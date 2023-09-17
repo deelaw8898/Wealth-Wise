@@ -1,0 +1,9 @@
+We will be creating a financial management website offering 5 different calculators
+for mortgage payments, car payments, debt repayment, leisure spending (vacation or
+personal), and a calculator for retirement age. Other features will include: options
+to log in, graphical and textual data representation, a spending tracker, and setting
+local currency. Our website will provide a personalized and user-friendly experience
+designed particularly for the younger generations dealing with ever-changing markets
+and skyrocketing interest rates. Our stakeholder is Trinity Munro who is interested
+in the functionality of the multipurpose calculator. We plan to implement this website
+using React, Node.js, SQL, and maybe Cloud Run and Docker.
