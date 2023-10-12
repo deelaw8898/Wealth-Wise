@@ -1,0 +1,58 @@
+/* Nav.css */
+
+/* Style for the overall navbar. Adjust colors, padding, etc. as necessary. */
+.navbar {
+    background-color: #f8f9fa; /* This is the light gray bg-light class color in Bootstrap */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the navbar */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure the navbar stays on top of other content */
+}
+
+/* Style for the company name */
+.navbar-brand {
+    font-size: 1.5rem; /* Increase the size of the company name */
+    font-weight: bold;  /* Make the company name bold */
+    color: #343a40;     /* This is the default color for text in Bootstrap */
+    position: absolute; /* Position it absolutely within the navbar container */
+    top: 0;             /* Align it to the top of the navbar container */
+    left: 0;            /* Align it to the left of the navbar container */
+    margin-left: 1rem;  /* Provide a slight space from the left edge */
+    margin-right: 0;    /* Reset the margin-right */
+}
+
+
+.auth-links {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%; /* Ensuring it takes the full width of its parent */
+}
+
+.nav-item.nav-link:nth-child(1) {
+    margin-right: 2rem; /* Add a 2rem space to the right side of the Login link */
+}
+
+
+.nav-item.nav-link {
+    color: #343a40; /* Default text color */
+    margin: 0 1rem; /* Increase margin to 1rem on the left and right side of each link */
+}
+
+/* Highlight the active link with a different color */
+.nav-item.nav-link.active {
+    color: #007bff; /* This is the primary color in Bootstrap */
+}
+
+/* Style for the navbar toggler button */
+.navbar-toggler {
+    border-color: #dee2e6; /* This is the default border color for buttons in Bootstrap */
+}
+
+/* Style for the navbar toggler icon */
+.navbar-toggler-icon {
+    background-image: url(data:image/svg+xml,%3csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2222%22%20height=%222%22%20viewBox=%220%200%2022%202%22%3e%3cpath%20d=%22M0%200h22v2H0z%22%3e%3c/path%3e%3c/svg%3e); /* Default Bootstrap icon */
+}
+
+/* Add any other styles you need for the navbar below... */
