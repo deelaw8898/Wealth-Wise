@@ -1,6 +1,18 @@
 import './App.css';
-import Nav from './pages /Nav/nav';
-import Home from './pages /Home/home';  
+
+
+import Nav from './pages/Nav/nav';
+import Home from './pages/Home/home'; 
+import Login from './pages/Login/login';
+import Registration from './pages/Registration/registration';
+import Mortgage from './pages/Mortgage_cal/mortgage';
+import Car from './pages/Car_payment/car_pay';
+import Debt from './pages/Debt_cal/debt';
+import Luxury from './pages/luxury_spending/luxury';
+import Vacation from './pages/Vacation_Spending/vacation';
+import Tracker from './pages/Money_tracker/tracker';
+
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -12,6 +24,17 @@ function App() {
           {/* this will route us to the page */}
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/registration" element={< Registration/>} />
+            <Route path="/mortgage" element={< Mortgage/>} />
+            <Route path="/car" element={< Car/>} />
+            <Route path="/debt" element={<Debt/>} />
+            <Route path="/luxury" element={<Luxury/>} />
+            <Route path="/vacation" element={< Vacation/>} />
+            <Route path="/tracker" element={< Tracker/>} />
+            
+            
+            {/*<Route path="/" element={< />} /> */}
           </Routes>
         </header>
       </div>
