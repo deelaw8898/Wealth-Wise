@@ -26,9 +26,9 @@ function Nav() {
                     <Link to='/' className="nav-item nav-link active">Home</Link>
                     <Link to='/mortgage' className="nav-item nav-link active">Mortgage Calculator </Link>
                     <Link to='/car' className="nav-item nav-link active">Car Payment Calculator </Link>
-                    <Link to='/debt' className="nav-item nav-link active">debt Calculator </Link>
-                    <Link to='/luxury' className="nav-item nav-link active">luxury spending Calculator </Link>
-                    <Link to='/vacation' className="nav-item nav-link active"> Vacation spending Calculator </Link>
+                    <Link to='/debt' className="nav-item nav-link active">Debt Calculator </Link>
+                    <Link to='/luxury' className="nav-item nav-link active">Luxury Spending Calculator </Link>
+                    <Link to='/vacation' className="nav-item nav-link active"> Vacation Spending Calculator </Link>
                     <Link to='/tracker' className="nav-item nav-link active"> Monthly Spending </Link>
 
 

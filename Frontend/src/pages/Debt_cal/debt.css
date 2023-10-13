@@ -1,0 +1,91 @@
+#DebtCalculatorPage {
+    margin-top: 15vh;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    height: auto;
+    min-width: 1000px;
+    width: 100%;
+    line-height: 1.0;
+}
+
+#DebtCalculatorPage input {
+    height: calc(10px + 2vmin);
+    font-size: calc(10px + 1vmin);
+    width: auto;
+    border: 2px solid white;
+    border-radius: 3px;
+}
+
+#DebtCalculatorPage button {
+    height: calc(10px + 3vmin);
+    font-size: calc(10px + 2vmin);
+    width: 80%;
+    border: 2px solid black;
+    border-radius: 3px;
+    align-self: center;
+}
+
+#DebtCalculatorPage select {
+    height: calc(10px + 2vmin);
+    font-size: calc(10px + 1vmin);
+    width: auto;
+    border: 2px solid white;
+    border-radius: 3px;
+}
+
+#DebtCalculatorPage label {
+    text-align: left;
+    height: calc(10px + 2vmin);
+    font-size: calc(10px + 2vmin);
+    width: auto;
+}
+
+#DebtCalculatorPage textarea {
+    height: auto;
+    width: auto;
+    font-size: calc(10px + 1vmin);
+    border: 2px solid white;
+    border-radius: 3px;
+}
+
+#interestReductionLabel {
+    text-align: center;
+}
+
+#DebtCalculatorPage input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  
+  input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+#DebtContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+#DebtCalc1 {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    min-width: auto;
+    min-height: auto;
+    margin-left: 10%;
+    width: 35%;
+}
+
+#DebtCalc2 {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: left;
+    min-width: auto;
+    min-height: auto;
+    margin-left: 10%;
+    width: 35%;
+}
