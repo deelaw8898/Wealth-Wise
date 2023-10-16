@@ -77,6 +77,10 @@ function Car(){
     setCurrentVehicleValue(0);
     setRegistrationFees(0);
     setEstimatedPayment(0);
+    setTotalPayments(0);
+    setTotalInterest(0);
+    setTotalNumberOfPayments(0);
+    setTotalSalesTax(0);
   };
 
   function numberWithCommas(x) {
