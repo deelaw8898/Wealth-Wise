@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './car_pay.css';
+import './App.css';
 
 function App() {
   const [paymentFrequency, setPaymentFrequency] = useState('monthly');
