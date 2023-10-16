@@ -54,20 +54,20 @@
 }
 
 .CarPaymentCalculatorPage .summary-section {
-    margin-top: 20px;
+    margin-top: 15px;
     border-radius: 8px;
     padding: 20px;
 }
 
 .CarPaymentCalculatorPage .summary-section h2 {
-    font-size: 45px;
+    font-size: 50x;
     font-weight: bold;
     margin-bottom: 30px;
     text-align: center;
 }
 
 .CarPaymentCalculatorPage .summary-section div {
-    font-size: 25px;
+    font-size: 30px;
     margin-bottom: 20px;
     text-align: center;
 }
