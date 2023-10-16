@@ -1,0 +1,81 @@
+/* mortgage.css */
+
+.MortgageCalculatorPage {
+    display: flex;
+    margin-top: 5vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 20px;
+    position: relative;
+}
+
+.MortgageCalculatorPage h1 {
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.MortgageCalculatorPage label {
+    text-align: center;
+    height: auto;
+    font-size: auto;
+    width: auto;
+    font-weight: bold;
+}
+
+.MortgageCalculatorPage input, .MortgageCalculatorPage select {
+    height: calc(10px + 2vmin);
+    font-size: calc(10px + 1vmin);
+    width: auto;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.MortgageCalculatorPage select:hover {
+    background-color: #e1e1e1;
+}
+
+.MortgageCalculatorPage button {
+    height: auto;
+    font-size: 25px;
+    width: 50%;
+    border-radius: 3px;
+    align-self: center;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.MortgageCalculatorPage button:last-child {
+    margin-right: 0;
+}
+
+.MortgageCalculatorPage button:hover {
+    background-color: #e1e1e1;
+}
+
+.MortgageCalculatorPage .summary-section {
+    margin-top: 15px;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.MortgageCalculatorPage .summary-section h3 {
+    font-size: 50px;  /* Corrected from 50x to 50px */
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.MortgageCalculatorPage .summary-section div {
+    font-size: 30px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.MortgageCalculatorPage input[type="number"]::-webkit-inner-spin-button,
+.MortgageCalculatorPage input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
