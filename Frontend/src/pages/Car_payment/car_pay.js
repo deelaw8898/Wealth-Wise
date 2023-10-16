@@ -2,7 +2,7 @@ import React, { usestate } from 'react';
 import './car_pay.css';
 
 function Car(){
-    const [paymentFrequency, setPaymentFrequency] = useState('monthly');
+  const [paymentFrequency, setPaymentFrequency] = useState('monthly');
   const [vehiclePrice, setVehiclePrice] = useState(0);
   const [downPayment, setDownPayment] = useState(0);
   const [interestRate, setInterestRate] = useState(0);
