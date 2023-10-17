@@ -1,6 +1,6 @@
 #DebtCalculatorPage {
     padding: 2.5%;
-    margin-top: 10vh;
+    margin-top: calc(12.5vmin);
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -9,6 +9,10 @@
     min-width: 1000px;
     width: 90%;
     max-width: 100%;
+}
+
+#DebtCalculatorPage h1 {
+    font-size: calc(10px + 3vmin);
 }
 
 #DebtCalculatorPage input {
@@ -20,11 +24,11 @@
 }
 
 #DebtCalculatorPage button {
-    height: calc(10px + 3vmin);
+    height: calc(10px + 3.5vmin);
     font-size: calc(10px + 2vmin);
     width: 80%;
     border: 2px solid black;
-    border-radius: 3px;
+    border-radius: 5px;
     align-self: center;
 }
 
@@ -55,6 +59,7 @@
 #DebtContainer {
     display: flex;
     flex-direction: row;
+    min-width: 1000px;
 }
 
 #DebtCalc1 {
@@ -62,7 +67,7 @@
     flex-direction: column;
     align-items: left;
     justify-content: left;
-    min-width: auto;
+    min-width: 400px;
     min-height: auto;
     margin-left: 10%;
     width: 35%;
@@ -80,6 +85,7 @@
 
 #DebtCalc1Output h3 {
     margin-top: -0.5%;
+    font-size: calc(10px + 1.5vmin);
 }
 
 #DebtCalc1Output p {
@@ -92,7 +98,7 @@
     flex-direction: column;
     align-items: left;
     justify-content: left;
-    min-width: auto;
+    min-width: 400px;
     min-height: auto;
     margin-left: 10%;
     width: 35%;
@@ -111,6 +117,7 @@
 
 #DebtCalc2Output h3 {
     margin-top: -0.5%;
+    font-size: calc(10px + 1.5vmin);
 }
 
 #DebtCalc2Output p {
