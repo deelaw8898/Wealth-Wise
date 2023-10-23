@@ -1,13 +1,18 @@
 #DebtCalculatorPage {
-    margin-top: 15vh;
+    padding: 2.5%;
+    margin-top: calc(12.5vmin);
     display: flex;
     flex-direction: column;
     align-items: left;
     justify-content: left;
     height: auto;
     min-width: 1000px;
-    width: 100%;
-    line-height: 1.0;
+    width: 90%;
+    max-width: 100%;
+}
+
+#DebtCalculatorPage h1 {
+    font-size: calc(10px + 3vmin);
 }
 
 #DebtCalculatorPage input {
@@ -19,16 +24,16 @@
 }
 
 #DebtCalculatorPage button {
-    height: calc(10px + 3vmin);
+    height: calc(10px + 3.5vmin);
     font-size: calc(10px + 2vmin);
     width: 80%;
     border: 2px solid black;
-    border-radius: 3px;
+    border-radius: 5px;
     align-self: center;
 }
 
 #DebtCalculatorPage select {
-    height: calc(10px + 2vmin);
+    height: calc(10px + 2.5vmin);
     font-size: calc(10px + 1vmin);
     width: auto;
     border: 2px solid white;
@@ -40,18 +45,6 @@
     height: calc(10px + 2vmin);
     font-size: calc(10px + 2vmin);
     width: auto;
-}
-
-#DebtCalculatorPage textarea {
-    height: auto;
-    width: auto;
-    font-size: calc(10px + 1vmin);
-    border: 2px solid white;
-    border-radius: 3px;
-}
-
-#interestReductionLabel {
-    text-align: center;
 }
 
 #DebtCalculatorPage input[type="number"] {
@@ -66,6 +59,7 @@
 #DebtContainer {
     display: flex;
     flex-direction: row;
+    min-width: 1000px;
 }
 
 #DebtCalc1 {
@@ -73,10 +67,30 @@
     flex-direction: column;
     align-items: left;
     justify-content: left;
-    min-width: auto;
+    min-width: 400px;
     min-height: auto;
     margin-left: 10%;
     width: 35%;
+}
+
+#DebtCalc1Output {
+    padding: 2.5%;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    align-items: left;
+    justify-content: left;
+    width: 95%;
+    color: black;
+}
+
+#DebtCalc1Output h3 {
+    margin-top: -0.5%;
+    font-size: calc(10px + 1.5vmin);
+}
+
+#DebtCalc1Output p {
+    margin-top: -10%;
+    font-size: calc(10px + 1.5vmin);
 }
 
 #DebtCalc2 {
@@ -84,8 +98,29 @@
     flex-direction: column;
     align-items: left;
     justify-content: left;
-    min-width: auto;
+    min-width: 400px;
     min-height: auto;
     margin-left: 10%;
     width: 35%;
+}
+
+#DebtCalc2Output {
+    padding: 2.5%;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    align-items: left;
+    justify-content: left;
+    width: 95%;
+    height: auto;
+    color: black;
+}
+
+#DebtCalc2Output h3 {
+    margin-top: -0.5%;
+    font-size: calc(10px + 1.5vmin);
+}
+
+#DebtCalc2Output p {
+    margin-top: -10%;
+    font-size: calc(10px + 1.5vmin);
 }
