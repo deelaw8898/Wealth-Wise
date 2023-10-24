@@ -74,18 +74,21 @@
 }
 
 #DebtCalc1Output {
-    padding: 2.5%;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 2vmin;
     background-color: #f9f9f9;
     border-radius: 5px;
     align-items: left;
     justify-content: left;
-    width: 95%;
+    width: 97.5%;
+    height: auto;
     color: black;
 }
 
 #DebtCalc1Output h3 {
     margin-top: -0.5%;
-    font-size: calc(10px + 1.5vmin);
+    font-size: calc(10px + 2vmin);
 }
 
 #DebtCalc1Output p {
@@ -105,19 +108,21 @@
 }
 
 #DebtCalc2Output {
-    padding: 2.5%;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 2vmin;
     background-color: #f9f9f9;
     border-radius: 5px;
     align-items: left;
     justify-content: left;
-    width: 95%;
+    width: 97.5%;
     height: auto;
     color: black;
 }
 
 #DebtCalc2Output h3 {
     margin-top: -0.5%;
-    font-size: calc(10px + 1.5vmin);
+    font-size: calc(10px + 2vmin);
 }
 
 #DebtCalc2Output p {
