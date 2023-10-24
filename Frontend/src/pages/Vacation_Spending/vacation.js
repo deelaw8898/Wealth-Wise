@@ -10,15 +10,16 @@ function Vacation(){
     const [remainingBudget, setRemainingBudget] = useState(''); //variable for remaining budget
     const [expenseNameToDelete, setExpenseNameToDelete] = useState(''); //variable to delete the expense
     const [expenseTotal, setTotal] = useState('');    //varible for the total of all the expenses
-    
   
     /**
      * This function checks for valid input for the input given by the user
      */
   const validateInput = (value) => {
-    if (value < 0) {
+    if (value <= 0 || value === null ) {
       alert("Enter a Valid Input");
-      return 0;
+      setTotal('');
+      setBudget('');
+      return null;
     }
     return value;
   }
@@ -27,9 +28,17 @@ function Vacation(){
    * calculates the budget status and total simuntaneously
    */
     const validateBudget = () => {
-    setRemainingBudget(budget);
-    calculateTotalExpenses();
-    } 
+
+      if(budget === null || budget === 0)
+      {
+        setRemainingBudget('');
+        setTotal('')
+      }
+      else{
+      setRemainingBudget(budget);
+      calculateTotalExpenses();
+      }
+      } 
 
   /** This function handle the expenses entered by the user and checks if they are valid 
      * or not and displays an error message according to that
@@ -44,7 +53,6 @@ function Vacation(){
             setTotal(expenseAmount);
             //addition of expense and amount to the expenses array
             setExpenses([...expenses, {name: expenseName, amount: parseFloat(expenseAmount)}]);
-
             budgetUpdate();
             setTotal(expenseTotal + expenseAmount);
         }
@@ -53,7 +61,8 @@ function Vacation(){
         }
     }
         else{
-         alert("Enter a  Valid amount")
+          setAmount('')
+         alert("Enter a  Valid amount");
         }
     }
     
@@ -143,7 +152,7 @@ return(
                     id="expense-amount"
                     placeholder="Enter expense amount"
                     value={expenseAmount}
-                    onChange={(e) => setAmount((validateInput(parseFloat(e.target.value))) || 0)}/>
+                    onChange={(e) => setAmount((validateInput(parseFloat(e.target.value))))}/>
           <button id="add-expense" onClick={validateExpense}>Add Expense</button>
         </div>
         <div>
