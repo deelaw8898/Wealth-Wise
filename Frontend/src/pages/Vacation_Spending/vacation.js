@@ -7,19 +7,19 @@ function Vacation(){
     const [expenseName, setName] = useState('');    //variable for expense name
     const [expenseAmount, setAmount] = useState('');  //varaible for expense amount
     const [expenses, setExpenses] = useState([]);    //array of all the expenses added
-    const [remainingBudget, setRemainingBudget] = useState(''); //variable for remaining budget
+    const [remainingBudget, setRemainingBudget] = useState(0); //variable for remaining budget
     const [expenseNameToDelete, setExpenseNameToDelete] = useState(''); //variable to delete the expense
-    const [expenseTotal, setTotal] = useState('');    //varible for the total of all the expenses
+    const [expenseTotal, setTotal] = useState(0);    //varible for the total of all the expenses
   
     /**
      * This function checks for valid input for the input given by the user
      */
   const validateInput = (value) => {
-    if (value <= 0 || value === null ) {
+    if (value < 0) {
       alert("Enter a Valid Input");
-      setTotal('');
+      setTotal(0);
       setBudget('');
-      return null;
+      return 0;
     }
     return value;
   }
@@ -28,11 +28,11 @@ function Vacation(){
    * calculates the budget status and total simuntaneously
    */
     const validateBudget = () => {
-
-      if(budget === null || budget === 0)
+      const parsedBudget = parseFloat(budget);
+      if(isNaN(parsedBudget) || parsedBudget <= 0)
       {
-        setRemainingBudget('');
-        setTotal('')
+        setRemainingBudget(0);
+        setTotal(0)
       }
       else{
       setRemainingBudget(budget);
@@ -48,7 +48,11 @@ function Vacation(){
      *      Display an error message
      */
   const validateExpense = () => { //setting the remaining budget limit
-    if (parseFloat(expenseAmount) > 0 ){
+    const name = expenseName.toString();
+    if(name ===''){
+      alert("Enter an expense name");
+    }
+    else if (parseFloat(expenseAmount) > 0){
         if(remainingBudget >= expenseAmount){
             setTotal(expenseAmount);
             //addition of expense and amount to the expenses array
@@ -62,7 +66,7 @@ function Vacation(){
     }
         else{
           setAmount('')
-         alert("Enter a  Valid amount");
+         alert("Enter a Valid amount");
         }
     }
     
@@ -96,6 +100,8 @@ function Vacation(){
         setTotal(newtotal);
         setExpenses(newarray);
         setExpenseNameToDelete('');
+        setAmount('');
+        setName('');
   }
 
     
@@ -117,11 +123,12 @@ function Vacation(){
         setName('');    //deleting the name of expense
         setBudget('');   //deleting the budget
         setAmount('');   //deleting the amount of the expense to zero
-        setRemainingBudget('');
+        setRemainingBudget(0);
         setExpenseNameToDelete('')
-        setTotal('');
+        setTotal(0);
     }
 
+    
 return(
 
   <div className="Vacation">
@@ -164,10 +171,10 @@ return(
         <button id="reset-button" onClick={resetExpenses}>Reset</button>
         </div>
         <div>
-        <label className='total-label' for = "total">Your Total Spending is: $ {expenseTotal} </label>
+        <label className='total-label' for = "total">Your Total Spending is: $ {parseFloat(expenseTotal).toFixed(2)} </label>
         </div>
         <div>
-        <label className = 'print-label' for = "budget">You still have ${remainingBudget} to spend</label>
+        <label className = 'print-label' for = "budget">You still have ${remainingBudget.toFixed(2)} to spend</label>
         </div>   
         <br></br>
         <div>
