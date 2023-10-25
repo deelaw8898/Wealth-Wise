@@ -109,10 +109,17 @@ function Debt() {
                 let debtFreeBy = new Date(newDebtFreeDate.getTime() + (daysToPay * 24 * 60 * 60 * 1000));
                 console.log(debtFreeBy.toDateString());
 
-                setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month. " +
-                "It looks like this is about $" + difference.toString() + " more than you can afford per month " +
-                "given your surplus income. If you were to pay $" + surplusIncome.toString() + " a month, you would be debt free by " 
-                + debtFreeBy.toDateString() + ".");
+                console.log(debtFreeBy.getDate());
+                console.log(then.getDate());
+
+                if (debtFreeBy.getDate() <= then.getDate() + 1) {setMonthlyPayment("To be debt free by this date, you would need to pay about $" + surplusIncome.toString() + " a month.");}
+
+                else {
+                    setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month. " +
+                    "It looks like this is about $" + difference.toString() + " more than you can afford per month " +
+                    "given your surplus income. If you were to pay $" + surplusIncome.toString() + " a month, you would be debt free by " 
+                    + debtFreeBy.toDateString() + ".");
+                }
             }
         }
 
