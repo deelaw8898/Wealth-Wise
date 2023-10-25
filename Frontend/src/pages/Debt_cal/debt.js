@@ -27,7 +27,7 @@ function Debt() {
      * divided by the dailly interest rate to get the required monthly payment. Then, the output
      * field is updated to display the information to the user.
      */
-    function calculate1() {
+    function setRequiredMonthlyPayment() {
         var inputs = document.querySelectorAll("#DebtCalc1 input[required]")
         var flag = false;
 
@@ -124,6 +124,8 @@ function Debt() {
         }
 
         else {setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month.");}
+
+        scrollToBottom();
     }
 
     // All these variables are either input variable or output variable from the calculator
@@ -132,7 +134,7 @@ function Debt() {
     const [interest2, setInterest2] = useState('');                     // Annual interest rate as a percent
     const [lumpSum, setLumpSum] = useState('');                         // The lump sum payment
     const [term, setTerm] = useState('');                               // Whether the interest is annual or monthly
-    const [interestReduction, setInterestReduction] = useState('');     // Field wherein output is displayed
+    const [interestReduction, setInterestReduc] = useState('');     // Field wherein output is displayed
 
     /**
      * This function calculates the interest savings from making a lump sum payment today using the following formula:
@@ -140,7 +142,7 @@ function Debt() {
      * that would be paid on the debt before the lump sum payment and then calculates the interest paid on the debt 
      * after the lump sum payment and displays the difference between the two in the output field.
      */
-    function calculate2() {
+    function setInterestReduction() {
         var inputs = document.querySelectorAll("#DebtCalc2 input[required]")
         var flag = false;
 
@@ -173,7 +175,7 @@ function Debt() {
         // false to abort the calculation.
         if (flag) {
             alert("Please fill out all fields for the Interest Reduction Calculator.");
-            setInterestReduction("");
+            setInterestReduc("");
             return;
         }
 
@@ -185,7 +187,7 @@ function Debt() {
             const oldInterest = debt * (interest2 / 100);
             const newInterest = (debt - lumpSum) * (interest2 / 100);
             const interestDiff = oldInterest - newInterest;
-            setInterestReduction("If you were to make a lump sum payment of $" + parseFloat(lumpSum).toFixed(2).toString() +
+            setInterestReduc("If you were to make a lump sum payment of $" + parseFloat(lumpSum).toFixed(2).toString() +
             " today, you would save a total of $" + interestDiff.toFixed(2) + " a year in interest costs.");
         }
 
@@ -193,9 +195,11 @@ function Debt() {
             const oldInterest = (debt * (interest2 / 100)) / 12;
             const newInterest = ((debt - lumpSum) * (interest2 / 100)) / 12;
             const interestDiff = oldInterest - newInterest;
-            setInterestReduction("If you were to make a lump sum payment of $" + parseFloat(lumpSum).toFixed(2).toString() +
+            setInterestReduc("If you were to make a lump sum payment of $" + parseFloat(lumpSum).toFixed(2).toString() +
             " today, you would save a total of $" + interestDiff.toFixed(2) + " a month in interest costs.");
         }
+
+        scrollToBottom();
     }
     
 
@@ -258,6 +262,53 @@ function Debt() {
     }
 
     /**
+     * This function quickly scrolls the user to the bottom of the page to make sure that the input
+     * is visible after calculation.
+     */
+    function scrollToBottom() {
+        // The duration of the scroll, the position of where the window currently is, the position of where the window
+        // ends and the time at which the scroll started are all initialized.
+        const duration = 375;
+        const startY = window.scrollY;
+        const endY = document.documentElement.scrollHeight - window.innerHeight;
+        const startTime = performance.now();
+      
+        // Inner function that actually scrolls the window
+        function scroll(currentTime) {
+            const elapsedTime = currentTime - startTime;
+            // If the time hasn't elapsed, then the window is scrolled by a small increment to
+            // make the scroll less jarring.
+            if (elapsedTime < duration) {
+                window.scrollTo(0, smoothScroll(elapsedTime, startY, endY - startY, duration));
+                requestAnimationFrame(scroll);
+            } 
+            
+            // If the time has elapsed, then the window is scrolled to the end position
+            else {
+                window.scrollTo(0, endY);
+            }
+        }
+
+        // Inner function that calculates the easing of the scroll so it isn't abrupt
+        function smoothScroll(elapsed, startingY, yDifference, duration) {
+            // Moves half the distance over a given unit of time to quickly accelerate
+            // downward initially but slow down towards the end
+            elapsed /= duration / 2;
+
+            // If the elapsed time is less than 1, then the scroll is still accelerating
+            // and the window is scrolled by increasinlgy large increments
+            if (elapsed < 1) return yDifference / 2 * elapsed * elapsed + startingY;
+            elapsed--;
+
+            // If the elapsed time is greater than 1, then the scroll is decelerating
+            // and the window is scrolled by increasingly small increments
+            return -yDifference / 2 * (elapsed * (elapsed - 2) - 1) + startingY;
+        }
+      
+        requestAnimationFrame(scroll);
+      }
+
+    /**
      * The following code is the HTML code for the debt calculator page. It contains two forms, one for each
      * calculator. Each form contains input fields for the user to enter their information and a button to
      * calculate the output. The output is displayed in a textarea field that is read only.
@@ -294,7 +345,7 @@ function Debt() {
                     onChange={(e) => setDate(e.target.value)} 
                     onBlur={(e) => {if (validateDate(e.target.value)) setDate(e.target.value)}} required></input><br></br>
 
-                    <button type="button" onClick={calculate1}>Calculate</button><br></br>
+                    <button type="button" onClick={setRequiredMonthlyPayment}>Calculate</button><br></br>
 
                     <div id="DebtCalc1Output">
                         <h3 id="monthlyPayment">Required Monthly Payment</h3><br></br>
@@ -338,7 +389,7 @@ function Debt() {
                     </select>
                     <br></br>
 
-                    <button type="button" onClick={calculate2}>Calculate</button><br></br>
+                    <button type="button" onClick={setInterestReduction}>Calculate</button><br></br>
                     
                     <div id="DebtCalc2Output">
                         <h3 id="interestReduction">Reduction in Interest Cost</h3><br></br>
