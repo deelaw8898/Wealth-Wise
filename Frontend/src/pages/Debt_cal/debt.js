@@ -270,7 +270,6 @@ function Debt() {
         // ends and the time at which the scroll started are all initialized.
         const duration = 375;
         const startY = window.scrollY;
-        const endY = document.documentElement.scrollHeight - window.innerHeight;
         const startTime = performance.now();
       
         // Inner function that actually scrolls the window
@@ -279,13 +278,13 @@ function Debt() {
             // If the time hasn't elapsed, then the window is scrolled by a small increment to
             // make the scroll less jarring.
             if (elapsedTime < duration) {
-                window.scrollTo(0, smoothScroll(elapsedTime, startY, endY - startY, duration));
+                window.scrollTo(0, smoothScroll(elapsedTime, startY, document.documentElement.scrollHeight - window.innerHeight - startY, duration));
                 requestAnimationFrame(scroll);
             } 
             
             // If the time has elapsed, then the window is scrolled to the end position
             else {
-                window.scrollTo(0, endY);
+                window.scrollTo(0, document.documentElement.scrollHeight - window.innerHeight);
             }
         }
 
