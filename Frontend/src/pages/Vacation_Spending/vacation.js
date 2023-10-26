@@ -62,7 +62,7 @@ function Vacation(){
             setTotal(expenseTotal + expenseAmount);
         }
         else{
-            alert("Expense is too expensive for the budegt");
+            alert("Expense is too expensive for the budget");
         }
     }
         else{
