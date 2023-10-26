@@ -32,11 +32,12 @@ function Vacation(){
       if(isNaN(parsedBudget) || parsedBudget <= 0)
       {
         setRemainingBudget(0);
-        setTotal(0)
+        setTotal(0);
+        alert("Enter a Valid Budget");
       }
       else{
-      setRemainingBudget(budget);
-      calculateTotalExpenses();
+        setRemainingBudget(budget);
+        calculateTotalExpenses();
       }
       } 
 
@@ -80,24 +81,28 @@ function Vacation(){
     }
 
     const deleteExpense = () => {
-    //searching for the right expense to be deleted
-    let expenseToDelete = expenses.find((expense) => expense.name === expenseNameToDelete);
-    //searching for the amount to be deleted
+    //searching for the right expense to be deleted and creating an array of the expenses to be deleted
+    const deletedExpenses = expenses.filter((expense) => expense.name === expenseNameToDelete);
+    //calculating the amount to be deleted
         let deletedAmount;
-        if (expenseToDelete) {
-        deletedAmount = expenseToDelete.amount;
-        } 
-        else {
-        deletedAmount = 0;
-        alert("Check the expense, it doesn't exist"); //displys an erro when expense doesn't exist
-        }
+        if (deletedExpenses.length > 0) {
+        let deletedAmount = deletedExpenses.reduce((total, expense) => total + expense.amount, 0);
         //calculation of the new remaining budget
         let newbugetremaining = remainingBudget + deletedAmount;
         setRemainingBudget(newbugetremaining);
-        //updating the expenses array
-        const newarray = expenses.filter((expense) => expense.name !== expenseNameToDelete); 
         let newtotal = expenseTotal - deletedAmount;
         setTotal(newtotal);
+        }
+        else {
+        deletedAmount = 0;
+        let newbugetremaining = remainingBudget + deletedAmount;
+        setRemainingBudget(newbugetremaining);
+        let newtotal = expenseTotal - deletedAmount;
+        setTotal(newtotal);
+        alert("Check the expense, it doesn't exist"); //displys an erro when expense doesn't exist
+        }
+        //updating the expenses array
+        const newarray = expenses.filter((expense) => expense.name !== expenseNameToDelete); 
         setExpenses(newarray);
         setExpenseNameToDelete('');
         setAmount('');
