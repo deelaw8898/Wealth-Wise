@@ -33,7 +33,7 @@ function Vacation(){
       {
         setRemainingBudget(0);
         setTotal(0);
-        alert("Enter a Valid Budget");
+        alert("Please check your Budget!");
       }
       else{
         setRemainingBudget(budget);
@@ -50,8 +50,9 @@ function Vacation(){
      */
   const validateExpense = () => { //setting the remaining budget limit
     const name = expenseName.toString();
+    const budgetintial = budget.toString();
     if(name ===''){
-      alert("Enter an expense name");
+      alert("Expense name is empty! Please give a name.");
     }
     else if (parseFloat(expenseAmount) > 0){
         if(remainingBudget >= expenseAmount){
@@ -63,13 +64,16 @@ function Vacation(){
             setAmount('');
             setName('');
         }
+        else if(budgetintial === ''){
+          alert("Oops! You forgot to set the budget.")
+        }
         else{
-            alert("Expense is too expensive for the budegt");
+            alert("You are going Over-Budget!");
         }
     }
         else{
           setAmount('')
-         alert("Enter a Valid amount");
+         alert("Expense Amouunt Invalid! Please try again.");
         }
     }
     
@@ -84,7 +88,12 @@ function Vacation(){
 
     const deleteExpense = () => {
     //searching for the right expense to be deleted and creating an array of the expenses to be deleted
-    const deletedExpenses = expenses.filter((expense) => expense.name === expenseNameToDelete);
+    const deletename = expenseNameToDelete.toString();
+      if(deletename === ''){
+        alert("Please enter a Name for the expense to delete!");
+      }
+      else{
+        const deletedExpenses = expenses.filter((expense) => expense.name === expenseNameToDelete);
     //calculating the amount to be deleted
         let deletedAmount;
         if (deletedExpenses.length > 0) {
@@ -95,6 +104,7 @@ function Vacation(){
         let newtotal = expenseTotal - deletedAmount;
         setTotal(newtotal);
         }
+
         else {
         deletedAmount = 0;
         let newbugetremaining = remainingBudget + deletedAmount;
@@ -109,6 +119,7 @@ function Vacation(){
         setExpenseNameToDelete('');
         setAmount('');
         setName('');
+      }
   }
 
     
