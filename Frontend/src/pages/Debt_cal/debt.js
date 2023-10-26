@@ -12,9 +12,9 @@ function Debt() {
     // All these variables are either input variable or output variable from the calculator
     // that calculates the required monthly payment to be debt free by a certain date.
     const [debt1, setDebt1] = useState('');                     // Total amount owing
-    const [date, setDate] = useState('');                       // Desired debt-free date
-    const [surplusIncome, setSurplusIncome] = useState('');     // Average monthly surplus income
     const [interest1, setInterest1] = useState('');             // Annual interest rate as a percent
+    const [surplusIncome, setSurplusIncome] = useState('');     // Average monthly surplus income
+    const [date, setDate] = useState('');                       // Desired debt-free date
     const [monthlyPayment, setMonthlyPayment] = useState('');   // Field wherein output is displayed
 
     /**

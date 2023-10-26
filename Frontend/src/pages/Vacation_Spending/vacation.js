@@ -7,10 +7,9 @@ function Vacation(){
     const [expenseName, setName] = useState('');    //variable for expense name
     const [expenseAmount, setAmount] = useState('');  //varaible for expense amount
     const [expenses, setExpenses] = useState([]);    //array of all the expenses added
-    const [remainingBudget, setRemainingBudget] = useState(''); //variable for remaining budget
+    const [remainingBudget, setRemainingBudget] = useState(0); //variable for remaining budget
     const [expenseNameToDelete, setExpenseNameToDelete] = useState(''); //variable to delete the expense
-    const [expenseTotal, setTotal] = useState('');    //varible for the total of all the expenses
-    
+    const [expenseTotal, setTotal] = useState(0);    //varible for the total of all the expenses
   
     /**
      * This function checks for valid input for the input given by the user
@@ -18,6 +17,8 @@ function Vacation(){
   const validateInput = (value) => {
     if (value < 0) {
       alert("Enter a Valid Input");
+      setTotal(0);
+      setBudget('');
       return 0;
     }
     return value;
@@ -27,9 +28,18 @@ function Vacation(){
    * calculates the budget status and total simuntaneously
    */
     const validateBudget = () => {
-    setRemainingBudget(budget);
-    calculateTotalExpenses();
-    } 
+      const parsedBudget = parseFloat(budget);
+      if(isNaN(parsedBudget) || parsedBudget <= 0)
+      {
+        setRemainingBudget(0);
+        setTotal(0);
+        alert("Enter a Valid Budget");
+      }
+      else{
+        setRemainingBudget(budget);
+        calculateTotalExpenses();
+      }
+      } 
 
   /** This function handle the expenses entered by the user and checks if they are valid 
      * or not and displays an error message according to that
@@ -39,21 +49,25 @@ function Vacation(){
      *      Display an error message
      */
   const validateExpense = () => { //setting the remaining budget limit
-    if (parseFloat(expenseAmount) > 0 ){
+    const name = expenseName.toString();
+    if(name ===''){
+      alert("Enter an expense name");
+    }
+    else if (parseFloat(expenseAmount) > 0){
         if(remainingBudget >= expenseAmount){
             setTotal(expenseAmount);
             //addition of expense and amount to the expenses array
             setExpenses([...expenses, {name: expenseName, amount: parseFloat(expenseAmount)}]);
-
             budgetUpdate();
             setTotal(expenseTotal + expenseAmount);
         }
         else{
-            alert("Expense is too expensive for the budegt");
+            alert("Expense is too expensive for the budget");
         }
     }
         else{
-         alert("Enter a  Valid amount")
+          setAmount('')
+         alert("Enter a Valid amount");
         }
     }
     
@@ -67,26 +81,32 @@ function Vacation(){
     }
 
     const deleteExpense = () => {
-    //searching for the right expense to be deleted
-    let expenseToDelete = expenses.find((expense) => expense.name === expenseNameToDelete);
-    //searching for the amount to be deleted
+    //searching for the right expense to be deleted and creating an array of the expenses to be deleted
+    const deletedExpenses = expenses.filter((expense) => expense.name === expenseNameToDelete);
+    //calculating the amount to be deleted
         let deletedAmount;
-        if (expenseToDelete) {
-        deletedAmount = expenseToDelete.amount;
-        } 
-        else {
-        deletedAmount = 0;
-        alert("Check the expense, it doesn't exist"); //displys an erro when expense doesn't exist
-        }
+        if (deletedExpenses.length > 0) {
+        let deletedAmount = deletedExpenses.reduce((total, expense) => total + expense.amount, 0);
         //calculation of the new remaining budget
         let newbugetremaining = remainingBudget + deletedAmount;
         setRemainingBudget(newbugetremaining);
-        //updating the expenses array
-        const newarray = expenses.filter((expense) => expense.name !== expenseNameToDelete); 
         let newtotal = expenseTotal - deletedAmount;
         setTotal(newtotal);
+        }
+        else {
+        deletedAmount = 0;
+        let newbugetremaining = remainingBudget + deletedAmount;
+        setRemainingBudget(newbugetremaining);
+        let newtotal = expenseTotal - deletedAmount;
+        setTotal(newtotal);
+        alert("Check the expense, it doesn't exist"); //displys an erro when expense doesn't exist
+        }
+        //updating the expenses array
+        const newarray = expenses.filter((expense) => expense.name !== expenseNameToDelete); 
         setExpenses(newarray);
         setExpenseNameToDelete('');
+        setAmount('');
+        setName('');
   }
 
     
@@ -108,11 +128,12 @@ function Vacation(){
         setName('');    //deleting the name of expense
         setBudget('');   //deleting the budget
         setAmount('');   //deleting the amount of the expense to zero
-        setRemainingBudget('');
+        setRemainingBudget(0);
         setExpenseNameToDelete('')
-        setTotal('');
+        setTotal(0);
     }
 
+    
 return(
 
   <div className="Vacation">
@@ -143,7 +164,7 @@ return(
                     id="expense-amount"
                     placeholder="Enter expense amount"
                     value={expenseAmount}
-                    onChange={(e) => setAmount((validateInput(parseFloat(e.target.value))) || 0)}/>
+                    onChange={(e) => setAmount((validateInput(parseFloat(e.target.value))))}/>
           <button id="add-expense" onClick={validateExpense}>Add Expense</button>
         </div>
         <div>
@@ -155,10 +176,10 @@ return(
         <button id="reset-button" onClick={resetExpenses}>Reset</button>
         </div>
         <div>
-        <label className='total-label' for = "total">Your Total Spending is: $ {expenseTotal} </label>
+        <label className='total-label' for = "total">Your Total Spending is: $ {parseFloat(expenseTotal).toFixed(2)} </label>
         </div>
         <div>
-        <label className = 'print-label' for = "budget">You still have ${remainingBudget} to spend</label>
+        <label className = 'print-label' for = "budget">You still have ${remainingBudget.toFixed(2)} to spend</label>
         </div>   
         <br></br>
         <div>
