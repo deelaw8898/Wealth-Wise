@@ -60,6 +60,8 @@ function Vacation(){
             setExpenses([...expenses, {name: expenseName, amount: parseFloat(expenseAmount)}]);
             budgetUpdate();
             setTotal(expenseTotal + expenseAmount);
+            setAmount('');
+            setName('');
         }
         else{
             alert("Expense is too expensive for the budegt");
