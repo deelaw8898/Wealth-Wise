@@ -192,11 +192,10 @@ return(
         <br></br>
         <button id="reset-button" onClick={resetExpenses}>Reset</button>
         </div>
-        <div>
         <br></br>
+        <div className='print'>
         <label className='total-label' for = "total">Your Total Spending is: $ {parseFloat(expenseTotal).toFixed(2)} </label>
-        </div>
-        <div>
+        <br></br>
         <label className = 'print-label' for = "budget">You still have ${remainingBudget.toFixed(2)} to spend</label>
         </div>   
         <br></br>

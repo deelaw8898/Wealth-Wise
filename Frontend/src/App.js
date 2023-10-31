@@ -3,7 +3,7 @@ import './App.css';
 
 import Nav from './pages/Nav/nav';
 import Home from './pages/Home/home'; 
-import Login from './pages/Login/login';
+import Login  from './pages/Login/login';
 import Registration from './pages/Registration/registration';
 import Mortgage from './pages/Mortgage_cal/mortgage';
 import Car from './pages/Car_payment/car_pay';
