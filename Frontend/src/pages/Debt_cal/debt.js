@@ -66,11 +66,6 @@ function Debt() {
         const dailyInterest = (parseFloat(interest1) / 100) / 365.25;
         const monthlyPaymentCalc = ((365.25 / 12) * (debt / ((1 - (1 + dailyInterest) ** -(days)) / dailyInterest))).toFixed(2);
 
-        // monthlyPaymentCalc/(365.25/12) = debt / ((1 - (1 + dailyInterest) ** -(days)) / dailyInterest)
-        // monthlyPaymentCalc/((365.25/12)*debt) = 1 / ((1 - (1 + dailyInterest) ** -(days)) / dailyInterest)
-        // dailyInterest*surplusIncome/((365.25/12)*debt) = 1 / (1 - (1 + dailyInterest) ** -(days))
-        // 
-
         // Calculates the difference between the required monthly payment and the surplus income. If the difference
         // is greater than 0, then the user cannot afford to pay off their debt by the desired date. Else, the user
         // can afford to pay off their debt by the desired date and the output field is updated to display the
@@ -91,7 +86,6 @@ function Debt() {
             
             while (debt2 > 0) {
               debt2 = debt2 * (1 + dailyInterestRate) - (surplusIncome / (365.25 / 12));
-              console.log(debt2);
               if (debt2 > debt) {
                 flag = true;
                 break;
@@ -101,18 +95,12 @@ function Debt() {
             
             if (flag) {setMonthlyPayment("With your current surplus income, you will not be able to pay off this debt.");}
             else {
-                console.log(daysToPayOff);
                 const daysToPay = daysToPayOff;
 
                 let newDebtFreeDate = new Date();
-                console.log(newDebtFreeDate.toDateString());
                 let debtFreeBy = new Date(newDebtFreeDate.getTime() + (daysToPay * 24 * 60 * 60 * 1000));
-                console.log(debtFreeBy.toDateString());
 
-                console.log(debtFreeBy.getDate());
-                console.log(then.getDate());
-
-                if (debtFreeBy.getDate() <= then.getDate() + 1) {setMonthlyPayment("To be debt free by this date, you would need to pay about $" + surplusIncome.toString() + " a month.");}
+                if (debtFreeBy.getMilliseconds() <= then.getMilliseconds()) {setMonthlyPayment("To be debt free by this date, you would need to pay about $" + surplusIncome.toString() + " a month.");}
 
                 else {
                     setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month. " +

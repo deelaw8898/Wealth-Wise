@@ -94,22 +94,26 @@ function Registration() {
             <div id="registrationPage">
                 <h1>Registration</h1>
                     <form id="regForm">
-                        <label for="username">Username</label><br></br>
+                        <label for="username">Username*</label><br></br>
                         <input type="text" id="username" name="username" value={username} placeholder="Enter username..." required
-                        onChange={(e) => setUsername(e.target.value)}></input><br></br>
+                        onChange={(e) => setUsername(e.target.value)}></input><br></br><br></br>
 
-                        <label for="password">Password</label><br></br>
+                        <label for="password">Password*</label><br></br>
                         <input type="text" id="password" name="password" value={password} placeholder="Enter password..." required
-                        onChange={(e) => setPassword(e.target.value)}></input><br></br>
+                        onChange={(e) => setPassword(e.target.value)}></input><br></br><br></br>
 
                         <label for="income">Income (Monthly)</label><br></br>
                         <input type="number" id="income" name="income" value={income} 
                         onChange={(e) => setIncome(parseFloat(e.target.value))} 
                         onBlur={(e) => {if (validateNumber(e.target.value)) setIncome(parseFloat(e.target.value).toFixed(2))
                                         else setIncome('')}}
-                        placeholder="Enter monthly income..." min="0"></input><br></br>
+                        placeholder="Enter monthly income..." min="0"></input><br></br><br></br>
 
                         <button type="button" onClick={registerUser}>Register</button><br></br>
+
+                        <br></br>
+
+                        <p>Fields marked with a * are mandatory for registration.</p>
                     </form>
             </div>
         </section>
