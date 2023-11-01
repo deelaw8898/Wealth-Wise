@@ -79,35 +79,34 @@ function Debt() {
         // how often they'll have to pay the prescribed amount every month to be debt free.
         if (difference > 0) {
             const interestRateAnnual = parseFloat(interest1) / 100;
-            const dailyInterestRate = interestRateAnnual / 365.25;
-            let daysToPayOff = 0;
+            const monthlyInterestRate = interestRateAnnual / (365.25 / 12);
+            let monthsToPayOff = 0;
             let debt2 = debt;
             let flag = false;
             
             while (debt2 > 0) {
-              debt2 = debt2 * (1 + dailyInterestRate) - (surplusIncome / (365.25 / 12));
+              debt2 = debt2 * (1 + monthlyInterestRate) - surplusIncome;
               if (debt2 > debt) {
                 flag = true;
                 break;
               }
-              daysToPayOff++;
+              monthsToPayOff++;
             }
             
             if (flag) {setMonthlyPayment("With your current surplus income, you will not be able to pay off this debt.");}
             else {
-                const daysToPay = daysToPayOff;
+                const monthsToPay = monthsToPayOff;
 
                 let newDebtFreeDate = new Date();
-                let debtFreeBy = new Date(newDebtFreeDate.getTime() + (daysToPay * 24 * 60 * 60 * 1000));
+                let debtFreeBy = new Date(newDebtFreeDate.getTime() + (monthsToPay * (365.25 / 12) * 24 * 60 * 60 * 1000));
+                let min = new Date(then.getTime() + (365.25 / 12) * 24 * 60 * 60 * 1000);
 
-                if (debtFreeBy.getMilliseconds() <= then.getMilliseconds()) {setMonthlyPayment("To be debt free by this date, you would need to pay about $" + surplusIncome.toString() + " a month.");}
+                if (debtFreeBy < min) {debtFreeBy = min;}
 
-                else {
-                    setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month. " +
-                    "It looks like this is about $" + difference.toString() + " more than you can afford per month " +
-                    "given your surplus income. If you were to pay $" + surplusIncome.toString() + " a month, you would be debt free by " 
-                    + debtFreeBy.toDateString() + ".");
-                }
+                setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month. " +
+                "It looks like this is about $" + difference.toString() + " more than you can afford per month " +
+                "given your surplus income. If you were to pay $" + surplusIncome.toString() + " a month, you would be debt free by " 
+                + debtFreeBy.toISOString().split('T')[0] + ".");
             }
         }
 
