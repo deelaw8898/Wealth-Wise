@@ -66,11 +66,6 @@ function Debt() {
         const dailyInterest = (parseFloat(interest1) / 100) / 365.25;
         const monthlyPaymentCalc = ((365.25 / 12) * (debt / ((1 - (1 + dailyInterest) ** -(days)) / dailyInterest))).toFixed(2);
 
-        // monthlyPaymentCalc/(365.25/12) = debt / ((1 - (1 + dailyInterest) ** -(days)) / dailyInterest)
-        // monthlyPaymentCalc/((365.25/12)*debt) = 1 / ((1 - (1 + dailyInterest) ** -(days)) / dailyInterest)
-        // dailyInterest*surplusIncome/((365.25/12)*debt) = 1 / (1 - (1 + dailyInterest) ** -(days))
-        // 
-
         // Calculates the difference between the required monthly payment and the surplus income. If the difference
         // is greater than 0, then the user cannot afford to pay off their debt by the desired date. Else, the user
         // can afford to pay off their debt by the desired date and the output field is updated to display the
@@ -84,42 +79,34 @@ function Debt() {
         // how often they'll have to pay the prescribed amount every month to be debt free.
         if (difference > 0) {
             const interestRateAnnual = parseFloat(interest1) / 100;
-            const dailyInterestRate = interestRateAnnual / 365.25;
-            let daysToPayOff = 0;
+            const monthlyInterestRate = interestRateAnnual / (365.25 / 12);
+            let monthsToPayOff = 0;
             let debt2 = debt;
             let flag = false;
             
             while (debt2 > 0) {
-              debt2 = debt2 * (1 + dailyInterestRate) - (surplusIncome / (365.25 / 12));
-              console.log(debt2);
+              debt2 = debt2 * (1 + monthlyInterestRate) - surplusIncome;
               if (debt2 > debt) {
                 flag = true;
                 break;
               }
-              daysToPayOff++;
+              monthsToPayOff++;
             }
             
             if (flag) {setMonthlyPayment("With your current surplus income, you will not be able to pay off this debt.");}
             else {
-                console.log(daysToPayOff);
-                const daysToPay = daysToPayOff;
+                const monthsToPay = monthsToPayOff;
 
                 let newDebtFreeDate = new Date();
-                console.log(newDebtFreeDate.toDateString());
-                let debtFreeBy = new Date(newDebtFreeDate.getTime() + (daysToPay * 24 * 60 * 60 * 1000));
-                console.log(debtFreeBy.toDateString());
+                let debtFreeBy = new Date(newDebtFreeDate.getTime() + (monthsToPay * (365.25 / 12) * 24 * 60 * 60 * 1000));
+                let min = new Date(then.getTime() + (365.25 / 12) * 24 * 60 * 60 * 1000);
 
-                console.log(debtFreeBy.getDate());
-                console.log(then.getDate());
+                if (debtFreeBy < min) {debtFreeBy = min;}
 
-                if (debtFreeBy.getDate() <= then.getDate() + 1) {setMonthlyPayment("To be debt free by this date, you would need to pay about $" + surplusIncome.toString() + " a month.");}
-
-                else {
-                    setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month. " +
-                    "It looks like this is about $" + difference.toString() + " more than you can afford per month " +
-                    "given your surplus income. If you were to pay $" + surplusIncome.toString() + " a month, you would be debt free by " 
-                    + debtFreeBy.toDateString() + ".");
-                }
+                setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month. " +
+                "It looks like this is about $" + difference.toString() + " more than you can afford per month " +
+                "given your surplus income. If you were to pay $" + surplusIncome.toString() + " a month, you would be debt free by " 
+                + debtFreeBy.toISOString().split('T')[0] + ".");
             }
         }
 
