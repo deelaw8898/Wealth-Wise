@@ -37,22 +37,22 @@ function Car(){
       return;
     }
     //Check for interest rate
-    else if (interestRate === null || interestRate === "") {
+    else if (interestRate === null || isNaN(interestRate) || interestRate === "") {
       alert("Please enter an amount (or 0) for the Interest Rate!")
       return;
     }
     // Check for current vehicle value
-    else if (currentVehicleValue === null || currentVehicleValue === "") {
+    else if (currentVehicleValue === null || isNaN(currentVehicleValue) || currentVehicleValue === "") {
       alert("Please enter an amount (or 0) for the Current Vehicle Value.");
       return;
     }
     // Check for down payment
-    else if (downPayment === null || downPayment === "") {
+    else if (downPayment === null || isNaN(downPayment) || downPayment === "") {
       alert("Please enter an amount (or 0) for the Down Payment.");
       return;
     }
     // Check for registration & other fees
-    else if (registrationFees === null || registrationFees === "") {
+    else if (registrationFees === null || isNaN(registrationFees) || registrationFees === "") {
       alert("Please enter an amount (or 0) for Registration & Other Fees.");
       return;
     }
