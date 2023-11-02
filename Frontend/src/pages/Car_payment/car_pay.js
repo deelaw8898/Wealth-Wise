@@ -1,31 +1,62 @@
-import React, { useState } from 'react'; 
+import React, { useState, useRef } from 'react'; 
 import './car_pay.css';
 
 function Car(){
   const [paymentFrequency, setPaymentFrequency] = useState('monthly');
-  const [vehiclePrice, setVehiclePrice] = useState(0);
-  const [downPayment, setDownPayment] = useState(0);
-  const [interestRate, setInterestRate] = useState(0);
+  const [vehiclePrice, setVehiclePrice] = useState(null);
+  const [downPayment, setDownPayment] = useState(null);
+  const [interestRate, setInterestRate] = useState(null);
   const [provincialTax, setProvincialTax] = useState('none');
-  const [loanDuration, setLoanDuration] = useState(12);
+  const [loanDuration, setLoanDuration] = useState(null);
   const [durationType, setDurationType] = useState('months');
-  const [currentVehicleValue, setCurrentVehicleValue] = useState(0);
-  const [registrationFees, setRegistrationFees] = useState(0);
+  const [currentVehicleValue, setCurrentVehicleValue] = useState(null);
+  const [registrationFees, setRegistrationFees] = useState(null);
   const [estimatedPayment, setEstimatedPayment] = useState(0);
   const [totalPayments, setTotalPayments] = useState(0);
   const [totalInterest, setTotalInterest] = useState(0);
   const [totalNumberOfPayments, setTotalNumberOfPayments] = useState(0);
   const [totalSalesTax, setTotalSalesTax] = useState(0);
 
-  // const validateInput = (value) => {
-  //   if (value < 0) {
-  //     alert("Value cannot be negative");
-  //     return 0;
-  //   }
-  //   return value;
-  // };
+  //creating ref for summary section
+  const summaryRef = useRef(null);
+
+  //New reference for top section
+  const topSectionRef = useRef(null);
 
   const calculatePayment = () => {
+
+    // Check for vehicle price
+    if (!vehiclePrice || vehiclePrice === 0) {
+      alert("You forgot to enter the New Vehicle Price!");
+      setTotalNumberOfPayments(0);
+      return;
+    }
+    //Check for duration of loan
+    else if (!loanDuration || loanDuration === 0) {
+      alert("You forgot to enter the Duration of Loan!")
+      return;
+    }
+    //Check for interest rate
+    else if (interestRate === null || interestRate === "") {
+      alert("Please enter an amount (or 0) for the Interest Rate!")
+      return;
+    }
+    // Check for current vehicle value
+    else if (currentVehicleValue === null || currentVehicleValue === "") {
+      alert("Please enter an amount (or 0) for the Current Vehicle Value.");
+      return;
+    }
+    // Check for down payment
+    else if (downPayment === null || downPayment === "") {
+      alert("Please enter an amount (or 0) for the Down Payment.");
+      return;
+    }
+    // Check for registration & other fees
+    else if (registrationFees === null || registrationFees === "") {
+      alert("Please enter an amount (or 0) for Registration & Other Fees.");
+      return;
+    }
+
     // 1. Adjust the vehiclePrice for provincial tax
     let adjustedVehiclePrice = vehiclePrice;
     switch (provincialTax) {
@@ -70,29 +101,28 @@ function Car(){
     setTotalNumberOfPayments(isNaN(numberOfPayments) ? 0 : numberOfPayments);
     setTotalSalesTax(Math.round((isNaN(adjustedVehiclePrice - vehiclePrice) ? 0 : (adjustedVehiclePrice - vehiclePrice)) * 100) / 100);
 
-    if (vehiclePrice === 0) {
-      alert("You forgot to enter the New Vehicle Price!");
-      setTotalNumberOfPayments(0);
-      return;
-    }
-
+    //Scroll down to summary section
+    summaryRef.current.scrollIntoView({ behavior: 'smooth'});
   };
 
   const resetInputs = () => {
     setPaymentFrequency('monthly');
-    setVehiclePrice(0);
-    setDownPayment(0);
-    setInterestRate(0);
+    setVehiclePrice("");
+    setDownPayment("");
+    setInterestRate("");
     setProvincialTax('none');
-    setLoanDuration(12);
+    setLoanDuration("");
     setDurationType('months');
-    setCurrentVehicleValue(0);
-    setRegistrationFees(0);
+    setCurrentVehicleValue("");
+    setRegistrationFees("");
     setEstimatedPayment(0);
     setTotalPayments(0);
     setTotalInterest(0);
     setTotalNumberOfPayments(0);
     setTotalSalesTax(0);
+
+    //Scroll back up
+    topSectionRef.current.scrollIntoView({ behavior: 'smooth'});
   };
 
   function numberWithCommas(x) {
@@ -100,35 +130,35 @@ function Car(){
   }
 
    return (
-    <div className="CarPaymentCalculatorPage">
+    <div className="CarPaymentCalculatorPage" ref={topSectionRef}>
       <div className="CarPaymentCalculatorPage">
-        <h1>Car Payment Calculator</h1>
-        
+        <br></br>
+        <br></br>
         <div>
           <label>
             New Vehicle Price: &nbsp;
-            <input type="number" value={vehiclePrice} onChange={e => setVehiclePrice(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={vehiclePrice} onChange={e => setVehiclePrice(parseFloat(e.target.value))} />
           </label>
         </div>
         <br></br>
         <div>
           <label>
             Current Vehicle Value (Optional): &nbsp;
-            <input type="number" value={currentVehicleValue} onChange={e => setCurrentVehicleValue(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={currentVehicleValue} onChange={e => setCurrentVehicleValue(parseFloat(e.target.value))} />
           </label>
         </div>
         <br></br>
         <div>
           <label>
             Down Payment (Optional): &nbsp;
-            <input type="number" value={downPayment} onChange={e => setDownPayment(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={downPayment} onChange={e => setDownPayment(parseFloat(e.target.value))} />
           </label>
         </div>
         <br></br>
         <div>
           <label>
             Duration of Loan: &nbsp;
-            <input type="number" value={loanDuration} onChange={e => setLoanDuration(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={loanDuration} onChange={e => setLoanDuration(parseFloat(e.target.value))} />
             <select value={durationType} onChange={e => setDurationType(e.target.value)}>
               <option value="months">Months</option>
               <option value="years">Years</option>
@@ -139,7 +169,7 @@ function Car(){
         <div>
           <label>
             Interest Rate (%): &nbsp;
-            <input type="number" value={interestRate} onChange={e => setInterestRate(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={interestRate} onChange={e => setInterestRate(parseFloat(e.target.value))} />
           </label>
         </div>
         <br></br>
@@ -165,7 +195,7 @@ function Car(){
         <div>
           <label>
             Registration & Other Fees (Optional): &nbsp;
-            <input type="number" value={registrationFees} onChange={e => setRegistrationFees(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={registrationFees} onChange={e => setRegistrationFees(parseFloat(e.target.value))} />
           </label>
         </div>
         <br></br>
@@ -182,7 +212,7 @@ function Car(){
         <button onClick={calculatePayment} style={{marginRight: "10px"}}>Calculate</button> 
         <button onClick={resetInputs}>Reset</button>
         
-        <div className="summary-section">
+        <div className="summary-section" ref={summaryRef}>
           <h2>Summary</h2>
           <div>Estimated Payment: ${numberWithCommas((isNaN(estimatedPayment) ? 0 : estimatedPayment).toFixed(2))}</div>
           <div>Total Payments: ${numberWithCommas((isNaN(totalPayments) ? 0 : totalPayments).toFixed(2))}</div>
