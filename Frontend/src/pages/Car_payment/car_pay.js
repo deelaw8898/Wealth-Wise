@@ -23,6 +23,13 @@ function Car(){
   //New reference for top section
   const topSectionRef = useRef(null);
 
+  // Function to prevent invallid characters
+  const preventInvalidChars = (e) => {
+    if (e.key === "-" || e.key === "+") {
+      e.preventDefault();
+    }
+  };
+
   const calculatePayment = () => {
 
     // Check for vehicle price
@@ -137,28 +144,28 @@ function Car(){
         <div>
           <label>
             New Vehicle Price: &nbsp;
-            <input type="number" min = "0" value={vehiclePrice} onChange={e => setVehiclePrice(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={vehiclePrice} onChange={e => setVehiclePrice(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
           </label>
         </div>
         <br></br>
         <div>
           <label>
             Current Vehicle Value (Optional): &nbsp;
-            <input type="number" min = "0" value={currentVehicleValue} onChange={e => setCurrentVehicleValue(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={currentVehicleValue} onChange={e => setCurrentVehicleValue(parseFloat(e.target.value))} onKeyDown=       {preventInvalidChars} />
           </label>
         </div>
         <br></br>
         <div>
           <label>
             Down Payment (Optional): &nbsp;
-            <input type="number" min = "0" value={downPayment} onChange={e => setDownPayment(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={downPayment} onChange={e => setDownPayment(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
           </label>
         </div>
         <br></br>
         <div>
           <label>
             Duration of Loan: &nbsp;
-            <input type="number" min = "0" value={loanDuration} onChange={e => setLoanDuration(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={loanDuration} onChange={e => setLoanDuration(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
             <select value={durationType} onChange={e => setDurationType(e.target.value)}>
               <option value="months">Months</option>
               <option value="years">Years</option>
@@ -169,7 +176,7 @@ function Car(){
         <div>
           <label>
             Interest Rate (%): &nbsp;
-            <input type="number" min = "0" value={interestRate} onChange={e => setInterestRate(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={interestRate} onChange={e => setInterestRate(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
           </label>
         </div>
         <br></br>
@@ -195,7 +202,7 @@ function Car(){
         <div>
           <label>
             Registration & Other Fees (Optional): &nbsp;
-            <input type="number" min = "0" value={registrationFees} onChange={e => setRegistrationFees(parseFloat(e.target.value))} />
+            <input type="number" min = "0" value={registrationFees} onChange={e => setRegistrationFees(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
           </label>
         </div>
         <br></br>
