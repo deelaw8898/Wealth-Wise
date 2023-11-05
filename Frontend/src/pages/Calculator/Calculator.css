@@ -1,0 +1,125 @@
+/* Calculator.css */
+
+.calculator-widget {
+    position: fixed;
+    bottom: 70px; /* Adjust based on the size of your toggle button */
+    right: 20px;
+    background: #3a4452;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 101; /* Above the button */
+    width: 250px; /* Fixed width for the calculator */
+}
+
+.calculator-widget form input[type="text"] {
+    width: calc(100% - 40px); /* Adjust width to account for padding */
+    border: 0;
+    outline: 0;
+    height: 60px;
+    border-radius: 10px;
+    background: transparent;
+    font-size: 45px;
+    color: #fff;
+    margin-bottom: 20px; /* Space below the input */
+    text-align: right;
+    padding: 0 20px; /* Add padding inside the input */
+}
+
+.calculator-widget .keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Creates 4 columns */
+    grid-template-rows: repeat(5, 1fr); /* Creates 5 rows */
+    grid-template-areas:
+      "clear clear backspace divide"
+      "seven eight nine multiply"
+      "four five six subtract"
+      "one two three add"
+      "point zero zero equal";
+    gap: 10px; /* Space between buttons */
+}
+
+/* Assign grid areas to each button based on its function */
+.calculator-widget .keypad button#clear {
+    grid-area: clear;
+}
+
+.calculator-widget .keypad button#backspace {
+    grid-area: backspace;
+}
+
+.calculator-widget .keypad button[name="/"] {
+    grid-area: divide;
+}
+.calculator-widget .keypad button[name="*"] {
+    grid-area: multiply;
+}.calculator-widget .keypad button[name="-"] {
+     grid-area: subtract;
+ }.calculator-widget .keypad button[name="+"] {
+      grid-area: add;
+  }
+.calculator-widget .keypad button#result {
+    grid-area: equal;
+}
+.calculator-widget .keypad button[name="9"] {
+    grid-area: nine;
+}.calculator-widget .keypad button[name="8"] {
+     grid-area: eight;
+ }
+.calculator-widget .keypad button[name="7"] {
+    grid-area: seven;
+}
+
+.calculator-widget .keypad button[name="6"] {
+    grid-area: six;
+}
+.calculator-widget .keypad button[name="5"] {
+    grid-area: five;
+}
+.calculator-widget .keypad button[name="4"] {
+    grid-area: four;
+}
+
+.calculator-widget .keypad button[name="3"] {
+    grid-area: three;
+}
+.calculator-widget .keypad button[name="2"] {
+    grid-area: two;
+}
+.calculator-widget .keypad button[name="1"] {
+    grid-area: one;
+}
+
+.calculator-widget .keypad button[name="0"] {
+    grid-area: zero;
+}
+.calculator-widget .keypad button[name="."] {
+    grid-area: point;
+}
+.calculator-widget .keypad button {
+    border: 0;
+    outline: 0;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    background: #3a4452;
+    box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+    /* Set the button width to 100% of the grid column */
+    width: 100%;
+}
+
+.calculator-widget .keypad button:hover {
+    background-color: #505a6b;
+}
+
+.calculator-widget .keypad button[name="/"],
+.calculator-widget .keypad button[name="*"],
+.calculator-widget .keypad button[name="-"],
+.calculator-widget .keypad button[name="+"] {
+    color: #33ffd8;
+}
+
+/* Ensure that the '0' and '00' buttons are properly aligned */
+

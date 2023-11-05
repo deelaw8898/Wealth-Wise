@@ -12,6 +12,8 @@ import Vacation from './pages/Vacation_Spending/vacation';
 import Tracker from './pages/Money_tracker/tracker';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Calculator from "./pages/Calculator/Calculator";
+import CalculatorButton from "./pages/Calculator/CalculatorButton";
 
 function App() {
   return (
@@ -19,6 +21,7 @@ function App() {
       <div className="App">
         <header className="App-header">
           <Nav />
+          <CalculatorButton />
           {/* this will route us to the page */}
           <Routes>
             <Route path="/" element={<Home />} />
