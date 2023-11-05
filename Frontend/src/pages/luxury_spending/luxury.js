@@ -5,8 +5,9 @@ function Luxury() {
   const [timePeriod, setTimePeriod] = useState("");
   const [totalSpending, setTotalSpending] = useState(0);
   const [monthlySavings, setMonthlySavings] = useState(0);
+  const [affordabilityPlanSavings, setAffordabilityPlanSavings] = useState(0);
   const [monthlyIncome, setMonthlyIncome] = useState("");
-  const [savingsPlan, setSavingsPlan] = useState("very-comfortable");
+  const [affordabilityPlan, setAffordabilityPlan] = useState("very-comfortable");
   const [monthsToSave, setMonthsToSave] = useState(0);
 
   const calculateTotalSpending = () => {
@@ -24,18 +25,23 @@ function Luxury() {
       const totalPrice = itemPriceNumber + taxAmount;
       setTotalSpending(totalPrice);
 
+      const requiredSavings = totalPrice / timePeriodNumber;
+      setMonthlySavings(requiredSavings.toFixed(2));
+
       const savingsPercentage =
-        savingsPlan === "very-comfortable"
+        affordabilityPlan === "very-comfortable"
           ? 0.3
-          : savingsPlan === "comfortable"
+          : affordabilityPlan === "comfortable"
           ? 0.5
           : 0.9;
 
-      const requiredSavings = (totalPrice / timePeriodNumber) * savingsPercentage;
-      setMonthlySavings(requiredSavings.toFixed(2));
+      const allotableFunds = monthlyIncome * savingsPercentage;
+      if (allotableFunds > 0) {
+        
+        const months = Math.ceil(totalPrice / allotableFunds);
+        const APrequiredSavings = totalPrice / months
 
-      if (requiredSavings > 0) {
-        const months = Math.ceil(totalPrice / (monthlyIncomeNumber * savingsPercentage));
+        setAffordabilityPlanSavings(APrequiredSavings.toFixed(2));
         setMonthsToSave(months);
       }
     }
@@ -76,12 +82,12 @@ function Luxury() {
         </div>
 
         <div className="form-group">
-          <label htmlFor="savingsPlan">Affordability Plan:</label>
+          <label htmlFor="affordabilityPlan">Affordability Plan:</label>
           <select
             className="form-control"
-            id="savingsPlan"
-            value={savingsPlan}
-            onChange={(e) => setSavingsPlan(e.target.value)}
+            id="affordabilityPlan"
+            value={affordabilityPlan}
+            onChange={(e) => setAffordabilityPlan(e.target.value)}
           >
             <option value="very-comfortable">Very Comfortable</option>
             <option value="comfortable">Comfortable</option>
@@ -91,9 +97,20 @@ function Luxury() {
 
         {totalSpending > 0 && (
           <div>
-            <p>Total Spending (including tax): ${totalSpending.toFixed(2)}</p>
-            <p>Monthly Savings Required: ${monthlySavings}</p>
-            <p>Time Untill Purchese: {monthsToSave} months</p>
+            <p>
+              Total Spending (including tax): ${totalSpending.toFixed(2)}
+            </p>
+            <p>
+              Monthly Savings for {timePeriod}{" "}
+              {timePeriod === 1 ? "Month" : "Months"}: ${monthlySavings}
+            </p>
+            <p>
+              Monthly Savings (With Affordability Plan): ${affordabilityPlanSavings}
+            </p>
+            <p>
+              Time Until Purchase (With Affordability Plan):{" "}
+              {monthsToSave} {monthsToSave === 1 ? "month" : "months"}
+            </p>
           </div>
         )}
       </div>
