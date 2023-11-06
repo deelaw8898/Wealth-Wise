@@ -1,14 +1,53 @@
 /* Calculator.css */
 
-.calculator-widget {
+/* This container will hold both the calculator and the history */
+.calculator-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns children (calculator and history) to the right */
+    align-items: flex-end; /* Aligns children to the bottom */
+    gap: 10px; /* Add some space between the history and the calculator */
     position: fixed;
     bottom: 70px; /* Adjust based on the size of your toggle button */
     right: 20px;
+    z-index: 100; /* Ensures that the container is above other elements */
+}
+
+
+.history-window {
+    width: 200px; /* Or the width of your calculator */
+    height: 370px; /* Match the height of your calculator */
+    display: none; /* Hide by default */
+    background: #3a4452;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.2);
+    order: 1; /* Ensures the history is to the left */
+}
+
+.history-window textarea {
+    width: 100%; /* Make textarea take up 100% of the .history-window width */
+    height: calc(100% - 40px); /* Adjust height to account for padding */
+    border: none; /* Remove border */
+    outline: none; /* Remove outline */
+    border-radius: 10px; /* Match the border radius */
+    background: transparent; /* Transparent background */
+    font-size: 16px; /* Adjust font-size as needed for the history content */
+    color: #fff; /* White text color to match the input */
+    text-align: left; /* Align text to the left */
+    overflow-y: auto; /* Allow scrollbar if content overflows */
+    resize: none; /* Prevent manual resizing of the textarea */
+}
+
+.history-window.show {
+    display: block; /* Show when class 'show' is added */
+}
+.calculator-widget {
     background: #3a4452;
     padding: 20px;
     border-radius: 10px;
     z-index: 101; /* Above the button */
     width: 250px; /* Fixed width for the calculator */
+    order: 2; /* Ensures the calculator is to the right */
 }
 
 .calculator-widget form input[type="text"] {
@@ -27,14 +66,14 @@
 
 .calculator-widget .keypad {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Creates 4 columns */
+    grid-template-columns: repeat(5, 1fr); /* Creates 4 columns */
     grid-template-rows: repeat(5, 1fr); /* Creates 5 rows */
     grid-template-areas:
-      "clear clear backspace divide"
-      "seven eight nine multiply"
-      "four five six subtract"
-      "one two three add"
-      "point zero zero equal";
+      "Hist clear clear backspace divide"
+      "Hist seven eight nine multiply"
+      "Hist four five six subtract"
+      "Hist one two three add"
+      "Hist point zero zero equal";
     gap: 10px; /* Space between buttons */
 }
 
@@ -95,6 +134,7 @@
 .calculator-widget .keypad button[name="."] {
     grid-area: point;
 }
+
 .calculator-widget .keypad button {
     border: 0;
     outline: 0;
