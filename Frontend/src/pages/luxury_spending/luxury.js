@@ -3,6 +3,7 @@ import React, { useState } from "react";
 function Luxury() {
   const [itemPrice, setItemPrice] = useState("");
   const [timePeriod, setTimePeriod] = useState("");
+  const [selectedTP, setSelectedTP] = useState("");
   const [totalSpending, setTotalSpending] = useState(0);
   const [monthlySavings, setMonthlySavings] = useState(0);
   const [affordabilityPlanSavings, setAffordabilityPlanSavings] = useState(0);
@@ -15,6 +16,8 @@ function Luxury() {
     const itemPriceNumber = parseFloat(itemPrice);
     const timePeriodNumber = parseInt(timePeriod, 10);
     const monthlyIncomeNumber = parseFloat(monthlyIncome);
+    
+    setSelectedTP(timePeriod);
 
     if (
       !isNaN(itemPriceNumber) &&
@@ -101,7 +104,7 @@ function Luxury() {
               Total Spending (including tax): ${totalSpending.toFixed(2)}
             </p>
             <p>
-              Monthly Savings for {timePeriod}{" "}
+              Monthly Savings for {selectedTP}{" "}
               {timePeriod === 1 ? "Month" : "Months"}: ${monthlySavings}
             </p>
             <p>
