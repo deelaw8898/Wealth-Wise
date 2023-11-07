@@ -61,6 +61,8 @@ function Vacation(){
             setExpenses([...expenses, {name: expenseName, amount: parseFloat(expenseAmount)}]);
             budgetUpdate();
             setTotal(expenseTotal + expenseAmount);
+            setAmount("");
+            setName("");
         }
         else if(budgetintial === ''){
           alert("Oops! You forgot to set the budget.")
