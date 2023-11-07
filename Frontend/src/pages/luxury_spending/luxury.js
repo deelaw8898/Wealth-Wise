@@ -60,7 +60,10 @@ function Luxury() {
             className="form-control"
             placeholder="Item Price"
             value={itemPrice}
-            onChange={(e) => setItemPrice(e.target.value)}
+            onChange={(e) => {
+              const newValue = Math.max(0, parseFloat(e.target.value));
+              setItemPrice(newValue.toString());
+            }}
           />
         </div>
 
@@ -70,7 +73,10 @@ function Luxury() {
             className="form-control"
             placeholder="Time Period (in months)"
             value={timePeriod}
-            onChange={(e) => setTimePeriod(e.target.value)}
+            onChange={(e) => {
+              const newValue = Math.max(0, parseFloat(e.target.value));
+              setTimePeriod(newValue.toString());
+            }}
           />
         </div>
 
@@ -80,7 +86,10 @@ function Luxury() {
             className="form-control"
             placeholder="Monthly Expendable Income"
             value={monthlyIncome}
-            onChange={(e) => setMonthlyIncome(e.target.value)}
+            onChange={(e) => {
+              const newValue = Math.max(0, parseFloat(e.target.value));
+              setMonthlyIncome(newValue.toString());
+            }}
           />
         </div>
 
