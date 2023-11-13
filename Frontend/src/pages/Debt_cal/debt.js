@@ -53,17 +53,28 @@ function Debt() {
             return false;
         }
 
+        if (validateDate(date) === false) {
+            alert("Please enter a date at least one month in the future.");
+            setMonthlyPayment("");
+            return false;
+        }
+
         // Gets the current date and time and the desired debt free date and calculates the difference
-        // between the two dates in days, rounding up where applicable.
+        // between the two dates in months.
         const now = new Date();
-        const then = new Date(date);
-        const days = Math.ceil((then - now) / (1000 * 60 * 60 * 24));
+        const then = new Date(Date.UTC(date.substring(0, 4), date.substring(5, 7) - 1, date.substring(8, 10)));
+        let months = (then.getUTCFullYear() - now.getUTCFullYear()) * 12 + (then.getUTCMonth() - now.getUTCMonth());
+
+        if (then.getUTCDate() > new Date(then.getUTCFullYear(), then.getUTCMonth() + 1, 0).getUTCDate()) {
+            const remainingDaysInMonth = new Date(then.getUTCFullYear(), then.getUTCMonth() + 1, 0).getUTCDate() - now.getUTCDate() + 1;
+            months += 1 + Math.floor(remainingDaysInMonth / new Date(then.getUTCFullYear(), then.getUTCMonth() + 1, 0).getUTCDate());
+        }
 
         // Gets the total amount owing, the annual interest rate, and calculates the required monthly payment to
         // be debt free by the desired date.
         let debt = parseFloat(debt1);
-        const dailyInterest = (parseFloat(interest1) / 100) / 365.25;
-        const monthlyPaymentCalc = ((365.25 / 12) * (debt / ((1 - (1 + dailyInterest) ** -(days)) / dailyInterest))).toFixed(2);
+        const monthlyInterestRate = (parseFloat(interest1) / 100) / 12;
+        const monthlyPaymentCalc = ((debt * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -months))).toFixed(2);
 
         // Calculates the difference between the required monthly payment and the surplus income. If the difference
         // is greater than 0, then the user cannot afford to pay off their debt by the desired date. Else, the user
@@ -91,25 +102,24 @@ function Debt() {
               }
               monthsToPayOff++;
             }
+            monthsToPayOff++;
+
+            if (debt2 === 0) monthsToPayOff--;
             
             if (flag) {setMonthlyPayment("With your current surplus income, you will not be able to pay off this debt.");}
             else {
-                const monthsToPay = monthsToPayOff;
+                let debtFreeBy = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + monthsToPayOff + 1, then.getUTCDate()));
 
-                let newDebtFreeDate = new Date();
-                let debtFreeBy = new Date(newDebtFreeDate.getTime() + (monthsToPay * (365.25 / 12) * 24 * 60 * 60 * 1000));
-                let min = new Date(then.getTime() + (365.25 / 12) * 24 * 60 * 60 * 1000);
+                const newMonthlyPaymentCalc = ((debt * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -monthsToPayOff))).toFixed(2);
 
-                if (debtFreeBy < min) {debtFreeBy = min;}
-
-                setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month. " +
-                "It looks like this is about $" + difference.toString() + " more than you can afford per month " +
-                "given your surplus income. If you were to pay $" + surplusIncome.toString() + " a month, you would be debt free by " 
-                + debtFreeBy.toISOString().split('T')[0] + ".");
+                setMonthlyPayment("To be debt free by " + then.toISOString().split('T')[0] + ", you would need to pay about $" + monthlyPaymentCalc.toString() + 
+                " a month. It looks like this is about $" + difference.toString() + " more than you can afford per month given your surplus income. If you were to pay $" 
+                + newMonthlyPaymentCalc.toString() + " a month in " + monthsToPayOff.toString() + " installments, you would be debt free by " + debtFreeBy.toISOString().split('T')[0] + ".");
             }
         }
 
-        else {setMonthlyPayment("To be debt free by this date, you would need to pay about $" + monthlyPaymentCalc.toString() + " a month.");}
+        else {setMonthlyPayment("To be debt free by " + then.toISOString().split('T')[0] + ", you would need to pay about $" + monthlyPaymentCalc.toString() + " a month in " + 
+        months.toString() + " monthly installments.");}
 
         scrollToBottom();
     }
@@ -236,11 +246,18 @@ function Debt() {
     // A quick helper function to validate if a date is valid. If it is not, then an alert is displayed
     // to the user.
     function validateDate(date) {
-        const now = new Date();
-        const then = new Date(date);
+        const then = new Date();
+        then.setFullYear(date.substring(0, 4));
+        then.setMonth(date.substring(5, 7) - 1);
+        then.setDate(date.substring(8, 10));
+        then.setHours(12);
+        const min = new Date();
+        min.setMonth(min.getMonth() + 1);
+        min.setDate(min.getDate());
+        min.setHours(0);
 
-        if (then < now) {
-            alert("Please enter a date in the future.");
+        if (then < min) {
+            alert("Please enter a date at least one month in the future.");
             return false;
         }
 
@@ -328,7 +345,8 @@ function Debt() {
                     <label for="date">Desired Debt-Free Date</label><br></br>
                     <input type="date" id="date" name="date" value={date} 
                     onChange={(e) => setDate(e.target.value)} 
-                    onBlur={(e) => {if (validateDate(e.target.value)) setDate(e.target.value)}} required></input><br></br>
+                    onBlur={(e) => {if (validateDate(e.target.value)) setDate(e.target.value)
+                                    else setDate('')}} required></input><br></br>
 
                     <button type="button" onClick={setRequiredMonthlyPayment}>Calculate</button><br></br>
 
