@@ -114,7 +114,7 @@ function Luxury() {
             </p>
             <p>
               Monthly Savings for {selectedTP}{" "}
-              {timePeriod === 1 ? "Month" : "Months"}: ${monthlySavings}
+              {timePeriod == 1 ? "Month" : "Months"}: ${monthlySavings}
             </p>
             <p>
               Monthly Savings (With Affordability Plan): ${affordabilityPlanSavings}
