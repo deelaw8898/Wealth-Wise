@@ -8,7 +8,6 @@ import './debt.css';
  * calculator is for calculating the interest savings from making a lump sum payment today.
  */
 function Debt() {
-
     // All these variables are either input variable or output variable from the calculator
     // that calculates the required monthly payment to be debt free by a certain date.
     const [debt1, setDebt1] = useState('');                     // Total amount owing

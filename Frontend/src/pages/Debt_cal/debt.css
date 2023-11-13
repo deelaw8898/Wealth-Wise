@@ -9,6 +9,7 @@
     min-width: 1000px;
     width: 90%;
     max-width: 100%;
+    font-family: Montserrat;
 }
 
 #DebtCalculatorPage h1 {
@@ -16,24 +17,28 @@
 }
 
 #DebtCalculatorPage input {
-    height: calc(10px + 2vmin);
+    height: calc(10px + 2.25vmin);
     font-size: calc(10px + 1vmin);
     width: auto;
     border: 2px solid white;
     border-radius: 3px;
+    font-family: Montserrat;
 }
 
 #DebtCalculatorPage button {
-    height: calc(10px + 3.5vmin);
+    height: calc(10px + 3.75vmin);
     font-size: calc(10px + 2vmin);
-    width: 80%;
+    color: white;
+    width: 85%;
     border: 2px solid black;
     border-radius: 5px;
     align-self: center;
+    background-color: #30b273;
+    font-family: Montserrat;
 }
 
 #DebtCalculatorPage select {
-    height: calc(10px + 2.5vmin);
+    height: calc(10px + 2.75vmin);
     font-size: calc(10px + 1vmin);
     width: auto;
     border: 2px solid white;
@@ -55,6 +60,10 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
+#date {
+    font-family: Montserrat;
+}
 
 #DebtContainer {
     display: flex;
