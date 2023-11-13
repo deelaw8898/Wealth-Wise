@@ -88,29 +88,19 @@ function Debt() {
         // paid off their debt. Each time it loops, it increments the days to pay variable which, in the end, describes to the user
         // how often they'll have to pay the prescribed amount every month to be debt free.
         if (difference > 0) {
-            const interestRateAnnual = parseFloat(interest1) / 100;
-            const monthlyInterestRate = interestRateAnnual / (365.25 / 12);
-            let monthsToPayOff = 0;
-            let debt2 = debt;
-            let flag = false;
-            
-            while (debt2 > 0) {
-              debt2 = debt2 * (1 + monthlyInterestRate) - surplusIncome;
-              if (debt2 > debt) {
-                flag = true;
-                break;
-              }
-              monthsToPayOff++;
-            }
-            monthsToPayOff++;
+            const monthlyInterestRate = (parseFloat(interest1) / 100) / 12;
+            let monthsToPayOff = Math.ceil(Math.abs(Math.log(1 - (debt * monthlyInterestRate) / surplusIncome) / Math.log(1 + monthlyInterestRate)));
 
-            if (debt2 === 0) monthsToPayOff--;
-            
-            if (flag) {setMonthlyPayment("With your current surplus income, you will not be able to pay off this debt.");}
+            if (isNaN(monthsToPayOff)) setMonthlyPayment("With your current surplus income, you will not be able to pay off this debt.");
+
             else {
-                let debtFreeBy = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + monthsToPayOff + 1, then.getUTCDate()));
+                let newMonthlyPaymentCalc = ((debt * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -monthsToPayOff))).toFixed(2);
+                let debtFreeBy = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + monthsToPayOff, 0));
 
-                const newMonthlyPaymentCalc = ((debt * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -monthsToPayOff))).toFixed(2);
+                if (then.getUTCDate() >= 29 && debtFreeBy.getMonth() === 1 && debtFreeBy.getFullYear() % 4 === 0) debtFreeBy.setDate(29);
+                else if (then.getUTCDate() >= 28 && debtFreeBy.getMonth() === 1 && debtFreeBy.getFullYear() % 4 !== 0) debtFreeBy.setDate(28);
+                else if (then.getUTCDate() === 31 && (debtFreeBy.getMonth() === 3 || debtFreeBy.getMonth() === 5 || debtFreeBy.getMonth() === 8 || debtFreeBy.getMonth() === 10)) debtFreeBy.setDate(30);
+                else debtFreeBy.setDate(then.getDate());
 
                 setMonthlyPayment("To be debt free by " + then.toISOString().split('T')[0] + ", you would need to pay about $" + monthlyPaymentCalc.toString() + 
                 " a month. It looks like this is about $" + difference.toString() + " more than you can afford per month given your surplus income. If you were to pay $" 
