@@ -10,21 +10,18 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 const mysql = require('mysql2');
-//localhost
-var dp = mysql.createConnection({
-    host: 'localhost',
-    port: 3306,
-    user: 'root',
-    database: 'user'
+
+const dp = mysql.createConnection({
+  host: 'localhost',
+  port: 3306, 
+  user: 'root',
+  password: '1234', 
+  database: 'user'
 });
 
-
-dp.connect((err) => {
-  if (err) {
-      console.error('Error connecting to the database:', err);
-      return;
-  }
-  console.log('Connected to the MySQL database');
+dp.connect(error => {
+  if (error) throw error;
+  console.log("Successfully connected to the database.");
 });
 
 dp.query('USE user;');
@@ -107,9 +104,6 @@ app.post('/login', (req, res) => {
         }
     );
 });
-
-
-
 
 
 app.listen(PORT, () => {
