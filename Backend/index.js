@@ -11,26 +11,50 @@ app.use(bodyParser.json());
 
 const mysql = require('mysql2');
 
-const dp = mysql.createConnection({
-  host: 'localhost',
-  port: 3306, 
+const db = mysql.createConnection({
+  host: '127.0.0.1',
+  port: 3306,
   user: 'root',
-  password: '1234', 
-  database: 'user'
+  password: 'asdf1234'
 });
 
-dp.connect(error => {
-  if (error) throw error;
-  console.log("Successfully connected to the database.");
-});
+function createDatabase() {
+  db.query("CREATE DATABASE IF NOT EXISTS Tracker", (err, result) => {
+    if (err) {
+      console.error("Error creating database: ", err);
+      return;
+    }
+    console.log("Database 'Tracker' created or verified successfully");
+    useDatabase();
+  });
+}
 
-dp.query('USE user;');
+function useDatabase() {
+  db.query("USE Tracker", (err, result) => {
+    if (err) {
+      console.error("Error using database: ", err);
+      return;
+    }
+    console.log("Using database 'Tracker'");
+    createUserTable();
+  });
+}
+
+
+db.connect(error => {
+  if (error) {
+    console.error("Error connecting to MySQL: ", error);
+    return;
+  }
+  console.log("Successfully connected to MySQL.");
+  createDatabase();
+});
 
 
 // need to add the first and last name and email
 function createUserTable() {
-    dp.query(
-      "CREATE TABLE IF NOT EXISTS users (id INT NOT NULL AUTO_INCREMENT, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, first_name VARCHAR(255), last_name VARCHAR(255), email VARCHAR(255), is_admin BOOLEAN NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB;",
+    db.query(
+      "CREATE TABLE IF NOT EXISTS users (id INT NOT NULL AUTO_INCREMENT, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, email VARCHAR(255), is_admin BOOLEAN NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB;",
       (err, results) => {
         if (err) {
           console.log(err);
@@ -41,42 +65,29 @@ function createUserTable() {
     );
 }
 
-function createAdminUser() {
-    dp.query("INSERT INTO users (username, password, first_name, last_name, email, is_admin) VALUES ('admin', 'admin1234', 'Admin', 'User', 'admin@example.com', 1)",
-      (err, results) => {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("Admin user created successfully");
-        }
-      }
-    );
-  }
-  
-
 createUserTable();
-createAdminUser();
+
 
 app.post('/register', (req, res) => {
-    const { username, password, first_name, last_name, email } = req.body;
+  const { username, password, first_name, last_name, email } = req.body;
 
-    dp.query("SELECT * FROM users WHERE username = ?", [username], (err, results) => {
-        if (err) {
-            console.log(err);
-            res.status(500).send('Error registering user');
-        } else if (results.length > 0) {
-            res.status(409).send('Username already taken');
-        } else {
-            dp.query("INSERT INTO users (username, password, first_name, last_name, email, is_admin) VALUES (?, ?, ?, ?, ?, 0)", [username, password, first_name, last_name, email], (err, results) => {
-                if (err) {
-                    console.log(err);
-                    res.status(500).send('Error registering user');
-                } else {
-                    res.status(201).send('User registered successfully');
-                }
-            });
-        }
-    });
+  db.query("SELECT * FROM users WHERE username = ?", [username], (err, results) => {
+      if (err) {
+          console.log(err);
+          res.status(500).send('Error registering user');
+      } else if (results.length > 0) {
+          res.status(409).send('Username already taken');
+      } else {
+          db.query("INSERT INTO users (username, password, first_name, last_name, email, is_admin) VALUES (?, ?, ?, ?, ?, 0)", [username, password, first_name, last_name, email], (err, results) => {
+              if (err) {
+                  console.log(err);
+                  res.status(500).send('Error registering user');
+              } else {
+                  res.status(201).send('User registered successfully');
+              }
+          });
+      }
+  });
 });
 
 
@@ -87,7 +98,7 @@ app.post('/login', (req, res) => {
     const password = req.body.password;
     console.log(`Trying to log in with username: ${username}, password: ${password}`); // Add this line
     
-    dp.query(
+    db.query(
         "SELECT * FROM users WHERE username = ? AND password = ?",
         [username, password], 
         (err, results) => {
