@@ -138,3 +138,9 @@
     margin-top: -10%;
     font-size: calc(10px + 1.5vmin);
 }
+
+#DebtChart {
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+}

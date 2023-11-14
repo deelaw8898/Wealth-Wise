@@ -1,4 +1,6 @@
-import React, {useState} from "react";
+import React from "react";
+import { useState } from "react";
+import { Line } from "react-chartjs-2";
 import './debt.css';
 
 /**
@@ -13,8 +15,14 @@ function Debt() {
     const [debt1, setDebt1] = useState('');                     // Total amount owing
     const [interest1, setInterest1] = useState('');             // Annual interest rate as a percent
     const [surplusIncome, setSurplusIncome] = useState('');     // Average monthly surplus income
-    const [date, setDate] = useState('');                       // Desired debt-free date
+    const [date, setDate] = useState(new Date());                       // Desired debt-free date
     const [monthlyPayment, setMonthlyPayment] = useState('');   // Field wherein output is displayed
+    // const [data, setData] = useState(["Months", "Debt"]);                       // Data for the chart
+    // const [options, setOptions] = useState({
+    //     title: 'Debt Repayment',
+    //     curveType: 'function',
+    //     legend: { position: 'bottom' }
+    // });                                                            // Options for the chart
 
     /**
      * The current function calculates the required monthly payment using the following formula:
@@ -91,11 +99,13 @@ function Debt() {
             const monthlyInterestRate = (parseFloat(interest1) / 100) / 12;
             let monthsToPayOff = Math.ceil(Math.abs(Math.log(1 - (debt * monthlyInterestRate) / surplusIncome) / Math.log(1 + monthlyInterestRate)));
 
-            if (isNaN(monthsToPayOff)) setMonthlyPayment("With your current surplus income, you will not be able to pay off this debt.");
+            if (isNaN(monthsToPayOff)) {
+                setMonthlyPayment("With your current surplus income, you will not be able to pay off this debt.");
+            }
 
             else {
                 let newMonthlyPaymentCalc = ((debt * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -monthsToPayOff))).toFixed(2);
-                let debtFreeBy = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + monthsToPayOff, 0));
+                let debtFreeBy = new Date(Date.UTC(now.getUTCFullYear() + (monthsToPayOff / 12), (now.getUTCMonth() + (monthsToPayOff % 12)) % 12, 15));
 
                 if (then.getUTCDate() >= 29 && debtFreeBy.getMonth() === 1 && debtFreeBy.getFullYear() % 4 === 0) debtFreeBy.setDate(29);
                 else if (then.getUTCDate() >= 28 && debtFreeBy.getMonth() === 1 && debtFreeBy.getFullYear() % 4 !== 0) debtFreeBy.setDate(28);
@@ -105,13 +115,53 @@ function Debt() {
                 setMonthlyPayment("To be debt free by " + then.toISOString().split('T')[0] + ", you would need to pay about $" + monthlyPaymentCalc.toString() + 
                 " a month. It looks like this is about $" + difference.toString() + " more than you can afford per month given your surplus income. If you were to pay $" 
                 + newMonthlyPaymentCalc.toString() + " a month in " + monthsToPayOff.toString() + " installments, you would be debt free by " + debtFreeBy.toISOString().split('T')[0] + ".");
+                populateGraph(now, then, debt, monthlyInterestRate, monthlyPaymentCalc, months);
             }
         }
 
-        else {setMonthlyPayment("To be debt free by " + then.toISOString().split('T')[0] + ", you would need to pay about $" + monthlyPaymentCalc.toString() + " a month in " + 
-        months.toString() + " monthly installments.");}
+        else {
+            setMonthlyPayment("To be debt free by " + then.toISOString().split('T')[0] + ", you would need to pay about $" + 
+            monthlyPaymentCalc.toString() + " a month in " + months.toString() + " monthly installments.");
+            populateGraph(now, then, debt, monthlyInterestRate, monthlyPaymentCalc, months);
+        }
 
         scrollToBottom();
+    }
+
+    function populateGraph(start, end, debt, inter, monPay, mon) {
+        let list = [["Month", "Debt"]];
+        let debt2 = parseFloat(debt);
+        list.push([start.toISOString().split('T')[0], debt2]);
+        let startYear = start.getUTCFullYear();
+        let startMonth = start.getMonth();
+        let targetDate = end.getUTCDate();
+        if (start.getDate() < targetDate) startMonth += 1;
+        if (startMonth === 12) {
+            startYear += 1;
+            startMonth = 0;
+        }
+        let curDate = 0;
+
+        for (let x = 0; x < mon; x++) {
+            if (targetDate >= 29 && start === 1 && start.getUTCFullYear() % 4 === 0) curDate = 29;
+            else if (targetDate >= 28 && start === 1 && start.getUTCFullYear() % 4 !== 0) curDate = 28;
+            else if (targetDate === 31 && (start === 3 || start === 5 || start === 8 || start === 10)) curDate = 30;
+            else curDate = targetDate;
+            let now = new Date(Date.UTC(startYear, startMonth, curDate));
+            debt2 = debt2 - monPay + debt2 * inter;
+            list.push([now.toISOString().split('T')[0], Math.max(debt2, 0)]);
+            startMonth++;
+            if (startMonth === 12) {
+                startYear += 1;
+                startMonth = 0;
+            }
+        }
+
+        const options = {
+            title: 'Debt Repayment',
+            curveType: 'function',
+            legend: { position: 'bottom' }
+        };
     }
 
     // All these variables are either input variable or output variable from the calculator
@@ -298,7 +348,7 @@ function Debt() {
         }
       
         requestAnimationFrame(scroll);
-      }
+    }
 
     /**
      * The following code is the HTML code for the debt calculator page. It contains two forms, one for each
