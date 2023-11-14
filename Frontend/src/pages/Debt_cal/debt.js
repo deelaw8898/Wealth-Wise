@@ -162,7 +162,9 @@ function Debt() {
             legend: 'none',
             colors: ['#ab151c'],
             chartArea: { width: '600px', height: '500px' },
+            areaOpacity: 0.5,
             backgroundColor: '#F1F1F1',
+            curveType: 'none',
             animation: {
                 startup: true,
                 duration: 500,
@@ -456,6 +458,7 @@ function Debt() {
                 width="100%"
                 height="600px"
                 chartType="AreaChart"
+                curveType="none"
                 loader={<div>Loading Chart</div>}
                 data={data}
                 options={options}
