@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Line } from "react-chartjs-2";
+import { Chart } from "react-google-charts";
 import './debt.css';
 
 /**
@@ -15,14 +15,8 @@ function Debt() {
     const [debt1, setDebt1] = useState('');                     // Total amount owing
     const [interest1, setInterest1] = useState('');             // Annual interest rate as a percent
     const [surplusIncome, setSurplusIncome] = useState('');     // Average monthly surplus income
-    const [date, setDate] = useState(new Date());                       // Desired debt-free date
+    const [date, setDate] = useState('');                       // Desired debt-free date
     const [monthlyPayment, setMonthlyPayment] = useState('');   // Field wherein output is displayed
-    // const [data, setData] = useState(["Months", "Debt"]);                       // Data for the chart
-    // const [options, setOptions] = useState({
-    //     title: 'Debt Repayment',
-    //     curveType: 'function',
-    //     legend: { position: 'bottom' }
-    // });                                                            // Options for the chart
 
     /**
      * The current function calculates the required monthly payment using the following formula:
@@ -35,6 +29,7 @@ function Debt() {
      * field is updated to display the information to the user.
      */
     function setRequiredMonthlyPayment() {
+        setChartAvailable(false);
         var inputs = document.querySelectorAll("#DebtCalc1 input[required]")
         var flag = false;
 
@@ -115,7 +110,7 @@ function Debt() {
                 setMonthlyPayment("To be debt free by " + then.toISOString().split('T')[0] + ", you would need to pay about $" + monthlyPaymentCalc.toString() + 
                 " a month. It looks like this is about $" + difference.toString() + " more than you can afford per month given your surplus income. If you were to pay $" 
                 + newMonthlyPaymentCalc.toString() + " a month in " + monthsToPayOff.toString() + " installments, you would be debt free by " + debtFreeBy.toISOString().split('T')[0] + ".");
-                populateGraph(now, then, debt, monthlyInterestRate, monthlyPaymentCalc, months);
+                populateGraph(now, then, debt, monthlyInterestRate, newMonthlyPaymentCalc, monthsToPayOff);
             }
         }
 
@@ -128,14 +123,20 @@ function Debt() {
         scrollToBottom();
     }
 
+    const [data, setData] = useState([]);                                           // Data for the chart
+    const [options, setOptions] = useState([]);                                     // Options for the chart
+    const [chartAvailable, setChartAvailable] = useState(false);                    // Whether the chart is available
+
     function populateGraph(start, end, debt, inter, monPay, mon) {
-        let list = [["Month", "Debt"]];
+        let list = [];
         let debt2 = parseFloat(debt);
+        list.push(['Date', 'Debt'])
         list.push([start.toISOString().split('T')[0], debt2]);
         let startYear = start.getUTCFullYear();
         let startMonth = start.getMonth();
         let targetDate = end.getUTCDate();
         if (start.getDate() < targetDate) startMonth += 1;
+        else if (start.getDate() === targetDate) startMonth += 1;
         if (startMonth === 12) {
             startYear += 1;
             startMonth = 0;
@@ -151,17 +152,24 @@ function Debt() {
             debt2 = debt2 - monPay + debt2 * inter;
             list.push([now.toISOString().split('T')[0], Math.max(debt2, 0)]);
             startMonth++;
-            if (startMonth === 12) {
-                startYear += 1;
-                startMonth = 0;
-            }
         }
 
-        const options = {
+        setData(list);
+        setOptions({
             title: 'Debt Repayment',
-            curveType: 'function',
-            legend: { position: 'bottom' }
-        };
+            hAxis: { title: 'Date' },
+            vAxis: { title: 'Debt Remaining' },
+            legend: 'none',
+            colors: ['#ab151c'],
+            chartArea: { width: '600px', height: '500px' },
+            backgroundColor: '#F1F1F1',
+            animation: {
+                startup: true,
+                duration: 500,
+                easing: 'out',
+            },
+        });
+        setChartAvailable(true);
     }
 
     // All these variables are either input variable or output variable from the calculator
@@ -441,6 +449,17 @@ function Debt() {
 
                 </form>
             </div>
+            <br></br>
+
+            {chartAvailable && ( <div id="DebtChart">
+                <Chart
+                width="100%"
+                height="600px"
+                chartType="AreaChart"
+                loader={<div>Loading Chart</div>}
+                data={data}
+                options={options}
+            /></div>)}
         </div>
     );
 }
