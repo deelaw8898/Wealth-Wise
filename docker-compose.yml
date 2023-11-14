@@ -4,18 +4,20 @@ services:
   mysql:
     image: mysql:5.7 # or whichever version you prefer
     environment:
-      MYSQL_DATABASE: 'user'
+      MYSQL_DATABASE: 'Tracker'
       MYSQL_USER: 'root' # It's common to just use the root user for simplicity
       MYSQL_PASSWORD: 'asdf1234' # Same as in your Node.js app config
       MYSQL_ROOT_PASSWORD: 'asdf1234'
     ports:
-      - "3307:3306"
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+    command: 
+      --init-file /docker-entrypoint-initdb.d/init.sql
 
   backend:
     build:
-      context: .
+      context: ./Backend
       dockerfile: Dockerfile
     ports:
       - "4000:4000"
@@ -28,7 +30,7 @@ services:
       - DB_PORT=3306 # Internal MySQL port
       - DB_USER=root
       - DB_PASSWORD=asdf1234
-      - DB_NAME=user
+      - DB_NAME=Tracker
     depends_on:
       - mysql
     command: node index.js
