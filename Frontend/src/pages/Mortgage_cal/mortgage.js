@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './mortgage.css'
+import './mortgage.css';
 
 const PROVINCES_TAX_RATES = {
   Alberta: 0.6,
@@ -22,6 +22,21 @@ function MortgageCalculator() {
   const [province, setProvince] = useState("Alberta");
   const [monthlyPayment, setMonthlyPayment] = useState(0);
 
+  const handleHomePriceChange = (e) => {
+    const value = Math.max(0, Number(e.target.value));
+    setHomePrice(value);
+  };
+
+  const handleDownPaymentChange = (e) => {
+    const value = Math.max(0, Number(e.target.value));
+    setDownPayment(value);
+  };
+
+  const handleInterestRateChange = (e) => {
+    const value = Math.max(0, Number(e.target.value));
+    setInterestRate(value);
+  };
+
   const calculateMortgage = () => {
     const principal = homePrice - downPayment;
     const monthlyRate = interestRate / 1200;
@@ -34,22 +49,22 @@ function MortgageCalculator() {
   };
 
   return (
-    <div>
+    <div className='mortgage-calculator'>
       <label>
         Home Price:
-        <input type="number" value={homePrice} onChange={e => setHomePrice(Number(e.target.value))} />
+        <input type="number" value={homePrice} onChange={handleHomePriceChange} />
       </label>
       <br />
 
       <label>
         Down Payment:
-        <input type="number" value={downPayment} onChange={e => setDownPayment(Number(e.target.value))} />
+        <input type="number" value={downPayment} onChange={handleDownPaymentChange} />
       </label>
       <br />
 
       <label>
         Interest Rate (%):
-        <input type="number" value={interestRate} onChange={e => setInterestRate(Number(e.target.value))} />
+        <input type="number" value={interestRate} onChange={handleInterestRateChange} />
       </label>
       <br />
 
@@ -67,7 +82,7 @@ function MortgageCalculator() {
         Province:
         <select value={province} onChange={e => setProvince(e.target.value)}>
           {Object.keys(PROVINCES_TAX_RATES).map(p => (
-            <option key={p} value={p}>{p}</option>
+            <option key={p} value={p}>{p.replace(/([A-Z])/g, ' $1').trim()}</option>
           ))}
         </select>
       </label>
