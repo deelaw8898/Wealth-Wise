@@ -1,5 +1,5 @@
-// Import necessary React components and libraries
 import React, { useState } from 'react';
+import axios from 'axios'; // Import axios here
 
 function Login() {
   // Define state variables to store username and password
@@ -11,15 +11,13 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Send a POST request to your server to authenticate the user
+    const userData = {
+      username,
+      password,
+    };
+
     try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      const response = await axios.post('http://localhost:4000/login', userData);
 
       if (response.status === 200) {
         setMessage('Login successful');

@@ -11,12 +11,27 @@ app.use(bodyParser.json());
 
 const mysql = require('mysql2');
 
-const db = mysql.createConnection({
-  host: 'localhost',
-  port: 3306,
+
+var db = mysql.createConnection({
+  host: 'mysql2',
   user: 'root',
   password: 'asdf1234'
+ 
 });
+
+db.connect((err) => {
+  if (err) {
+      console.error('Error connecting to the database:', err);
+      if (err.code === 'ECONNREFUSED') {
+          console.error('Database connection refused. Exiting application.');
+          process.exit(1); // Exit with a failure code
+      }
+  } else {
+      console.log('Connected to the database.');
+      createDatabase();
+  }
+});
+
 
 function createDatabase() {
   db.query("CREATE DATABASE IF NOT EXISTS Tracker", (err, result) => {
@@ -25,12 +40,21 @@ function createDatabase() {
       return;
     }
     console.log("Database 'Tracker' created or verified successfully");
-    useDatabase();
+    db.query("USE Tracker", (err, result) => {
+      if (err) {
+        console.error("Error using database: ", err);
+        return;
+      }
+      console.log("Using database 'Tracker'");
+      createUserTable();
+    });
   });
 }
 
+
+
 function useDatabase() {
-  db.query("USE Tracker", (err, result) => {
+  db.query("USE tracker", (err, result) => {
     if (err) {
       console.error("Error using database: ", err);
       return;
@@ -41,20 +65,11 @@ function useDatabase() {
 }
 
 
-db.connect(error => {
-  if (error) {
-    console.error("Error connecting to MySQL: ", error);
-    return;
-  }
-  console.log("Successfully connected to MySQL.");
-  createDatabase();
-});
-
 
 // need to add the first and last name and email
 function createUserTable() {
     db.query(
-      "CREATE TABLE IF NOT EXISTS users (id INT NOT NULL AUTO_INCREMENT, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, first_name VARCHAR(255) NOT NULL, last_name VARCHAR(255) NOT NULL, email VARCHAR(255), is_admin BOOLEAN NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB;",
+      "CREATE TABLE IF NOT EXISTS users (id INT NOT NULL AUTO_INCREMENT, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, first_name VARCHAR(255), last_name VARCHAR(255), email VARCHAR(255), is_admin BOOLEAN NOT NULL, PRIMARY KEY (id)) ENGINE=InnoDB;",
       (err, results) => {
         if (err) {
           console.log(err);
@@ -67,9 +82,13 @@ function createUserTable() {
 
 createUserTable();
 
-
 app.post('/register', (req, res) => {
-  const { username, password, first_name, last_name, email } = req.body;
+  const { username, password, firstName, lastName, email } = req.body;
+
+  if (!username || !password || !firstName || !lastName) {
+    res.status(400).send('Missing required fields');
+    return;
+  }
 
   db.query("SELECT * FROM users WHERE username = ?", [username], (err, results) => {
       if (err) {
@@ -78,7 +97,8 @@ app.post('/register', (req, res) => {
       } else if (results.length > 0) {
           res.status(409).send('Username already taken');
       } else {
-          db.query("INSERT INTO users (username, password, first_name, last_name, email, is_admin) VALUES (?, ?, ?, ?, ?, 0)", [username, password, first_name, last_name, email], (err, results) => {
+          db.query("INSERT INTO users (username, password, first_name, last_name, email, is_admin) VALUES (?, ?, ?, ?, ?, 0)", 
+          [username, password, firstName, lastName, email], (err, results) => {
               if (err) {
                   console.log(err);
                   res.status(500).send('Error registering user');
@@ -89,6 +109,7 @@ app.post('/register', (req, res) => {
       }
   });
 });
+
 
 
 

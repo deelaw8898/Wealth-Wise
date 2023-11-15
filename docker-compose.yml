@@ -1,21 +1,18 @@
 version: '3.8'
 
 services:
-  mysql:
+  mysql2:
+    container_name: db
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: 'Tracker'
-      MYSQL_ROOT_PASSWORD: 'asdf1234'
-    ports:
-      - "3306:3306"
+      MYSQL_ROOT_PASSWORD: asdf1234
     volumes:
-      - mysql-data:/var/lib/mysql
-    command: 
-      --init-file /docker-entrypoint-initdb.d/init.sql
+      - ./mysql:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqlroot", "ping", "-h", "127.0.0.1", "root", "-p asdf1234"]
-      timeout: 20s
-      retries: 10
+      test: ["CMD", "mysqladmin", "ping", "-h", "mysql2"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -26,21 +23,15 @@ services:
     volumes:
       - ./Backend:/app
       - /app/node_modules
-    environment:
-      - NODE_ENV=production
-      - DB_HOST=mysql # This will point to the MySQL service in Docker
-      - DB_PORT=3306 # Internal MySQL port
-      - DB_USER=root
-      - DB_PASSWORD=asdf1234
-      - DB_NAME=Tracker
     depends_on:
-      - mysql
+      mysql2:
+        condition: service_started
+    restart: on-failure  # Restart policy set to on-failure
     command: node index.js
 
   frontend:
     build:
       context: ./Frontend
-      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
