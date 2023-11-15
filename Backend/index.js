@@ -47,6 +47,7 @@ function createDatabase() {
       }
       console.log("Using database 'Tracker'");
       createUserTable();
+      createtransactionTable(); 
     });
   });
 }
@@ -80,7 +81,24 @@ function createUserTable() {
     );
 }
 
-createUserTable();
+
+
+
+function createtransactionTable() {
+  db.query(
+    "CREATE TABLE IF NOT EXISTS transactions (id INT NOT NULL AUTO_INCREMENT,user_id INT NOT NULL,category VARCHAR(255) NOT NULL,amount DECIMAL(10, 2) NOT NULL, transaction_date DATE NOT NULL,FOREIGN KEY (user_id) REFERENCES users(id),PRIMARY KEY (id)) ENGINE=InnoDB;",
+    (err, results) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("transaction table created/checked");
+      }
+    }
+  );
+}
+
+
+
 
 app.post('/register', (req, res) => {
   const { username, password, firstName, lastName, email } = req.body;
@@ -136,6 +154,34 @@ app.post('/login', (req, res) => {
         }
     );
 });
+
+app.post('/transaction', (req, res) => {
+  const { user_id, category, amount, transaction_date } = req.body;
+
+  db.query("INSERT INTO transactions (user_id, category, amount, transaction_date) VALUES (?, ?, ?, ?)", 
+  [user_id, category, amount, transaction_date], (err, results) => {
+      if (err) {
+          console.log(err);
+          res.status(500).send('Error adding transaction');
+      } else {
+          res.status(201).send('Transaction added successfully');
+      }
+  });
+});
+
+app.get('/transactions/:userId', (req, res) => {
+  const userId = req.params.userId;
+
+  db.query("SELECT * FROM transactions WHERE user_id = ?", [userId], (err, results) => {
+      if (err) {
+          console.log(err);
+          res.status(500).send('Error retrieving transactions');
+      } else {
+          res.status(200).json(results);
+      }
+  });
+});
+
 
 
 app.listen(PORT, () => {
