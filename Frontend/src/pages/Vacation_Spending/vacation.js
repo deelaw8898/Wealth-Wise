@@ -61,8 +61,8 @@ function Vacation(){
             setExpenses([...expenses, {name: expenseName, amount: parseFloat(expenseAmount)}]);
             budgetUpdate();
             setTotal(expenseTotal + expenseAmount);
-            setAmount('');
-            setName('');
+            setAmount("");
+            setName("");
         }
         else if(budgetintial === ''){
           alert("Oops! You forgot to set the budget.")
@@ -152,46 +152,52 @@ return(
   <div className="Vacation">
         <h1>Vacation Spending Calculator</h1>
         <div>
-          <label className='budget-label' for = "budget">Set Your Budget:
+          <label className='budget-label' for = "budget">Budget
           </label>
+          <br></br>
           <input type="number" id="budget"
                 placeholder="Enter your budget"
                 value={budget}
                 onChange={e => setBudget(validateInput(parseFloat(e.target.value)))}/>
-            <button id="set-budget" onClick={validateBudget}>Set Budget</button>
-        </div>
+           <button id="set-budget" onClick={validateBudget}>Set</button>
+          </div>
           <div>
-          <label className ="expense-label" for="expense-name">Expense Name:</label>
-        <input
-        type="text"
-         id="expense-name"
-        placeholder="Enter expense name"
-        value={expenseName}
-        onChange={(e) => setName(e.target.value)}
+          <label className ="expense-label" for="expense-name">Expense Name</label>
+          <br></br>
+          <input
+          type="text"
+          id="expense-name"
+            placeholder="Enter expense name"
+          value={expenseName}
+          onChange={(e) => setName(e.target.value)}
         />
         </div>
+        <br></br>
         <div>
-          <label className='expense-amount' for ="expense-amount "> Expense Amount:
+          <label className='expense-amount' for ="expense-amount "> Expense Amount
           </label>
+          <br></br>
           <input type="number"
                     id="expense-amount"
                     placeholder="Enter expense amount"
                     value={expenseAmount}
                     onChange={(e) => setAmount((validateInput(parseFloat(e.target.value))))}/>
-          <button id="add-expense" onClick={validateExpense}>Add Expense</button>
+          <button id="add-expense" onClick={validateExpense}>Add</button>
         </div>
         <div>
-        <label className='delete-label' for = "delete-expense">Expense To Delete:</label>
+        <label className='delete-label' for = "delete-expense">Expense To Delete</label>
+        <br></br>
         <input type="text" id = "delete-expense" placeholder="Name of expense" value={expenseNameToDelete} onChange={(e) => setExpenseNameToDelete(e.target.value)}/>
-        <button id="delete-button" onClick={deleteExpense}>Delete Expense</button>
+        <button id="delete-button" onClick={deleteExpense}>Delete</button>
         </div>
         <div>
+        <br></br>
         <button id="reset-button" onClick={resetExpenses}>Reset</button>
         </div>
-        <div>
+        <br></br>
+        <div className='print'>
         <label className='total-label' for = "total">Your Total Spending is: $ {parseFloat(expenseTotal).toFixed(2)} </label>
-        </div>
-        <div>
+        <br></br>
         <label className = 'print-label' for = "budget">You still have ${remainingBudget.toFixed(2)} to spend</label>
         </div>   
         <br></br>
