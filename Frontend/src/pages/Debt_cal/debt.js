@@ -13,7 +13,8 @@ function Debt() {
     // All these variables are either input variable or output variable from the calculator
     // that calculates the required monthly payment to be debt free by a certain date.
 
-    const [testState, setTestState] = useState(true);          // Used for testing purposes
+    const [firstTestState, setFirstTestState] = useState(true);          // Used for testing purposes
+    const [testDone, setTestDone] = useState(false);                      // Used for testing purposes
 
     // VARIABLES FOR INPUT FIELDS
     const [debt1, setDebt1] = useState('');                     // Total amount owing
@@ -40,7 +41,7 @@ function Debt() {
     const [data, setData] = useState([]);                                           // Data for the chart
     const [options, setOptions] = useState([]);                                     // Options for the chart
     const [chartAvailable, setChartAvailable] = useState(false);                    // Whether the chart is available
-    const [monPayReady, setMonPayReady] = useState(false);                          // Whether the monthly payment is ready to be calculated
+    const [monPayReady, setMonPayReady] = useState(false);                          // Whether the test is done
 
     function validateMonthlyPayment() {
         setMonthlyPayment('');
@@ -59,7 +60,6 @@ function Debt() {
         setMonthsToPay(0);
         setDebtFreeBy('');
 
-        console.log("Inside validateMonthlyPayment...");
         setChartAvailable(false);
         var inputs = document.querySelectorAll("#DebtCalc1 input[required]")
         var flag = false;
@@ -99,7 +99,6 @@ function Debt() {
         setInterest(parseFloat(interest1) / 100);
         setSurplus(parseFloat(surplusIncome));
         setMonPayReady(true);
-        console.log("Ending...");
     }
 
     /**
@@ -114,9 +113,11 @@ function Debt() {
      */
     useEffect(() => {
         if (monPayReady) {
+            setMonthsToPay(0);
+            setDebtFreeBy('');
+            setAffordablePayment(0);
+            setReqPayment(0);
             setMonPayReady(false);
-            console.log("Inside useEffect for monthly payment...");
-
             // Gets the current date and time and the desired debt free date and calculates the difference
             // between the two dates in months.
             const now = new Date(Date.UTC(startDate.substring(0, 4), startDate.substring(5, 7) - 1, startDate.substring(8, 10)));
@@ -161,7 +162,7 @@ function Debt() {
                     if (then.getUTCDate() >= 29 && debtFreeBy.getMonth() === 1 && debtFreeBy.getFullYear() % 4 === 0) debtFreeBy.setDate(29);
                     else if (then.getUTCDate() >= 28 && debtFreeBy.getMonth() === 1 && debtFreeBy.getFullYear() % 4 !== 0) debtFreeBy.setDate(28);
                     else if (then.getUTCDate() === 31 && (debtFreeBy.getMonth() === 3 || debtFreeBy.getMonth() === 5 || debtFreeBy.getMonth() === 8 || debtFreeBy.getMonth() === 10)) debtFreeBy.setDate(30);
-                    else debtFreeBy.setDate(then.getDate());
+                    else debtFreeBy.setUTCDate(then.getUTCDate());
 
                     setDebtFreeBy(debtFreeBy.toISOString().split('T')[0]);
                     setAffordablePayment(newMonthlyPaymentCalc);
@@ -176,34 +177,37 @@ function Debt() {
                 setReqPayment(monthlyPaymentCalc);
             }
 
-            setTextReady(true);
-            setGraphReady(true);
+            if (firstTestState) setTestDone(true);
+
+            else {
+                setTextReady(true);
+                setGraphReady(true);
+            }
         }
     }, [monPayReady, startDate, targetDate, debt, interest, surplus]);
 
     useEffect(() => {
-        if (textReady) {
+        if (textReady && !firstTestState) {
             setTextReady(false);
             if (!isNaN(monthsToPay)) {
                 if (debtFreeBy !== targetDate) {
                     setMonthlyPayment("To be debt free by " + targetDate + ", you would need to pay about $" + 
                     reqPayment.toString() + " a month which is more than you can afford by about $" + (reqPayment - affordablePayment).toFixed(2).toString() + ". If you were to pay $" + 
                     affordablePayment.toString() + " a month over " + monthsToPay + " months, you would be debt free by " + debtFreeBy + ".");
-                    
                 }
 
                 else {
                     setMonthlyPayment("To be debt free by " + debtFreeBy + ", you would need to pay about $" + 
-                    reqPayment.toString() + " a month in " + monthsToPay.toString() + " monthly installments.");
+                    affordablePayment.toString() + " a month in " + monthsToPay.toString() + " monthly installments.");
                 }
             }
 
             else setMonthlyPayment("You cannot afford to pay off your debt with your current surplus income.");
         }
-    }, [textReady, reqPayment, affordablePayment, monthsToPay, debtFreeBy, targetDate]);
+    }, [textReady, reqPayment, affordablePayment, monthsToPay, debtFreeBy, targetDate, firstTestState]);
 
     useEffect(() => {
-        if (graphReady) {
+        if (graphReady && !firstTestState) {
             setGraphReady(false);
             if (!isNaN(monthsToPay)) {
                 let list = [];
@@ -215,8 +219,10 @@ function Debt() {
                 let startYear = now.getUTCFullYear();
                 let startMonth = now.getMonth();
                 let targetDate = then.getUTCDate();
-                if (now.getDate() < targetDate) startMonth += 1;
-                else if (now.getDate() === targetDate) startMonth += 1;
+                console.log(now.getUTCDate());
+                console.log(targetDate);
+                if (now.getUTCDate() >= targetDate) startMonth += 1;
+                console.log(startMonth);
                 if (startMonth === 12) {
                     startYear += 1;
                     startMonth = 0;
@@ -260,7 +266,77 @@ function Debt() {
                 scrollToBottom();
             }
         }
-    }, [graphReady, monthsToPay, debt, monthlyInterest, affordablePayment, startDate, debtFreeBy]);
+    }, [graphReady, monthsToPay, debt, monthlyInterest, affordablePayment, startDate, debtFreeBy, firstTestState]);
+
+    const testStart = ["2023-01-01", "2024-01-31", "2024-01-01", "2024-01-01"];
+    const testTarget = ["2024-01-01", "2024-02-29", "2024-12-01", "2025-01-01"];
+    const testDebt = [1000, 1000, 1000, 1000];
+    const testInterest = [0.229, 0.229, 0.229, 0.229];
+    const testSurplus = [100, 1100, 94.03, 10];
+
+    const expDates = ["2024-01-01", "2024-02-29", "2025-01-01", ''];
+    const expPays = [94.03, 1019.08, 101.65, 0];
+    const expAffords = [94.03, 1019.08, 94.03, 0];
+    const expMonths = [12, 1, 12, NaN];
+
+    const [expDate, setExpDate] = useState('');
+    const [expPay, setExpPay] = useState(0);
+    const [expAfford, setExpAfford] = useState(0);
+    const [expMonth, setExpMonth] = useState(0);
+    const [last, setLast] = useState(false);
+    const [testNum, setTestNum] = useState(0);
+
+    useEffect(() => {
+        if (firstTestState) {
+            setTestNum(testNum);
+            setStartDate(testStart[testNum]);
+            setTargetDate(testTarget[testNum]);
+            setDebt(testDebt[testNum]);
+            setInterest(testInterest[testNum]);
+            setSurplus(testSurplus[testNum]);
+
+            setExpDate(expDates[testNum]);
+            setExpPay(expPays[testNum]);
+            setExpAfford(expAffords[testNum]);
+            setExpMonth(expMonths[testNum]);
+            
+            setMonPayReady(true);
+            if (testNum === testStart.length - 1) setLast(true);
+        }
+    }, [firstTestState, testNum]);
+
+    useEffect(() => {
+        if (firstTestState && testDone) {
+            setTestDone(false);
+            let diff1 = Math.abs(affordablePayment - expAfford);
+            let diff2 = Math.abs(reqPayment - expPay);
+
+            // console.log(affordablePayment);
+            // console.log(debtFreeBy);
+            // console.log(expDate);
+            // console.log(monthsToPay);
+            // console.log(expMonth);
+            // console.log(diff1);
+            // console.log(diff2);
+    
+            if (debtFreeBy === expDate && diff1 === 0 && diff2 === 0 && monthsToPay === expMonth) {
+                console.log("Monthly Payment Calculator Test " + testNum.toString() + " Passed!")
+            }
+
+            else if (debtFreeBy === expDate && diff1 === 0 && diff2 === 0) {
+                if (isNaN(monthsToPay) && isNaN(expMonth)) {
+                    console.log("Monthly Payment Calculator Test " + testNum.toString() + " Passed!")
+                }
+            }
+
+            else {
+                console.log("Monthly Payment Calculator Test " + testNum.toString() + " Failed!");
+            }
+
+            setTestNum(testNum + 1);
+            if (last) setFirstTestState(false);
+        }
+    }, [firstTestState, testDone, debtFreeBy, expDate, reqPayment, expPay, affordablePayment, expAfford, monthsToPay, expMonth, last]);
 
     // All these variables are either input variable or output variable from the calculator
     // that calculates the interest savings from making a lump sum payment today.
@@ -407,7 +483,6 @@ function Debt() {
      * is visible after calculation.
      */
     function scrollToBottom() {
-        console.log("Inside scrollToBottom...");
         // The duration of the scroll, the position of where the window currently is, the position of where the window
         // ends and the time at which the scroll started are all initialized.
         const duration = 375;
