@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Chart } from "react-google-charts";
 import './debt.css';
 
@@ -10,10 +9,15 @@ import './debt.css';
  * calculator is for calculating the interest savings from making a lump sum payment today.
  */
 function Debt() {
+    const [masterTestFlag, setMasterTestFlag] = useState(0);                // Used for testing purposes
+    const [allTestDone, setAllTestDone] = useState(false);                  // Used for testing purposes
+    const [firstTestState, setFirstTestState] = useState(true);             // Used for testing purposes
+    const [funTestState, setFunTestState] = useState(true);                 // Used for testing purposes
+    // FIRST CALCULATOR BELOW HERE - Monthly Payment Calculator
+
     // All these variables are either input variable or output variable from the calculator
     // that calculates the required monthly payment to be debt free by a certain date.
 
-    const [firstTestState, setFirstTestState] = useState(true);          // Used for testing purposes
     const [testDone, setTestDone] = useState(false);                      // Used for testing purposes
 
     // VARIABLES FOR INPUT FIELDS
@@ -217,7 +221,7 @@ function Debt() {
 
             else setTextReady(true);
         }
-    }, [monPayReady, startDate, targetDate, debt, interest, surplus]);
+    }, [monPayReady, startDate, targetDate, debt, interest, surplus, firstTestState]);
 
     // This useEffect function updates the output field to display the required monthly payment to be debt free by the
     // desired date. It does this by first checking if the text is ready to be displayed and then checking if the
@@ -321,16 +325,6 @@ function Debt() {
     // Each test case is designed to test a specific aspect of the calculator and is designed to fail if the calculator
     // is not working as expected and covers all of the fringe cases and the cases inbetweeen to test the function's 
     // operation in real world cases where input is messy and highly variable.
-    const testStart = ["2023-01-01", "2024-01-31", "2024-01-01", "2024-01-01", "2024-01-01", "2024-01-15", "2024-01-15"];
-    const testTarget = ["2024-01-01", "2024-02-29", "2024-12-01", "2025-01-01", "2024-11-01", "2025-01-15", "2024-03-15"];
-    const testDebt = [1000, 1000, 1000, 1000, 1000, 10000, 0];
-    const testInterest = [0.229, 0.229, 0.229, 0.229, 0, 0.229, 0];
-    const testSurplus = [100, 1100, 94.03, 10, 100, 200, 0];
-
-    const expDates = ["2024-01-01", "2024-02-29", "2025-01-01", '', '2024-11-01', "2037-09-15", "2024-01-15"];
-    const expPays = [94.03, 1019.08, 101.65, 0, 100, 940.28, 0];
-    const expAffords = [94.03, 1019.08, 94.03, 0, 100, 199.83, 0];
-    const expMonths = [12, 1, 12, NaN, 10, 164, 0];
 
     const [expDate, setExpDate] = useState('');
     const [expPay, setExpPay] = useState(0);
@@ -346,13 +340,22 @@ function Debt() {
     // incremented and the next test is run with a message sent to the console to indicate passing or failing.
     useEffect(() => {
         if (firstTestState) {
+            let testStart = ["2023-01-01", "2024-01-31", "2024-01-01", "2024-01-01", "2024-01-01", "2024-01-15", "2024-01-15"];
+            let testTarget = ["2024-01-01", "2024-02-29", "2024-12-01", "2025-01-01", "2024-11-01", "2025-01-15", "2024-03-15"];
+            let testDebt = [1000, 1000, 1000, 1000, 1000, 10000, 0];
+            let testInterest = [0.229, 0.229, 0.229, 0.229, 0, 0.229, 0];
+            let testSurplus = [100, 1100, 94.03, 10, 100, 200, 0];
+            let expDates = ["2024-01-01", "2024-02-29", "2025-01-01", '', '2024-11-01', "2037-09-15", "2024-01-15"];
+            let expPays = [94.03, 1019.08, 101.65, 0, 100, 940.28, 0];
+            let expAffords = [94.03, 1019.08, 94.03, 0, 100, 199.83, 0];
+            let expMonths = [12, 1, 12, NaN, 10, 164, 0];
+
             setTestNum(testNum);
             setStartDate(testStart[testNum]);
             setTargetDate(testTarget[testNum]);
             setDebt(testDebt[testNum]);
             setInterest(testInterest[testNum]);
             setSurplus(testSurplus[testNum]);
-
             setExpDate(expDates[testNum]);
             setExpPay(expPays[testNum]);
             setExpAfford(expAffords[testNum]);
@@ -365,17 +368,19 @@ function Debt() {
 
     useEffect(() => {
         if (firstTestState && testDone) {
+            let testStart = ["2023-01-01", "2024-01-31", "2024-01-01", "2024-01-01", "2024-01-01", "2024-01-15", "2024-01-15"];
+            let testTarget = ["2024-01-01", "2024-02-29", "2024-12-01", "2025-01-01", "2024-11-01", "2025-01-15", "2024-03-15"];
+            let testDebt = [1000, 1000, 1000, 1000, 1000, 10000, 0];
+            let testInterest = [0.229, 0.229, 0.229, 0.229, 0, 0.229, 0];
+            let testSurplus = [100, 1100, 94.03, 10, 100, 200, 0];
+            let expDates = ["2024-01-01", "2024-02-29", "2025-01-01", '', '2024-11-01', "2037-09-15", "2024-01-15"];
+            let expPays = [94.03, 1019.08, 101.65, 0, 100, 940.28, 0];
+            let expAffords = [94.03, 1019.08, 94.03, 0, 100, 199.83, 0];
+            let expMonths = [12, 1, 12, NaN, 10, 164, 0];
+
             setTestDone(false);
             let diff1 = Math.abs(affordablePayment - expAfford);
             let diff2 = Math.abs(reqPayment - expPay);
-
-            // console.log(affordablePayment);
-            // console.log(debtFreeBy);
-            // console.log(expDate);
-            // console.log(monthsToPay);
-            // console.log(expMonth);
-            // console.log(diff1);
-            // console.log(diff2);
     
             if (debtFreeBy === expDate && diff1 === 0 && diff2 === 0 && monthsToPay === expMonth) {
                 console.log("Monthly Payment Calculator Test " + testNum.toString() + " Passed!")
@@ -385,32 +390,85 @@ function Debt() {
                 if (isNaN(monthsToPay) && isNaN(expMonth)) {
                     console.log("Monthly Payment Calculator Test " + testNum.toString() + " Passed!")
                 }
+
+                else {
+                    console.log("Monthly Payment Calculator Test " + testNum.toString() + " Failed!");
+                    setMasterTestFlag(masterTestFlag + 1);
+                    console.log("Associated data:");
+                    console.log("Start Date: " + testStart[testNum]);
+                    console.log("Target Date: " + testTarget[testNum]);
+                    console.log("Debt: " + testDebt[testNum]);
+                    console.log("Interest: " + testInterest[testNum]);
+                    console.log("Surplus Income: " + testSurplus[testNum]);
+                    console.log("Expected Date: " + expDates[testNum] + " Actual Date: " + debtFreeBy);
+                    console.log("Expected Payment: " + expPays[testNum] + " Actual Payment: " + reqPayment);
+                    console.log("Expected Affordable Payment: " + expAffords[testNum] + " Actual Affordable Payment: " + affordablePayment);
+                    console.log("Expected Months to Pay: " + expMonths[testNum] + " Actual Months to Pay: " + monthsToPay);
+                }
             }
 
             else {
                 console.log("Monthly Payment Calculator Test " + testNum.toString() + " Failed!");
+                setMasterTestFlag(masterTestFlag + 1);
+                console.log("Associated data:");
+                console.log("Start Date: " + testStart[testNum]);
+                console.log("Target Date: " + testTarget[testNum]);
+                console.log("Debt: " + testDebt[testNum]);
+                console.log("Interest: " + testInterest[testNum]);
+                console.log("Surplus Income: " + testSurplus[testNum]);
+                console.log("Expected Date: " + expDates[testNum] + " Actual Date: " + debtFreeBy);
+                console.log("Expected Payment: " + expPays[testNum] + " Actual Payment: " + reqPayment);
+                console.log("Expected Affordable Payment: " + expAffords[testNum] + " Actual Affordable Payment: " + affordablePayment);
+                console.log("Expected Months to Pay: " + expMonths[testNum] + " Actual Months to Pay: " + monthsToPay);
             }
 
             setTestNum(testNum + 1);
-            if (last) setFirstTestState(false);
+            if (last) {
+                setFirstTestState(false);
+                if (!funTestState) setAllTestDone(true);
+            }
         }
-    }, [firstTestState, testDone, debtFreeBy, expDate, reqPayment, expPay, affordablePayment, expAfford, monthsToPay, expMonth, last]);
+    }, [firstTestState, testDone, debtFreeBy, expDate, reqPayment, expPay, affordablePayment, expAfford, monthsToPay, expMonth, last, funTestState, masterTestFlag, testNum]);
 
-    // All these variables are either input variable or output variable from the calculator
-    // that calculates the interest savings from making a lump sum payment today.
+    // END OF FIRST CALCULATOR
+
+    // SECOND CALCULATOR BELOW HERE - Interest Reduction Calculator
+
+    // INPUT VARIABLES
     const [debt2, setDebt2] = useState('');                             // The total amount owing
     const [interest2, setInterest2] = useState('');                     // Annual interest rate as a percent
     const [lumpSum, setLumpSum] = useState('');                         // The lump sum payment
     const [term, setTerm] = useState('');                               // Whether the interest is annual or monthly
-    const [interestReduction, setInterestReduc] = useState('');     // Field wherein output is displayed
+
+    // OUTPUT VARIABLES
+    const [interestReduction, setInterestReduc] = useState('');         // Field wherein output is displayed
+
+    // FUNCTION VARIABLES
+    const [funDebt2, setFunDebt2] = useState(0);                        // The total amount owing
+    const [funInterest2, setFunInterest2] = useState(0);                // Annual interest rate as a percent
+    const [funLumpSum, setFunLumpSum] = useState(0);                    // The lump sum payment
+    const [funTerm, setFunTerm] = useState('');                         // Whether the interest is annual or monthly
+    const [funReady, setFunReady] = useState(false);                    // Whether the function is ready to be run
+    const [funDisplayReady, setFunDisplayReady] = useState(false);      // Whether the display function is ready to be run
+    const [interestDiff, setInterestDiff] = useState('');               // The difference between the interest paid before and after the lump sum payment
+    const [funTestDone, setFunTestDone] = useState(false);              // Used for testing purposes
+    const [funTestNum, setFunTestNum] = useState(0);                    // Used for testing purposes
 
     /**
-     * This function calculates the interest savings from making a lump sum payment today using the following formula:
-     * (debt * (interest / 100)) - ((debt - lumpSum) * (interest / 100)). The formula first calculates the interest
-     * that would be paid on the debt before the lump sum payment and then calculates the interest paid on the debt 
-     * after the lump sum payment and displays the difference between the two in the output field.
+     * This function is used to validate the input fields and calculate the interest savings from making a lump sum
+     * payment today. It does this by first checking if all the input fields are filled out properly. If not, then an
+     * alert is displayed to the user to fill out all fields properly before returning false to abort the calculation.
+     * If the inputs are valid, then the values are placed into variables that will be used by the validateInterestReduction
+     * function.
      */
-    function setInterestReduction() {
+    function validateInterestReduction() {
+        setFunDebt2(0);
+        setFunInterest2(0);
+        setFunLumpSum(0);
+        setFunTerm('');
+        setInterestReduc('');
+        setFunDisplayReady(false);
+        setInterestDiff('');
         var inputs = document.querySelectorAll("#DebtCalc2 input[required]")
         var flag = false;
 
@@ -422,9 +480,7 @@ function Debt() {
                 flag = true;
             }
 
-            else {
-                inputs[x].style.border = "2px solid white";
-            }
+            else inputs[x].style.border = "2px solid white";
         }
 
         // Check if the interest term is selected. If not, the flag is set to true and the input field is highlighted
@@ -432,11 +488,6 @@ function Debt() {
         if (term === 'undefined' || term === '') {
             document.getElementById("interestTerm").style.border = "2px solid red";
             flag = true;
-        }
-
-        // If the input is valid, then the border is returned to normal.
-        else {
-            document.getElementById("interestTerm").style.border = "2px solid white";
         }
 
         // If the flag is true, then an alert is displayed to the user to fill out all fields properly before returning
@@ -447,29 +498,131 @@ function Debt() {
             return;
         }
 
-        const debt = parseFloat(debt2);                                 // Total amount owing
-        
-        // Calculates the interest savings based on whether the interest is annual or monthly and displays
-        // the output to the user.
-        if (term === 'annual') {
-            const oldInterest = debt * (interest2 / 100);
-            const newInterest = (debt - lumpSum) * (interest2 / 100);
-            const interestDiff = oldInterest - newInterest;
-            setInterestReduc("If you were to make a lump sum payment of $" + parseFloat(lumpSum).toFixed(2).toString() +
-            " today, you would save a total of $" + interestDiff.toFixed(2) + " a year in interest costs.");
+        if (parseFloat(lumpSum) > parseFloat(debt2)) {
+            alert("Please enter a lump sum payment that is less than or equal to the total amount owing.");
+            setLumpSum("");
+            document.getElementById("lumpSum").style.border = "2px solid red";
+            setInterestReduc("");
+            return;
         }
 
-        else {
-            const oldInterest = (debt * (interest2 / 100)) / 12;
-            const newInterest = ((debt - lumpSum) * (interest2 / 100)) / 12;
-            const interestDiff = oldInterest - newInterest;
-            setInterestReduc("If you were to make a lump sum payment of $" + parseFloat(lumpSum).toFixed(2).toString() +
-            " today, you would save a total of $" + interestDiff.toFixed(2) + " a month in interest costs.");
-        }
-
-        scrollToBottom();
+        setFunDebt2(parseFloat(debt2));
+        setFunInterest2(parseFloat(interest2) / 100);
+        setFunLumpSum(parseFloat(lumpSum));
+        setFunTerm(term);
+        setFunReady(true);
     }
+
+    //  This function calculates the interest savings from making a lump sum payment today using the following formula:
+    //  (debt * interestRate) - ((debt - lumpSum) * interestRate). The formula first calculates the interest paid on the
+    //  debt before the lump sum payment and then calculates the interest paid on the debt after the lump sum payment.
+    //  The difference between the two is the interest savings from making the lump sum payment today.
+    useEffect(() => {
+        if (funReady) {
+            setFunReady(false);
+            // Calculates the interest savings based on whether the interest is annual or monthly and displays
+            // the output to the user.
+            if (funTerm === 'annual') {
+                const oldInterest = funDebt2 * funInterest2;
+                const newInterest = (funDebt2 - funLumpSum) * funInterest2;
+                setInterestDiff((oldInterest - newInterest).toFixed(2));
+            }
+
+            else {
+                const oldInterest = (funDebt2 * funInterest2) / 12;
+                const newInterest = ((funDebt2 - funLumpSum) * funInterest2) / 12;
+                setInterestDiff((oldInterest - newInterest).toFixed(2));
+            }
+
+            if (!funTestState) setFunDisplayReady(true);
+            else setFunTestDone(true);
+        }
+    }, [funReady, funDebt2, funInterest2, funLumpSum, funTerm, funTestState]);
+
+    // This useEffect function updates the output field to display the interest savings from making a lump sum payment
+    // today. It does this by first checking if the function is ready to be run and then checking if the term is annual
+    // or monthly. If the term is annual, then the output field is updated to display the interest savings in a year.
+    // Otherwise, the output field is updated to display the interest savings in a month.
+    useEffect(() => {
+        if (funDisplayReady) {
+            setFunDisplayReady(false);
+
+            if (funTerm === 'annual') {
+                setInterestReduc("If you were to make a lump sum payment of $" + funLumpSum.toString() +
+                " today, you would save approximately $" + interestDiff + " a year in interest costs.");
+            }
+
+            else {
+                setInterestReduc("If you were to make a lump sum payment of $" + funLumpSum.toString() +
+                " today, you would save approximately $" + interestDiff + " a month in interest costs.");
+            }
+
+            scrollToBottom();
+        }
+    }, [funDisplayReady, funTerm, interestDiff, funLumpSum]);
     
+    // TEST CASES - The following test cases operate on every input field and test the functionality of the calculator.
+    // Each test case is designed to test a specific aspect of the calculator and is designed to fail if the calculator
+    // is not working as expected and covers all of the fringe cases and the cases inbetweeen to test the function's
+    // operation in real world cases where input is messy and highly variable. 
+    
+    // Since this function is relatively simple, only a few tests will be performed.
+
+    // The following useEffect function is used for testing purposes. It sets the input fields to the test cases
+    // and triggers the validateInterestReduction function to calculate the interest savings for verification.
+    useEffect(() => {
+        if (funTestState) {
+            let testDebt2 = [0, 1000, 1000, 1000, 1000, 1000];
+            let testInterest2 = [0, 0.229, 0.229, 1.000, 1.000, 1.000];
+            let testLumpSum = [0, 0, 1000, 1000, 500, 500];
+            let testTerm = ['annual', 'monthly', 'annual', 'annual', 'monthly', 'annual'];
+            setFunReady(false);
+            setFunTestDone(false);
+            setFunDebt2(testDebt2[funTestNum]);
+            setFunInterest2(testInterest2[funTestNum]);
+            setFunLumpSum(testLumpSum[funTestNum]);
+            setFunTerm(testTerm[funTestNum]);
+            setFunReady(true);
+        }
+    }, [funTestState, funTestNum]);
+
+    // The following useEffect function is used for testing purposes. It verifies the output of the calculator
+    // and determines whether the test passed or failed. Regardless of the test passing or failing, the test
+    // number is incremented and the next test is run. If the test passed or failed, console output is displayed
+    // to the user.
+    useEffect(() => {
+        if (funTestState && funTestDone) {
+            let testDebt2 = [0, 1000, 1000, 1000, 1000, 1000];
+            let testInterest2 = [0, 0.229, 0.229, 1.000, 1.000, 1.000];
+            let testLumpSum = [0, 0, 1000, 1000, 500, 500];
+            let testTerm = ['annual', 'monthly', 'annual', 'annual', 'monthly', 'annual'];
+            let expInterestDiff = [0, 0, 229, 1000, 41.67, 500];
+            setFunTestDone(false);
+
+            let diff = Math.abs(parseFloat(interestDiff) - expInterestDiff[funTestNum]);
+            if (diff === 0) console.log("Interest Reduction Calculator Test " + funTestNum.toString() + " Passed!");
+            else {
+                console.log("Interest Reduction Calculator Test " + funTestNum.toString() + " Failed!");
+                console.log("Associated data:");
+                console.log("Debt: " + testDebt2[funTestNum]);
+                console.log("Interest: " + testInterest2[funTestNum]);
+                console.log("Lump Sum: " + testLumpSum[funTestNum]);
+                console.log("Term: " + testTerm[funTestNum]);
+                console.log("Expected Interest Savings: " + expInterestDiff[funTestNum]);
+                console.log("Actual Interest Savings: " + interestDiff);
+                setMasterTestFlag(masterTestFlag + 1);
+            }
+
+            if (funTestNum === testDebt2.length - 1) {
+                setFunTestState(false);
+                if (!firstTestState) setAllTestDone(true);
+            }
+
+            else setFunTestNum(funTestNum + 1);
+        }
+    }, [funTestState, funTestDone, interestDiff, funTestNum, firstTestState, masterTestFlag]);
+
+    // END OF SECOND CALCULATOR
 
     // A quick helper function to validate if a number is valid. If it is not, then an alert is displayed
     // to the user and the value is set to an empty string.
@@ -582,6 +735,21 @@ function Debt() {
         requestAnimationFrame(scroll);
     }
 
+    // This useEffect function is used to reset the state of the page once all tests are done.
+    // If any tests failed (of the automated tests), then the user is notified of how many tests
+    // failed and is prompted to check the console for details. If all tests passed, then the user
+    // is notified that all tests passed.
+    useEffect(() => {
+        if (allTestDone) {
+            setFirstTestState(false);
+            setFunTestState(false);
+            setAllTestDone(false);
+
+            if (masterTestFlag === 0) console.log("All tests passed!");
+            else console.log(masterTestFlag.toString() + " tests failed. Please check console for details.");
+        }
+    }, [allTestDone, masterTestFlag]);
+
     /**
      * The following code is the HTML code for the debt calculator page. It contains two forms, one for each
      * calculator. Each form contains input fields for the user to enter their information and a button to
@@ -593,28 +761,28 @@ function Debt() {
                 <form id="DebtCalc1">
                     <h1 id="DebtCalcHeading1">Monthly Payment</h1>
 
-                    <label for="debt1">Total Amount Owing</label><br></br>
+                    <label htmlFor="debt1">Total Amount Owing</label><br></br>
                     <input type="number" id="debt1" name="debt1" value={debt1} 
                     onChange={(e) => setDebt1(parseFloat(e.target.value))}
                     onBlur={(e) => {if (validateNumber(e.target.value)) setDebt1(parseFloat(e.target.value).toFixed(2))
                                     else setDebt1('')}} 
                     placeholder="Enter total amount owing..." required min="0"></input><br></br>
 
-                    <label for="interest1">Interest Rate (Annual)</label><br></br>
+                    <label htmlFor="interest1">Interest Rate (Annual)</label><br></br>
                     <input type="number" id="interest1" name="interest1" value={interest1} 
                     onChange={(e) => setInterest1(parseFloat(e.target.value))} 
                     onBlur={(e) => {if (validateInterest(e.target.value)) setInterest1(parseFloat(e.target.value).toFixed(2))
                                     else setInterest1('')}}
                     placeholder="Enter interest rate (22.9 = 22.9% interest)" required min="0"></input><br></br>
 
-                    <label for="surplusIncome">Surplus Income (Monthly)</label><br></br>
+                    <label htmlFor="surplusIncome">Surplus Income (Monthly)</label><br></br>
                     <input type="number" id="surplusIncome" name="surplusIncome" value={surplusIncome} 
                     onChange={(e) => setSurplusIncome(parseFloat(e.target.value))} 
                     onBlur={(e) => {if (validateNumber(e.target.value)) setSurplusIncome(parseFloat(e.target.value).toFixed(2))
                                     else setSurplusIncome('')}}
                     placeholder="Enter monthly surplus income..." required min="0"></input><br></br>
 
-                    <label for="date">Desired Debt-Free Date</label><br></br>
+                    <label htmlFor="date">Desired Debt-Free Date</label><br></br>
                     <input type="date" id="date" name="date" value={date} 
                     onChange={(e) => setDate(e.target.value)} 
                     onBlur={(e) => {if (validateDate(e.target.value)) setDate(e.target.value)
@@ -631,7 +799,7 @@ function Debt() {
                 <form id="DebtCalc2">
                     <h1 id="DebtCalcHeading2">Interest Reduction</h1>
 
-                    <label for="debt2">Total Amount Owing</label><br></br>
+                    <label htmlFor="debt2">Total Amount Owing</label><br></br>
                     <input type="number" id="debt2" name="debt2" value={debt2} 
                     onChange={(e) => setDebt2(parseFloat(e.target.value))}
                     onBlur={(e) => {if (validateNumber(e.target.value)) setDebt2(parseFloat(e.target.value).toFixed(2))
@@ -639,7 +807,7 @@ function Debt() {
                     placeholder="Enter total amount owing..." required min="0"></input>
                     <br></br>
 
-                    <label for="interest2">Interest Rate (Annual)</label><br></br>
+                    <label htmlFor="interest2">Interest Rate (Annual)</label><br></br>
                     <input type="number" id="interest2" name="interest2" value={interest2} 
                     onChange={(e) => setInterest2(parseFloat(e.target.value))} 
                     onBlur={(e) => {if (validateInterest(e.target.value)) setInterest2(parseFloat(e.target.value).toFixed(2))
@@ -647,7 +815,7 @@ function Debt() {
                     placeholder="Enter interest rate (22.9 = 22.9% interest)" required min="0"></input>
                     <br></br>
 
-                    <label for="lumpSum">Lump Sum Payment</label><br></br>
+                    <label htmlFor="lumpSum">Lump Sum Payment</label><br></br>
                     <input type="number" id="lumpSum" name="lumpSum" value={lumpSum}
                     onChange={(e) => setLumpSum(parseFloat(e.target.value))}
                     onBlur={(e) => {if (validateNumber(e.target.value)) setLumpSum(parseFloat(e.target.value).toFixed(2))
@@ -655,7 +823,7 @@ function Debt() {
                     placeholder="Enter lump sum payment..." required min="0"></input>
                     <br></br>
 
-                    <label for="interestTerm">Annual or Monthly Interest</label><br></br>
+                    <label htmlFor="interestTerm">Annual or Monthly Interest</label><br></br>
                     <select id="interestTerm" name="interestTerm" value={term} required 
                     onChange={(e) => setTerm(e.target.value)}>
                         <option value="undefined">Select...</option>
@@ -664,7 +832,7 @@ function Debt() {
                     </select>
                     <br></br>
 
-                    <button type="button" onClick={setInterestReduction}>Calculate</button><br></br>
+                    <button type="button" onClick={validateInterestReduction}>Calculate</button><br></br>
                     
                     <div id="DebtCalc2Output">
                         <h3 id="interestReduction">Reduction in Interest Cost</h3><br></br>
