@@ -7,12 +7,22 @@ import './debt.css';
  * calculators with separate fields and separate calculations. The first calculator is for
  * calculating the monthly payment required to be debt free by a certain date, while the second
  * calculator is for calculating the interest savings from making a lump sum payment today.
+ * 
+ * All test cases will operate on page load and then will not run again unless page loaded. This
+ * will likely be changed further into development. All test cases were developed by Preston Peters.
  */
 function Debt() {
+    // The following variables are used for testing purposes. The masterTestFlag is used to determine
+    // how many tests have failed. If the masterTestFlag is greater than 0, then at least one test
+    // has failed and the user will be notified of this. The allTestDone variable is used to determine
+    // whether all the tests have been run. If they have, then the user will be notified of this.
+    // The firstTestState and funTestState variables are used to determine whether the first and second
+    // calculators have been tested respectively.
     const [masterTestFlag, setMasterTestFlag] = useState(0);                // Used for testing purposes
     const [allTestDone, setAllTestDone] = useState(false);                  // Used for testing purposes
     const [firstTestState, setFirstTestState] = useState(true);             // Used for testing purposes
     const [funTestState, setFunTestState] = useState(true);                 // Used for testing purposes
+    
     // FIRST CALCULATOR BELOW HERE - Monthly Payment Calculator
 
     // All these variables are either input variable or output variable from the calculator
@@ -368,16 +378,6 @@ function Debt() {
 
     useEffect(() => {
         if (firstTestState && testDone) {
-            let testStart = ["2023-01-01", "2024-01-31", "2024-01-01", "2024-01-01", "2024-01-01", "2024-01-15", "2024-01-15"];
-            let testTarget = ["2024-01-01", "2024-02-29", "2024-12-01", "2025-01-01", "2024-11-01", "2025-01-15", "2024-03-15"];
-            let testDebt = [1000, 1000, 1000, 1000, 1000, 10000, 0];
-            let testInterest = [0.229, 0.229, 0.229, 0.229, 0, 0.229, 0];
-            let testSurplus = [100, 1100, 94.03, 10, 100, 200, 0];
-            let expDates = ["2024-01-01", "2024-02-29", "2025-01-01", '', '2024-11-01', "2037-09-15", "2024-01-15"];
-            let expPays = [94.03, 1019.08, 101.65, 0, 100, 940.28, 0];
-            let expAffords = [94.03, 1019.08, 94.03, 0, 100, 199.83, 0];
-            let expMonths = [12, 1, 12, NaN, 10, 164, 0];
-
             setTestDone(false);
             let diff1 = Math.abs(affordablePayment - expAfford);
             let diff2 = Math.abs(reqPayment - expPay);
@@ -394,32 +394,36 @@ function Debt() {
                 else {
                     console.log("Monthly Payment Calculator Test " + testNum.toString() + " Failed!");
                     setMasterTestFlag(masterTestFlag + 1);
-                    console.log("Associated data:");
-                    console.log("Start Date: " + testStart[testNum]);
-                    console.log("Target Date: " + testTarget[testNum]);
-                    console.log("Debt: " + testDebt[testNum]);
-                    console.log("Interest: " + testInterest[testNum]);
-                    console.log("Surplus Income: " + testSurplus[testNum]);
-                    console.log("Expected Date: " + expDates[testNum] + " Actual Date: " + debtFreeBy);
-                    console.log("Expected Payment: " + expPays[testNum] + " Actual Payment: " + reqPayment);
-                    console.log("Expected Affordable Payment: " + expAffords[testNum] + " Actual Affordable Payment: " + affordablePayment);
-                    console.log("Expected Months to Pay: " + expMonths[testNum] + " Actual Months to Pay: " + monthsToPay);
+
+                    // UNCOMMENT TO DEBUG
+                    // console.log("Associated data:");
+                    // console.log("Start Date: " + testStart[testNum]);
+                    // console.log("Target Date: " + testTarget[testNum]);
+                    // console.log("Debt: " + testDebt[testNum]);
+                    // console.log("Interest: " + testInterest[testNum]);
+                    // console.log("Surplus Income: " + testSurplus[testNum]);
+                    // console.log("Expected Date: " + expDates[testNum] + " Actual Date: " + debtFreeBy);
+                    // console.log("Expected Payment: " + expPays[testNum] + " Actual Payment: " + reqPayment);
+                    // console.log("Expected Affordable Payment: " + expAffords[testNum] + " Actual Affordable Payment: " + affordablePayment);
+                    // console.log("Expected Months to Pay: " + expMonths[testNum] + " Actual Months to Pay: " + monthsToPay);
                 }
             }
 
             else {
                 console.log("Monthly Payment Calculator Test " + testNum.toString() + " Failed!");
                 setMasterTestFlag(masterTestFlag + 1);
-                console.log("Associated data:");
-                console.log("Start Date: " + testStart[testNum]);
-                console.log("Target Date: " + testTarget[testNum]);
-                console.log("Debt: " + testDebt[testNum]);
-                console.log("Interest: " + testInterest[testNum]);
-                console.log("Surplus Income: " + testSurplus[testNum]);
-                console.log("Expected Date: " + expDates[testNum] + " Actual Date: " + debtFreeBy);
-                console.log("Expected Payment: " + expPays[testNum] + " Actual Payment: " + reqPayment);
-                console.log("Expected Affordable Payment: " + expAffords[testNum] + " Actual Affordable Payment: " + affordablePayment);
-                console.log("Expected Months to Pay: " + expMonths[testNum] + " Actual Months to Pay: " + monthsToPay);
+
+                // UNCOMMENT TO DEBUG
+                // console.log("Associated data:");
+                // console.log("Start Date: " + testStart[testNum]);
+                // console.log("Target Date: " + testTarget[testNum]);
+                // console.log("Debt: " + testDebt[testNum]);
+                // console.log("Interest: " + testInterest[testNum]);
+                // console.log("Surplus Income: " + testSurplus[testNum]);
+                // console.log("Expected Date: " + expDates[testNum] + " Actual Date: " + debtFreeBy);
+                // console.log("Expected Payment: " + expPays[testNum] + " Actual Payment: " + reqPayment);
+                // console.log("Expected Affordable Payment: " + expAffords[testNum] + " Actual Affordable Payment: " + affordablePayment);
+                // console.log("Expected Months to Pay: " + expMonths[testNum] + " Actual Months to Pay: " + monthsToPay);
             }
 
             setTestNum(testNum + 1);
@@ -634,7 +638,6 @@ function Debt() {
     const [testNumber, setTestNumber] = useState(0);
     const [numberTested, setNumberTested] = useState(false);
     useEffect(() => {
-        console.log('testNumber value changed:', testNumber);
         if (testNumber < 4) {
             let testNumbers = [100, -1, "test", ""];
             if (testNumber === 0 && validateNumber(testNumbers[testNumber])) console.log("Number Validation Test " + testNumber + " Passed!");
@@ -682,7 +685,6 @@ function Debt() {
     const [interestNum, setInterestNum] = useState(0);
     const [interestTested, setInterestTested] = useState(false);
     useEffect(() => {
-        console.log('interestNum value changed:', interestNum);
         if (interestNum < 4) {
             let testInterest = [22.9, 101, -1, "test"];
             if (interestNum === 0 && validateInterest(testInterest[interestNum])) console.log("Interest Validation Test " + interestNum + " Passed!");
@@ -729,7 +731,6 @@ function Debt() {
     const [dateNum, setDateNum] = useState(0);
     const [dateTested, setDateTested] = useState(false);
     useEffect(() => {
-        console.log('dateTested value changed:', dateTested);
         if (dateNum < 2) {
             if (dateNum === 0) {
                 let dummyDate = new Date();
