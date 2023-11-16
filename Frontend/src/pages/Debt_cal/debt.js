@@ -297,7 +297,7 @@ function Debt() {
                     else if (targetDate === 31 && (startMonth === 3 || startMonth === 5 || startMonth === 8 || startMonth === 10)) curDate = 30;
                     else curDate = targetDate;
                     let now = new Date(Date.UTC(startYear, startMonth, curDate));
-                    cumulativeDebt = cumulativeDebt - affordablePayment + cumulativeDebt * monthlyInterest;
+                    cumulativeDebt = parseFloat((cumulativeDebt - affordablePayment + cumulativeDebt * monthlyInterest).toFixed(2));
                     list.push([now.toISOString().split('T')[0], Math.max(cumulativeDebt, 0)]);
                     startMonth++;
                     if (startMonth === 12) {
