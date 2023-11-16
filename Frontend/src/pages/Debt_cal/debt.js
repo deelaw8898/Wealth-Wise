@@ -26,16 +26,16 @@ function Debt() {
     const [monthlyPayment, setMonthlyPayment] = useState('');   // Field wherein output is displayed
 
     // VARIABLES FOR FUNCTION USE
-    const [startDate, setStartDate] = useState('');                     // Start date for the graph
-    const [targetDate, setTargetDate] = useState('');                   // Target end date for the graph
-    const [debt, setDebt] = useState(0);                                // Total amount owing
-    const [interest, setInterest] = useState(0);                        // Annual interest rate as a percent
-    const [surplus, setSurplus] = useState(0);   
-    const [monthlyInterest, setMonthlyInterest] = useState(0);                     // Average monthly surplus income
+    const [startDate, setStartDate] = useState('');                                 // Start date for the graph
+    const [targetDate, setTargetDate] = useState('');                               // Target end date for the graph
+    const [debt, setDebt] = useState(0);                                            // Total amount owing
+    const [interest, setInterest] = useState(0);                                    // Annual interest rate as a percent
+    const [surplus, setSurplus] = useState(0);                                      // Average monthly surplus income
+    const [monthlyInterest, setMonthlyInterest] = useState(0);                      // Monthly interest rate as a percent
     const [reqPayment, setReqPayment] = useState(0);                                // Required monthly payment to be debt free by the desired date  
     const [affordablePayment, setAffordablePayment] = useState(0);                  // Affordable payment (if it exists)
     const [monthsToPay, setMonthsToPay] = useState(0);                              // Months to pay off debt
-    const [debtFreeBy, setDebtFreeBy] = useState('');
+    const [debtFreeBy, setDebtFreeBy] = useState('');                               // Date by which debt will be paid off (desired)
     const [textReady, setTextReady] = useState(false);                              // Whether the text is ready to be displayed
     const [graphReady, setGraphReady] = useState(false);                            // Whether the graph is ready to be displayed
     const [data, setData] = useState([]);                                           // Data for the chart
@@ -43,6 +43,12 @@ function Debt() {
     const [chartAvailable, setChartAvailable] = useState(false);                    // Whether the chart is available
     const [monPayReady, setMonPayReady] = useState(false);                          // Whether the test is done
 
+    // The following function is used to validate the input fields and calculate the required monthly payment
+    // to be debt free by the desired date. It does this by first checking if all the input fields are filled
+    // out properly. If not, then an alert is displayed to the user to fill out all fields properly before
+    // returning false to abort the calculation. If the inputs are valid, then the values are placed into
+    // variables that will be used by the requiredMonthlyPayment function to calculate the required monthly
+    // payment to be debt free by the desired date.
     function validateMonthlyPayment() {
         setMonthlyPayment('');
         setChartAvailable(false);
@@ -93,6 +99,7 @@ function Debt() {
             return false;
         }
 
+        // Readies the variables for the requiredMonthlyPayment function to calculate the required monthly payment
         setStartDate(new Date().toISOString().split('T')[0]);
         setTargetDate(date);
         setDebt(parseFloat(debt1));
@@ -103,13 +110,13 @@ function Debt() {
 
     /**
      * The current function calculates the required monthly payment using the following formula:
-     * ((365.25 / 12) * (debt / ((1 - (1 + dailyInterest) ** -(days)) / dailyInterest))).
-     * The formula first computes the average number of days per month (365.25 / 12) and then
-     * multiplies that by the debt divided by the annuity factor. The annuity factor is calculated
-     * by dividing the total amount by the difference between 1 and the daily interest rate to the
-     * power of the amount of days until the desired debt free date. This annuity factor is then
-     * divided by the dailly interest rate to get the required monthly payment. Then, the output
-     * field is updated to display the information to the user.
+     * (debt * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -months)).
+     * The formula first multiples the debt value by the monthlyInterestRate and then divides
+     * that result by 1 - Math.pow(1 + monthlyInterestRate, -months). The latter part of the
+     * formula is the geometric series formula for calculating the sum of a geometric series
+     * which in this case can be used to compute the amount of money that would need to be paid
+     * each month given a certain percentage of accumulating interest to have the debt paid off
+     * by the desired date.
      */
     useEffect(() => {
         if (monPayReady) {
@@ -144,21 +151,48 @@ function Debt() {
             // the debt if the user were to pay the full amount of their surplus income every month.
             const difference = monthlyPaymentCalc - surplus;
             
+            // Fringe case where user is already debt free or accidentally inputs 0.
+            if (debt === 0) {
+                setMonthsToPay(0);
+                setDebtFreeBy(now.toISOString().split('T')[0]);
+                setAffordablePayment(monthlyPaymentCalc);
+                setReqPayment(monthlyPaymentCalc);
+            }
+
             // If the required payment is not affordable, finds out how soon the debt can be paid off with the current surplus income.
             // It does this by subtracting the payment from the debt plus whatever interest accrued on a daily basis until the user has
             // paid off their debt. Each time it loops, it increments the days to pay variable which, in the end, describes to the user
             // how often they'll have to pay the prescribed amount every month to be debt free.
-            if (difference > 0) {
+
+            // The formula used here for calculating the months necessary to pay off the debt is derived from the formula for calculating 
+            // the sum of a geometric series that was used above to calculate the required monthly payment. The formula is as follows: 
+            // months = Math.ceil(Math.abs(Math.log(1 - (debt * monthlyInterestRate) / surplus) / Math.log(1 + monthlyInterestRate))).
+            // This is essentially the same formula as above but rearranged to solve for months instead of the required monthly payment by
+            // applying logarithmic transformation to both sides to extract the exponent and then dividing the debt by the surplus income
+            // to get the ratio of the debt to the surplus income. 
+            
+            // The Math.ceil function is used to round up to the nearest integer since
+            // we want to calculate how many payments are necessary and if at least 11.5 payments are necessary, then 12 payments will be
+            // necessary since you can't make half a payment. The Math.abs function is used to ensure that the months to pay is always a
+            // positive number since the log of a number between 0 and 1 is always negative and we want to ensure that the months to pay is
+            // always positive.
+            else if (difference > 0) {
                 let monthsToPayOff = Math.ceil(Math.abs(Math.log(1 - (debt * monthlyInterestRate) / surplus) / Math.log(1 + monthlyInterestRate)));
                 
                 setMonthsToPay(monthsToPayOff);
 
+                // If the months to pay off is a number, then the output field is updated to display the required monthly payment.
+                // If not, that means that the debt will not be diminished with the user's current surplus income and so the
+                // payment is unaffordable. The formula here is essentially the same as the formula used first for the sum of a
+                // geometric series but now with the new value of months to pay off.
                 if (!isNaN(monthsToPayOff)) {
                     let newMonthlyPaymentCalc = 0;
                     if (monthlyInterestRate > 0) newMonthlyPaymentCalc = ((debt * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -monthsToPayOff))).toFixed(2);
                     else newMonthlyPaymentCalc = (debt / monthsToPayOff).toFixed(2);
                     let debtFreeBy = new Date(Date.UTC(now.getUTCFullYear() + (monthsToPayOff / 12), (now.getUTCMonth() + (monthsToPayOff % 12)) % 12, 15));
 
+                    // This covers the possibility of shorter months to avoid month overflow. Leap years are also covered
+                    // by this logic.
                     if (then.getUTCDate() >= 29 && debtFreeBy.getMonth() === 1 && debtFreeBy.getFullYear() % 4 === 0) debtFreeBy.setDate(29);
                     else if (then.getUTCDate() >= 28 && debtFreeBy.getMonth() === 1 && debtFreeBy.getFullYear() % 4 !== 0) debtFreeBy.setDate(28);
                     else if (then.getUTCDate() === 31 && (debtFreeBy.getMonth() === 3 || debtFreeBy.getMonth() === 5 || debtFreeBy.getMonth() === 8 || debtFreeBy.getMonth() === 10)) debtFreeBy.setDate(30);
@@ -170,6 +204,8 @@ function Debt() {
                 }
             }
 
+            // This covers the case where the user can afford to pay off their debt by the desired date with their current
+            // surplus income.
             else {
                 setMonthsToPay(months);
                 setDebtFreeBy(then.toISOString().split('T')[0]);
@@ -179,26 +215,32 @@ function Debt() {
 
             if (firstTestState) setTestDone(true);
 
-            else {
-                setTextReady(true);
-                setGraphReady(true);
-            }
+            else setTextReady(true);
         }
     }, [monPayReady, startDate, targetDate, debt, interest, surplus]);
 
+    // This useEffect function updates the output field to display the required monthly payment to be debt free by the
+    // desired date. It does this by first checking if the text is ready to be displayed and then checking if the
+    // amount of months is a number. If it is, then the output field is updated to display the required monthly
+    // payment. If it is not, then the output field is updated to display that the user cannot afford to pay off
+    // their debt with their current surplus income.
     useEffect(() => {
         if (textReady && !firstTestState) {
             setTextReady(false);
             if (!isNaN(monthsToPay)) {
-                if (debtFreeBy !== targetDate) {
+                if (monthsToPay === 0) setMonthlyPayment("You're already debt free!");
+
+                else if (debtFreeBy !== targetDate) {
                     setMonthlyPayment("To be debt free by " + targetDate + ", you would need to pay about $" + 
                     reqPayment.toString() + " a month which is more than you can afford by about $" + (reqPayment - affordablePayment).toFixed(2).toString() + ". If you were to pay $" + 
                     affordablePayment.toString() + " a month over " + monthsToPay + " months, you would be debt free by " + debtFreeBy + ".");
+                    setGraphReady(true);
                 }
 
                 else {
                     setMonthlyPayment("To be debt free by " + debtFreeBy + ", you would need to pay about $" + 
                     affordablePayment.toString() + " a month in " + monthsToPay.toString() + " monthly installments.");
+                    setGraphReady(true);
                 }
             }
 
@@ -206,6 +248,12 @@ function Debt() {
         }
     }, [textReady, reqPayment, affordablePayment, monthsToPay, debtFreeBy, targetDate, firstTestState]);
 
+
+    // The following useEffect function populates the graph and calculates the points at which payment will be made
+    // whenever all of its variables are ready. It does this by first calculating the cumulative debt at each point
+    // in time and then adding that point to the list of points to be displayed on the graph at the corresponding
+    // time on the y axis. Once all the points are calculated, the data and options for the graph are set and the
+    // graph is displayed to the user.
     useEffect(() => {
         if (graphReady && !firstTestState) {
             setGraphReady(false);
@@ -268,16 +316,21 @@ function Debt() {
         }
     }, [graphReady, monthsToPay, debt, monthlyInterest, affordablePayment, startDate, debtFreeBy, firstTestState]);
 
-    const testStart = ["2023-01-01", "2024-01-31", "2024-01-01", "2024-01-01"];
-    const testTarget = ["2024-01-01", "2024-02-29", "2024-12-01", "2025-01-01"];
-    const testDebt = [1000, 1000, 1000, 1000];
-    const testInterest = [0.229, 0.229, 0.229, 0.229];
-    const testSurplus = [100, 1100, 94.03, 10];
 
-    const expDates = ["2024-01-01", "2024-02-29", "2025-01-01", ''];
-    const expPays = [94.03, 1019.08, 101.65, 0];
-    const expAffords = [94.03, 1019.08, 94.03, 0];
-    const expMonths = [12, 1, 12, NaN];
+    // TEST CASES - The following test cases operate on every input field and test the functionality of the calculator.
+    // Each test case is designed to test a specific aspect of the calculator and is designed to fail if the calculator
+    // is not working as expected and covers all of the fringe cases and the cases inbetweeen to test the function's 
+    // operation in real world cases where input is messy and highly variable.
+    const testStart = ["2023-01-01", "2024-01-31", "2024-01-01", "2024-01-01", "2024-01-01", "2024-01-15", "2024-01-15"];
+    const testTarget = ["2024-01-01", "2024-02-29", "2024-12-01", "2025-01-01", "2024-11-01", "2025-01-15", "2024-03-15"];
+    const testDebt = [1000, 1000, 1000, 1000, 1000, 10000, 0];
+    const testInterest = [0.229, 0.229, 0.229, 0.229, 0, 0.229, 0];
+    const testSurplus = [100, 1100, 94.03, 10, 100, 200, 0];
+
+    const expDates = ["2024-01-01", "2024-02-29", "2025-01-01", '', '2024-11-01', "2037-09-15", "2024-01-15"];
+    const expPays = [94.03, 1019.08, 101.65, 0, 100, 940.28, 0];
+    const expAffords = [94.03, 1019.08, 94.03, 0, 100, 199.83, 0];
+    const expMonths = [12, 1, 12, NaN, 10, 164, 0];
 
     const [expDate, setExpDate] = useState('');
     const [expPay, setExpPay] = useState(0);
@@ -286,6 +339,11 @@ function Debt() {
     const [last, setLast] = useState(false);
     const [testNum, setTestNum] = useState(0);
 
+    // The below two useEffect functions are used for testing purposes. The first one is used to set the input fields
+    // which triggers the requiredMonthlyPayment function to calculate the required monthly payment. The second one
+    // verifies the output of the calculator and determines whether the test passed or failed. If the test passed,
+    // then the test number is incremented and the next test is run. If the test failed, then the test number is
+    // incremented and the next test is run with a message sent to the console to indicate passing or failing.
     useEffect(() => {
         if (firstTestState) {
             setTestNum(testNum);
