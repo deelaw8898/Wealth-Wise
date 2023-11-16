@@ -624,17 +624,44 @@ function Debt() {
 
     // END OF SECOND CALCULATOR
 
-    // A quick helper function to validate if a number is valid. If it is not, then an alert is displayed
-    // to the user and the value is set to an empty string.
+    // UNIT CASES FOR HELPER FUNCTIONS BELOW HERE
+
+    // TESTS FOR validateNumber
+    // Test 1: Test a valid number
+    // Test 2: Test a number that is too low
+    // Test 3: Test a number that is not a number
+    // Test 4: Test a number that is empty
+    const [testNumber, setTestNumber] = useState(0);
+    const [numberTested, setNumberTested] = useState(false);
+    useEffect(() => {
+        console.log('testNumber value changed:', testNumber);
+        if (testNumber < 4) {
+            let testNumbers = [100, -1, "test", ""];
+            if (testNumber === 0 && validateNumber(testNumbers[testNumber])) console.log("Number Validation Test " + testNumber + " Passed!");
+            else if (testNumber !== 0 && !validateNumber(testNumbers[testNumber])) console.log("Number Validation Test " + testNumber + " Passed!");
+            else {
+                console.log("Number Validation Test " + testNumber + " Failed!");
+                setMasterTestFlag(m => m + 1);
+            }
+            if (testNumber !== testNumbers.length - 1) setTestNumber(t => t + 1);
+            else setNumberTested(t => true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [testNumber]);
+
+    /* 
+     * A quick helper function to validate if a number is valid. If it is not, then an alert is displayed
+     * to the user and the value is set to an empty string.
+     */
     function validateNumber(value) {
         if (isNaN(value)) {
-            alert("Please enter a valid number.");
+            if (numberTested) alert("Please enter a valid number.");
             value = "";
             return false;
         }
 
         else if (value < 0) {
-            alert("Please enter a positive number.");
+            if (numberTested) alert("Please enter a positive number.");
             value = "";
             return false;
         }
@@ -646,17 +673,44 @@ function Debt() {
         return true;
     }
 
-    // A quick helper function to validate if an interest rate is valid. If it is not, then an alert is displayed
-    // to the user and the value is set to an empty string.
+    // TESTS FOR validateInterest
+
+    // Test 1: Test a valid interest rate
+    // Test 2: Test an interest rate that is too high
+    // Test 3: Test an interest rate that is too low
+    // Test 4: Test an interest rate that is not a number
+    const [interestNum, setInterestNum] = useState(0);
+    const [interestTested, setInterestTested] = useState(false);
+    useEffect(() => {
+        console.log('interestNum value changed:', interestNum);
+        if (interestNum < 4) {
+            let testInterest = [22.9, 101, -1, "test"];
+            if (interestNum === 0 && validateInterest(testInterest[interestNum])) console.log("Interest Validation Test " + interestNum + " Passed!");
+            else if (interestNum !== 0 && !validateInterest(testInterest[interestNum])) console.log("Interest Validation Test " + interestNum + " Passed!");
+            else {
+                console.log("Interest Validation Test " + interestNum + " Failed!");
+                setMasterTestFlag(m => m + 1);
+            }
+            if (interestNum !== testInterest.length) setInterestNum(interestNum + 1);
+            else setInterestTested(t => true);
+        }
+        // Fix for the useEffect hook running twice on the first render - function is irrelevant to render during tests
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [interestNum]);
+
+    /**
+      * A quick helper function to validate if an interest rate is valid. If it is not, then an alert is displayed.
+      * to the user and the value is set to an empty string.
+      */
     function validateInterest(value) {
         if (isNaN(value)) {
-            alert("Please enter a valid number.");
+            if (interestTested) alert("Please enter a valid number.");
             value = "";
             return false;
         }
 
         else if (value < 0 || value > 100) {
-            alert("Please enter a valid interest rate between 0 and 100.");
+            if (interestTested) alert("Please enter a valid interest rate between 0 and 100.");
             value = "";
             return false;
         }
@@ -668,8 +722,46 @@ function Debt() {
         return true;
     }
 
-    // A quick helper function to validate if a date is valid. If it is not, then an alert is displayed
-    // to the user.
+    // TESTS FOR validateDate
+
+    // Test 1: Test a valid date
+    // Test 2: Test a date that is too soon
+    const [dateNum, setDateNum] = useState(0);
+    const [dateTested, setDateTested] = useState(false);
+    useEffect(() => {
+        console.log('dateTested value changed:', dateTested);
+        if (dateNum < 2) {
+            if (dateNum === 0) {
+                let dummyDate = new Date();
+                dummyDate.setFullYear(dummyDate.getFullYear() + 1);
+                if (validateDate(dummyDate.toISOString().split('T')[0])) console.log("Date Validation Test 1 Passed!");
+                else {
+                    console.log("Date Validation Test 1 Failed!");
+                    setMasterTestFlag(m => m + 1);
+                }
+            }
+            else {
+                let dummyDate2 = new Date();
+                dummyDate2.setFullYear(dummyDate2.getFullYear() - 1);
+                if (!validateDate(dummyDate2.toISOString().split('T')[0])) console.log("Date Validation Test 2 Passed!");
+                else {
+                    console.log("Date Validation Test 2 Failed!");
+                    setMasterTestFlag(m => m + 1);
+                }
+            }
+
+            if (dateNum !== 1) setDateNum(t => t + 1);
+            else setDateTested(t => true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dateNum]);
+
+    /**
+     * This function is used to validate the date input field. It does this by first checking if the date is valid
+     * and then checking if the date is at least one month in the future. If the date is not valid, then an alert
+     * is displayed to the user to enter a valid date. A valid date is considered to be at least one month in the
+     * future in this context.
+     */
     function validateDate(date) {
         const then = new Date();
         then.setFullYear(date.substring(0, 4));
@@ -682,7 +774,7 @@ function Debt() {
         min.setHours(0);
 
         if (then < min) {
-            alert("Please enter a date at least one month in the future.");
+            if (dateTested) alert("Please enter a date at least one month in the future.");
             return false;
         }
 
