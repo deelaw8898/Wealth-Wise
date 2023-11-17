@@ -12,7 +12,6 @@ import Vacation from './pages/Vacation_Spending/vacation';
 import Tracker from './pages/Money_tracker/tracker';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Calculator from "./pages/Calculator/Calculator";
 import CalculatorButton from "./pages/Calculator/CalculatorButton";
 
 function App() {
