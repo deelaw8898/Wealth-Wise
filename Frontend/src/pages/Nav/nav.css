@@ -1,58 +1,94 @@
-/* Nav.css */
-
-/* Style for the overall navbar. Adjust colors, padding, etc. as necessary. */
+/* Overall navbar styling */
 .navbar {
-    background-color: #f8f9fa; /* This is the light gray bg-light class color in Bootstrap */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow to the navbar */
-    position: fixed;
-    top: 0;
-    left: 0;
+    position: fixed; /* Fix the navbar to the top of the screen */
+    top: 0; /* Align the navbar to the top */
+    left: 0; /* Align the navbar to the left */
+    width: 100%; /* Ensure the navbar spans the full width of the screen */
+    background-color: #031930; /* Dark blue background */
+    z-index: 1030; /* Higher z-index to ensure it stays on top of other content */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    flex-direction: column;
+}
+
+/* Top row styling */
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    z-index: 1000; /* Ensure the navbar stays on top of other content */
+    margin-bottom: 0.5rem; /* Space between top row and navigation buttons */
 }
 
 /* Style for the company name */
 .navbar-brand {
-    font-size: 1.5rem; /* Increase the size of the company name */
-    font-weight: bold;  /* Make the company name bold */
-    color: #343a40;     /* This is the default color for text in Bootstrap */
-    position: absolute; /* Position it absolutely within the navbar container */
-    top: 0;             /* Align it to the top of the navbar container */
-    left: 0;            /* Align it to the left of the navbar container */
-    margin-left: 1rem;  /* Provide a slight space from the left edge */
-    margin-right: 0;    /* Reset the margin-right */
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
 }
 
+/* Style for the navigation links */
+.navbar-nav {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding-left: 0; /* Remove default padding */
+}
 
+.nav-item {
+    margin: 0 1rem; /* Space between links */
+}
+
+.nav-link {
+    color: white;
+    background-color: #18bc9c; /* Green background */
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+/* Style for the authentication links */
 .auth-links {
     display: flex;
-    justify-content: flex-end;
-    width: 100%; /* Ensuring it takes the full width of its parent */
 }
 
-.nav-item.nav-link:nth-child(1) {
-    margin-right: 2rem; /* Add a 2rem space to the right side of the Login link */
+.auth {
+    padding: 0.5rem 1rem;
+    margin: 0 0.5rem;
+    background-color: #18bc9c;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
 }
 
-
-.nav-item.nav-link {
-    color: #343a40; /* Default text color */
-    margin: 0 1rem; /* Increase margin to 1rem on the left and right side of each link */
+.special {
+    background-color: #e74c3c;
+    color: white;
 }
 
-/* Highlight the active link with a different color */
-.nav-item.nav-link.active {
-    color: #007bff; /* This is the primary color in Bootstrap */
-}
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .navbar-nav, .top-row {
+        flex-direction: column;
+        align-items: center;
+    }
 
-/* Style for the navbar toggler button */
-.navbar-toggler {
-    border-color: #dee2e6; /* This is the default border color for buttons in Bootstrap */
-}
+    .auth-links, .navbar-nav {
+        width: 100%;
+    }
 
-/* Style for the navbar toggler icon */
-.navbar-toggler-icon {
-    background-image: url(data:image/svg+xml,%3csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2222%22%20height=%222%22%20viewBox=%220%200%2022%202%22%3e%3cpath%20d=%22M0%200h22v2H0z%22%3e%3c/path%3e%3c/svg%3e); /* Default Bootstrap icon */
-}
+    .nav-item {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
 
-/* Add any other styles you need for the navbar below... */
+    .auth {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
