@@ -28,4 +28,3 @@ mysql/#innodb_redo/*
 mysql/#innodb_redo/#ib_redo10
 mysql/ibtmp1
 mysql/binlog.000025
-mysql/mysql.sock
