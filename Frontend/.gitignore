@@ -22,5 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# MySQL socket file
+# MySQL temp files, not needed
+mysql/#ib_*
+mysql/#innodb_redo/*
+mysql/#innodb_redo/#ib_redo10
+mysql/ibtmp1
+mysql/binlog.000025
 mysql/mysql.sock
