@@ -77,3 +77,13 @@
     -webkit-appearance: none;
     margin: 0;
 }
+
+.CarPaymentCalculatorPage .chart-section {
+    width: 400px; 
+    height: 400px; 
+    margin-top: 20px;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
