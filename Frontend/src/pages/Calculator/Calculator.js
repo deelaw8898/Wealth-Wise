@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import './Calculator.css'; // You would need to create a corresponding CSS file for styling
+import './Calculator.css';
 
 function Calculator() {
     const [input, setInput] = useState('');
@@ -22,6 +22,11 @@ function Calculator() {
     }
 
     const calculate = () => {
+        if (input.trim() === '') {
+            // If there's no input, don't do anything
+            return;
+        }
+
         try {
             let result = Function('"use strict";return (' + input + ')')().toString();
             setInput(result);
@@ -31,6 +36,10 @@ function Calculator() {
             setInput('Error');
         }
     };
+    const handleInputChange = (e) => {
+        setInput(e.target.value);
+    };
+
     useEffect(() => {
         const handleKeyPress = (e) => {
             // Ignore key presses when a button is focused
@@ -67,7 +76,7 @@ function Calculator() {
             </div>
             <div className="calculator-widget">
                 <form>
-                    <input type="text" value={input}/>
+                    <input type="text" value={input} data-testid="calculator-display" onChange={handleInputChange}/>
 
                 </form>
                 <div className="keypad">
@@ -99,3 +108,4 @@ function Calculator() {
 }
 
 export default Calculator;
+

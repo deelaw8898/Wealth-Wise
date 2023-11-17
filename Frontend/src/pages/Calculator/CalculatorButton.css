@@ -3,15 +3,14 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 100; /* Ensure it's above other content */
+    z-index: 100; /* Ensures it's above other content */
 }
 
 .calculator-toggle {
-    /* Style your button as desired */
     padding: 10px;
     border-radius: 50%;
     font-size: 16px;
     border: none;
     cursor: pointer;
-    /* Add more styles as needed */
 }
+
