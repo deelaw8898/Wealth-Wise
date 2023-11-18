@@ -338,31 +338,32 @@ function Car(){
       <div className="CarPaymentCalculatorPage">
         <br></br>
         <br></br>
+        <br></br>
         <div>
           <label>
             New Vehicle Price: &nbsp;
-            <input type="number" min = "0" value={vehiclePrice} onChange={e => setVehiclePrice(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
+            <input type="number" min = "0" value={vehiclePrice} onChange={e => setVehiclePrice(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} placeholder="Enter New Vehicle Price" />
           </label>
         </div>
         <br></br>
         <div>
           <label>
             Current Vehicle Value (Optional): &nbsp;
-            <input type="number" min = "0" value={currentVehicleValue} onChange={e => setCurrentVehicleValue(parseFloat(e.target.value))} onKeyDown=       {preventInvalidChars} />
+            <input type="number" min = "0" value={currentVehicleValue} onChange={e => setCurrentVehicleValue(parseFloat(e.target.value))} onKeyDown=       {preventInvalidChars} placeholder="Enter Current Vehicle Price" />
           </label>
         </div>
         <br></br>
         <div>
           <label>
             Down Payment (Optional): &nbsp;
-            <input type="number" min = "0" value={downPayment} onChange={e => setDownPayment(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
+            <input type="number" min = "0" value={downPayment} onChange={e => setDownPayment(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} placeholder="Enter Down Payment" />
           </label>
         </div>
         <br></br>
         <div>
           <label>
             Duration of Loan: &nbsp;
-            <input type="number" min = "0" value={loanDuration} onChange={e => setLoanDuration(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
+            <input type="number" min = "0" value={loanDuration} onChange={e => setLoanDuration(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} placeholder="Enter Loan Duration" />
             <select value={durationType} onChange={e => setDurationType(e.target.value)}>
               <option value="months">Months</option>
               <option value="years">Years</option>
@@ -373,7 +374,7 @@ function Car(){
         <div>
           <label>
             Interest Rate (%): &nbsp;
-            <input type="number" min = "0" value={interestRate} onChange={e => setInterestRate(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
+            <input type="number" min = "0" value={interestRate} onChange={e => setInterestRate(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} placeholder="Enter Interest Rate" />
           </label>
         </div>
         <br></br>
@@ -399,7 +400,7 @@ function Car(){
         <div>
           <label>
             Registration & Other Fees (Optional): &nbsp;
-            <input type="number" min = "0" value={registrationFees} onChange={e => setRegistrationFees(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} />
+            <input type="number" min = "0" value={registrationFees} onChange={e => setRegistrationFees(parseFloat(e.target.value))} onKeyDown={preventInvalidChars} placeholder="Enter Other Fees" />
           </label>
         </div>
         <br></br>
