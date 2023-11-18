@@ -158,3 +158,7 @@ function Luxury() {
 }
 
 export default Luxury;
+
+
+// Manual testing has been conducted
+// Results along with documentation can be found in the "Luxury_Spending_Testing" file
