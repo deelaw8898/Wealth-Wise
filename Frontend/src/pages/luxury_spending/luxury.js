@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./luxury.css";
 
 function Luxury() {
   const [itemPrice, setItemPrice] = useState("");
@@ -10,13 +11,25 @@ function Luxury() {
   const [monthlyIncome, setMonthlyIncome] = useState("");
   const [affordabilityPlan, setAffordabilityPlan] = useState("very-comfortable");
   const [monthsToSave, setMonthsToSave] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const calculateTotalSpending = () => {
     const taxRate = 0.11;
     const itemPriceNumber = parseFloat(itemPrice);
     const timePeriodNumber = parseInt(timePeriod, 10);
     const monthlyIncomeNumber = parseFloat(monthlyIncome);
-    
+
+    if (
+      itemPriceNumber <= 0 ||
+      timePeriodNumber <= 0 ||
+      monthlyIncomeNumber <= 0
+    ) {
+      setErrorMessage("Please enter values higher than 0 for all inputs.");
+      return;
+    } else {
+      setErrorMessage("");
+    }
+
     setSelectedTP(timePeriod);
 
     if (
@@ -51,7 +64,7 @@ function Luxury() {
   };
 
   return (
-    <section>
+    <section className="LuxuryContainer">
       <div className="container-fluid">
         <h1 className="mt-5">Luxury Spending Calculator</h1>
         <div className="input-group mb-3">
@@ -114,7 +127,7 @@ function Luxury() {
             </p>
             <p>
               Monthly Savings for {selectedTP}{" "}
-              {timePeriod === 1 ? "Month" : "Months"}: ${monthlySavings}
+              {selectedTP == 1 ? "Month" : "Months"}: ${monthlySavings}
             </p>
             <p>
               Monthly Savings (With Affordability Plan): ${affordabilityPlanSavings}
@@ -129,6 +142,8 @@ function Luxury() {
       <button className="btn btn-primary" onClick={calculateTotalSpending}>
         Calculate
       </button>
+
+      {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
     </section>
   );
 }
