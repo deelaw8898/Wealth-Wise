@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./luxury.css";
 
 function Luxury() {
+  // State variables to store user inputs and calculated values
   const [itemPrice, setItemPrice] = useState("");
   const [timePeriod, setTimePeriod] = useState("");
   const [selectedTP, setSelectedTP] = useState("");
@@ -14,34 +15,30 @@ function Luxury() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const calculateTotalSpending = () => {
-    
+    // Tax rate constant
     const taxRate = 0.11;
 
-    if (
-      itemPrice <= 0 ||
-      timePeriod <= 0 ||
-      monthlyIncome <= 0
-    ) {
+    // Input validation: Check if any input is zero or negative
+    if (itemPrice <= 0 || timePeriod <= 0 || monthlyIncome <= 0) {
       setErrorMessage("Please enter values higher than 0 for all inputs.");
       return;
     } else {
-      setErrorMessage("");
+      setErrorMessage(""); // Clear error message if inputs are valid
     }
 
     setSelectedTP(timePeriod);
 
-    if (
-      !isNaN(itemPrice) &&
-      !isNaN(timePeriod) &&
-      !isNaN(monthlyIncome)
-    ) {
+    if (!isNaN(itemPrice) && !isNaN(timePeriod) && !isNaN(monthlyIncome)) {
+      // Calculate total spending including tax
       const taxAmount = itemPrice * taxRate;
       const totalPrice = itemPrice + taxAmount;
       setTotalSpending(totalPrice);
 
+      // Calculate monthly savings required to reach the goal
       const requiredSavings = totalPrice / timePeriod;
       setMonthlySavings(requiredSavings.toFixed(2));
 
+      // Define savings percentage based on affordability plan
       const savingsPercentage =
         affordabilityPlan === "very-comfortable"
           ? 0.3
@@ -49,12 +46,17 @@ function Luxury() {
           ? 0.5
           : 0.9;
 
+      // Calculate allotable funds based on monthly income and savings percentage
       const allotableFunds = monthlyIncome * savingsPercentage;
-      if (allotableFunds > 0) {
-        
-        const months = Math.ceil(totalPrice / allotableFunds);
-        const APrequiredSavings = totalPrice / months
 
+      if (allotableFunds > 0) {
+        // Calculate the number of months required to save
+        const months = Math.ceil(totalPrice / allotableFunds);
+        
+        // Calculate monthly savings with affordability plan
+        const APrequiredSavings = totalPrice / months;
+
+        // Update state variables with calculated values
         setAffordabilityPlanSavings(APrequiredSavings.toFixed(2));
         setMonthsToSave(months);
       }
@@ -65,6 +67,8 @@ function Luxury() {
     <section className="LuxuryContainer">
       <div className="container-fluid">
         <h1 className="mt-5">Luxury Spending Calculator</h1>
+
+        {/* Input for Item Price */}
         <div className="input-group mb-3">
           <input
             type="number"
@@ -78,6 +82,7 @@ function Luxury() {
           />
         </div>
 
+        {/* Input for Time Period (in months) */}
         <div className="input-group mb-3">
           <input
             type="number"
@@ -91,6 +96,7 @@ function Luxury() {
           />
         </div>
 
+        {/* Input for Monthly Expendable Income */}
         <div className="input-group mb-3">
           <input
             type="number"
@@ -104,6 +110,7 @@ function Luxury() {
           />
         </div>
 
+        {/* Dropdown for Affordability Plan */}
         <div className="form-group">
           <label htmlFor="affordabilityPlan">Affordability Plan:</label>
           <select
@@ -118,6 +125,7 @@ function Luxury() {
           </select>
         </div>
 
+        {/* Display calculated values if total spending is greater than 0 */}
         {totalSpending > 0 && (
           <div>
             <p>
@@ -137,10 +145,13 @@ function Luxury() {
           </div>
         )}
       </div>
+
+      {/* Button to trigger the calculation */}
       <button className="btn btn-primary" onClick={calculateTotalSpending}>
         Calculate
       </button>
 
+      {/* Display error message if any */}
       {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
     </section>
   );
