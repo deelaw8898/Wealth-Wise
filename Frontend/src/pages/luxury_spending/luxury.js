@@ -14,15 +14,13 @@ function Luxury() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const calculateTotalSpending = () => {
+    
     const taxRate = 0.11;
-    const itemPriceNumber = parseFloat(itemPrice);
-    const timePeriodNumber = parseInt(timePeriod, 10);
-    const monthlyIncomeNumber = parseFloat(monthlyIncome);
 
     if (
-      itemPriceNumber <= 0 ||
-      timePeriodNumber <= 0 ||
-      monthlyIncomeNumber <= 0
+      itemPrice <= 0 ||
+      timePeriod <= 0 ||
+      monthlyIncome <= 0
     ) {
       setErrorMessage("Please enter values higher than 0 for all inputs.");
       return;
@@ -33,15 +31,15 @@ function Luxury() {
     setSelectedTP(timePeriod);
 
     if (
-      !isNaN(itemPriceNumber) &&
-      !isNaN(timePeriodNumber) &&
-      !isNaN(monthlyIncomeNumber)
+      !isNaN(itemPrice) &&
+      !isNaN(timePeriod) &&
+      !isNaN(monthlyIncome)
     ) {
-      const taxAmount = itemPriceNumber * taxRate;
-      const totalPrice = itemPriceNumber + taxAmount;
+      const taxAmount = itemPrice * taxRate;
+      const totalPrice = itemPrice + taxAmount;
       setTotalSpending(totalPrice);
 
-      const requiredSavings = totalPrice / timePeriodNumber;
+      const requiredSavings = totalPrice / timePeriod;
       setMonthlySavings(requiredSavings.toFixed(2));
 
       const savingsPercentage =
@@ -75,7 +73,7 @@ function Luxury() {
             value={itemPrice}
             onChange={(e) => {
               const newValue = Math.max(0, parseFloat(e.target.value));
-              setItemPrice(newValue.toString());
+              setItemPrice(newValue);
             }}
           />
         </div>
@@ -87,8 +85,8 @@ function Luxury() {
             placeholder="Time Period (in months)"
             value={timePeriod}
             onChange={(e) => {
-              const newValue = Math.max(0, parseFloat(e.target.value));
-              setTimePeriod(newValue.toString());
+              const newValue = Math.max(0, parseInt(e.target.value, 10));
+              setTimePeriod(newValue);
             }}
           />
         </div>
@@ -101,7 +99,7 @@ function Luxury() {
             value={monthlyIncome}
             onChange={(e) => {
               const newValue = Math.max(0, parseFloat(e.target.value));
-              setMonthlyIncome(newValue.toString());
+              setMonthlyIncome(newValue);
             }}
           />
         </div>
@@ -127,7 +125,7 @@ function Luxury() {
             </p>
             <p>
               Monthly Savings for {selectedTP}{" "}
-              {selectedTP == 1 ? "Month" : "Months"}: ${monthlySavings}
+              {selectedTP === 1 ? "Month" : "Months"}: ${monthlySavings}
             </p>
             <p>
               Monthly Savings (With Affordability Plan): ${affordabilityPlanSavings}
