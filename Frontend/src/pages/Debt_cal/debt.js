@@ -561,7 +561,7 @@ function Debt() {
                 " today, you would save approximately $" + interestDiff + " a month in interest costs.");
             }
 
-            scrollToBottom();
+            scrollToBottom("DebtCalc2Output");
         }
     }, [funDisplayReady, funTerm, interestDiff, funLumpSum]);
     
@@ -786,26 +786,33 @@ function Debt() {
      * This function quickly scrolls the user to the bottom of the page to make sure that the input
      * is visible after calculation.
      */
-    function scrollToBottom() {
+    function scrollToBottom(id = "") {
         // The duration of the scroll, the position of where the window currently is, the position of where the window
         // ends and the time at which the scroll started are all initialized.
-        const duration = 375;
-        const startY = window.scrollY;
+        const duration = 500;
+        const currentScrollY = window.scrollY;
+        const startY = currentScrollY > 0 ? currentScrollY : 0;
         const startTime = performance.now();
       
         // Inner function that actually scrolls the window
         function scroll(currentTime) {
             const elapsedTime = currentTime - startTime;
+            const targetElement = id ? document.getElementById(id) : null;
+
+            const scrollTarget = targetElement
+                ? (targetElement.offsetTop + targetElement.scrollHeight - window.innerHeight + 25)
+                : (document.documentElement.scrollHeight - window.innerHeight - 60);
+
             // If the time hasn't elapsed, then the window is scrolled by a small increment to
             // make the scroll less jarring.
             if (elapsedTime < duration) {
-                window.scrollTo(0, smoothScroll(elapsedTime, startY, document.documentElement.scrollHeight - window.innerHeight - startY, duration));
+                window.scrollTo(0, smoothScroll(elapsedTime, startY, scrollTarget - startY, duration));
                 requestAnimationFrame(scroll);
             } 
             
             // If the time has elapsed, then the window is scrolled to the end position
             else {
-                window.scrollTo(0, document.documentElement.scrollHeight - window.innerHeight);
+                window.scrollTo(0, scrollTarget);
             }
         }
 
