@@ -9,7 +9,7 @@ import Car from './pages/Car_payment/car_pay';
 import Debt from './pages/Debt_cal/debt';
 import Luxury from './pages/luxury_spending/luxury';
 import Vacation from './pages/Vacation_Spending/vacation';
-import Tracker from './pages/Money_tracker/tracker';
+import MonthlyCalculator from './pages/MonthlyCalculator/MonthlyCalculator';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CalculatorButton from "./pages/Calculator/CalculatorButton";
@@ -31,7 +31,7 @@ function App() {
             <Route path="/debt" element={<Debt/>} />
             <Route path="/luxury" element={<Luxury/>} />
             <Route path="/vacation" element={< Vacation/>} />
-            <Route path="/tracker" element={< Tracker/>} />
+            <Route path="/tracker" element={< MonthlyCalculator/>} />
             
             
             {/*<Route path="/" element={< />} /> */}

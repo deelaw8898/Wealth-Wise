@@ -1,0 +1,27 @@
+
+
+
+.upperButtons{
+    border-color: black;
+    background-color: white;
+    margin-top: 3%;
+    margin-left: 3%;
+    height: 13vh;
+    width: 40vh;
+}
+
+.expenseTitle{
+    font-size: 50px;
+    font-weight: bold;
+   
+    margin-top: 2.7%;
+    margin-bottom: 2.5%;
+}
+.infoExpense{
+  
+    margin-left: 3%;
+    margin-top: -1.5%;
+}
+
+
+
