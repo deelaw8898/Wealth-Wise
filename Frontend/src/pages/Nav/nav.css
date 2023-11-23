@@ -1,5 +1,5 @@
 /* Overall navbar styling */
-.navbar {
+.navigation {
     position: fixed; /* Fix the navbar to the top of the screen */
     top: 0; /* Align the navbar to the top */
     left: 0; /* Align the navbar to the left */
@@ -19,6 +19,7 @@
 /* Top row styling */
 .top-row {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
@@ -26,30 +27,32 @@
 }
 
 /* Style for the company name */
-.navbar-brand {
+.navigation-brand {
     font-size: 1.5rem;
     font-weight: bold;
     color: white;
 }
 
 /* Style for the navigation links */
-.navbar-nav {
+.navigation-options {
     display: flex;
     justify-content: center;
     list-style-type: none;
     padding-left: 0; /* Remove default padding */
 }
 
-.nav-item {
-    margin: 0 1rem; /* Space between links */
+.navigation-item {
+    margin: 0 0.5vw; /* Space between links */
 }
 
-.nav-link {
+.navigation-link {
     color: white;
     background-color: #18bc9c; /* Green background */
     padding: 0.5rem 1rem;
     border-radius: 4px;
     text-decoration: none;
+    font-weight: bold;
+    font-size: max(1.2rem, 1.9vw);
 }
 
 /* Style for the authentication links */
@@ -71,18 +74,19 @@
     color: white;
 }
 
+/* Commented out by Preston to try to fix navbar */
 /* Responsive adjustments */
-@media (max-width: 991px) {
-    .navbar-nav, .top-row {
-        flex-direction: column;
+/* @media (max-width: 991px) {
+    .navigation-options, .top-row {
+        flex-direction: row;
         align-items: center;
     }
 
-    .auth-links, .navbar-nav {
+    .auth-links, .navigation-options {
         width: 100%;
     }
 
-    .nav-item {
+    .navigation-item {
         width: 100%;
         margin: 0.5rem 0;
     }
@@ -91,4 +95,4 @@
         width: 100%;
         margin: 0.5rem 0;
     }
-}
+} */
