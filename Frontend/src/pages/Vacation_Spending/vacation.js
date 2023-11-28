@@ -150,33 +150,30 @@ function Vacation(){
 return(
 
   <div className="Vacation">
-        <h1>Vacation Spending Calculator</h1>
+        <div className='box'>
         <div>
           <label className='budget-label' for = "budget">Budget
           </label>
-          <br></br>
+          
           <input type="number" id="budget"
                 placeholder="Enter your budget"
                 value={budget}
                 onChange={e => setBudget(validateInput(parseFloat(e.target.value)))}/>
+
            <button id="set-budget" onClick={validateBudget}>Set</button>
           </div>
           <div>
-          <label className ="expense-label" for="expense-name">Expense Name</label>
-          <br></br>
+          <label className ="expense-label" for="expense-name">Name</label>
           <input
           type="text"
           id="expense-name"
             placeholder="Enter expense name"
           value={expenseName}
-          onChange={(e) => setName(e.target.value)}
-        />
+          onChange={(e) => setName(e.target.value)}/>
         </div>
-        <br></br>
         <div>
-          <label className='expense-amount' for ="expense-amount "> Expense Amount
+          <label className='expense-amount' for ="expense-amount ">Amount
           </label>
-          <br></br>
           <input type="number"
                     id="expense-amount"
                     placeholder="Enter expense amount"
@@ -185,14 +182,14 @@ return(
           <button id="add-expense" onClick={validateExpense}>Add</button>
         </div>
         <div>
-        <label className='delete-label' for = "delete-expense">Expense To Delete</label>
-        <br></br>
+        <label className='delete-label' for = "delete-expense">Delete Expense</label>
         <input type="text" id = "delete-expense" placeholder="Name of expense" value={expenseNameToDelete} onChange={(e) => setExpenseNameToDelete(e.target.value)}/>
         <button id="delete-button" onClick={deleteExpense}>Delete</button>
         </div>
         <div>
         <br></br>
         <button id="reset-button" onClick={resetExpenses}>Reset</button>
+        </div>
         </div>
         <br></br>
         <div className='print'>

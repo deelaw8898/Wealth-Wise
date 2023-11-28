@@ -1,15 +1,10 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Sometype+Mono&display=swap');
-
 .Vacation{
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    align-items: center;
+    font-family: Montserrat;
+    justify-content:center;
     display: flex;
-    margin-top: 22.5vh;
+    margin: 22.5vh auto 0;
+    padding-top: 10vh;
     flex-direction: column;
     height: auto;
     min-width: 800px;
@@ -17,151 +12,142 @@
     overflow: auto;
 }
 
-.Vacation h1{
-    font-family: 'Roboto', sans-serif;
-}
-
-.Vacation label{
-    padding-right: 40px;
-    text-align: center;
-}
-
 .budget-label{
-    margin-left: -156px;
+    font-size: 30px;
+    margin-right:120px;
+    align-self: center;
 
 }
 .expense-label{
-    margin-left: -76px;
+    font-size: 30px;
+    margin-right:137px;
+
+    
 }
 
 .expense-amount{
-    margin-left: -49px;
+    font-size: 30px;
+    margin-right:118px;
     
 }
 
 .delete-label{
-    margin-left: -38px;
+    font-size: 30px;
+    margin-right:25px;
 }
 
 
 .print-label{
-  margin-left: 23px;
+  margin-left: 0px;
   
 }
 .total-label{
-    margin-left: 20px;
+    margin-left: 0px;
 }
 .print{
-    font-family: 'Sometype Mono', monospace;
-    border: solid;
-    border-color: white;
+    border: 3px outset #eee;
     margin-top: 10px;
-    border-radius: 30px;
-    margin-bottom: -10px;
-    margin-left: 10px;
+    border-radius: 5px;
     text-align: center;
     background:white;
     color: rgb(7, 6, 6);
     font-style: normal;
+    width: 50vh;
+    align-self: center;
    
+}
+
+.box{
+    border: 3px outset #eee;
+    border-radius: 30px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 80vh;
+    align-self: center;
 }
 
 .Vacation input{
     text-align: left;
     width: auto;
-    margin-left: 15px;
-    padding-top: 5px;
-    padding-bottom: 3px;
     border-radius: 5px;
     border-color:white;
-    border: none;
+    border:none;
     cursor: pointer;
-    align-self: center;
+    height: 30px;
+    font-size: large;
+    
 }
 
 
 #budget{
-    margin-left: -60px;
+    margin-left: 0px;
 }
 #expense-name{
-    margin-left: -135px;
+    margin-right: 12.7vh;
     
 }
 
 #expense-amount{
-    margin-left: -50px;
-    bottom: 12px;
+    margin-right:8px;
     
 }
 
 #delete-expense{
-    margin-left: -29px;
+    margin-left: 0px;
     
 }
 
 .Vacation button{
-    
-    size: 30px;
     cursor: pointer;
-    font-size: medium;
+    font-size: large;
     font-family: 'Sometype Mono', monospace;
     border-radius: 5px;
     transition-duration: 0.4s;
     padding: 3px;
-    padding-left: 7px;
-    padding-right: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
     padding-top: 1px;
     padding-bottom: 1px;
     text-align: center;
-    align-self: center;
 }
 
 
 #set-budget{
     background-color: white;
-    border: solid rgb(30, 176, 30);
-    margin: 15px;
-   
+    border: solid#008000;
+    margin-left: 5vh;
 }
 
 #set-budget:hover{
-    background-color: rgb(30, 176, 30);
+    background-color: #008000;
     color: rgb(255, 255, 255);
-    padding-left: 10px;
-    padding-right: 10px;
-    
 }
 
 
 #add-expense{
     background-color: white;
-    border: solid rgb(30, 176, 30);
+    border: solid #008000;
+    margin-left: 5vh;
+
     
-    bottom: 12px;
-    margin: 20px;
     
 }
 #add-expense:hover{
-    background-color: rgb(30, 176, 30);
+    background-color: #008000;
     color: rgb(255, 255, 255);
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 #delete-button{
     background-color: white;
-    border: solid rgb(205, 33, 33);
+    border: solid #f45142;
     text-align: center;
-    margin-top: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 1.3vh;
 }
 
 #delete-button:hover{
-    background-color: rgb(205, 33, 33);
+    background-color: #f45142;
     color: rgb(255, 255, 255);
-    padding-left: 10px;
-    padding-right: 10px;
+    
 }
 
 #reset-button{
@@ -171,8 +157,8 @@
 }
 
 #reset-button:hover{
-    border: solid black;
-    background-color: black;
+    border: solid #FF6F61;
+    background-color: #FF6F61;
     color: rgb(255, 255, 255);
     padding-left: 30px;
     padding-right: 30px;
@@ -181,16 +167,16 @@
 }
 
 .Vacation table {
-    font-family: 'Sometype Mono', monospace;
+    
     padding-top: 5px;
-    margin: 10px;
+    margin: 10px auto;
     text-align: center;
-    width: 100%;
-    border-collapse:collapse;
-    background-color: white;
+    width: 50vh;
+    border: 2px solid #bbb;
+    border-radius: 10px;
     background: white;
     color: rgb(50, 49, 49);
-    border-radius: 10px;
+    
 }
 
 
