@@ -2,15 +2,16 @@ import React from "react";
 import './nav.css';
 import { Link } from 'react-router-dom';
 
-function Nav() {
+function Nav({ isLoggedIn, username }) {
     return (
         <nav className="navigation">
             {/* Top row for brand and auth links */}
             <div className="top-row">
                 <span className="navigation-brand">WealthWise</span>
                 <div className="auth-links">
-                    <Link to='/login' className="navigation-item navigation-link auth">Login</Link>
-                    <Link to='/registration' className="navigation-item navigation-link auth special">Join us</Link>
+                {!isLoggedIn && <Link to='/login' className="navigation-item navigation-link auth">Login</Link>}
+                {!isLoggedIn && <Link to='/registration' className="navigation-item navigation-link auth special">Join us</Link>}
+                {isLoggedIn && <span className="navigation-item navigation-link auth">Hello, {username}</span>}
                 </div>
             </div>
 

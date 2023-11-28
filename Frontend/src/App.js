@@ -10,21 +10,29 @@ import Debt from './pages/Debt_cal/debt';
 import Luxury from './pages/luxury_spending/luxury';
 import Vacation from './pages/Vacation_Spending/vacation';
 import MonthlyCalculator from './pages/MonthlyCalculator/MonthlyCalculator';
-
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import CalculatorButton from "./pages/Calculator/CalculatorButton";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUsername] = useState('');
+
+  const onLogin = (loggedIn) => {
+    setIsLoggedIn(loggedIn);
+    setUsername(user);
+};
   return (
     <Router>
       <div className="App">
         <header className="App-header">
-          <Nav />
+        <Nav isLoggedIn={isLoggedIn} username={user} />
           <CalculatorButton />
+          
           {/* this will route us to the page */}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login onLogin={onLogin} />} />
             <Route path="/registration" element={< Registration/>} />
             <Route path="/mortgage" element={< Mortgage/>} />
             <Route path="/car" element={< Car/>} />
