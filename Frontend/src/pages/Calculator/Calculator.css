@@ -76,6 +76,20 @@
       "Hist point zero zero equal";
     gap: 10px; /* Space between buttons */
 }
+.clear-history {
+    border: 0;
+    outline: 0;
+    height: 50px;
+    border-radius: 10px;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    background: #3a4452;
+    box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.1), 5px 5px 15px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+    /* Set the button width to 100% of the grid column */
+    width: 100%;
+}
 
 /* Assign grid areas to each button based on its function */
 .calculator-widget .keypad button#clear {

@@ -3,14 +3,23 @@
     position: fixed;
     bottom: 20px;
     right: 20px;
-    z-index: 100; /* Ensures it's above other content */
+    z-index: 100;
 }
 
 .calculator-toggle {
-    padding: 10px;
+    padding: 0; /* Adjust or remove padding as needed */
     border-radius: 50%;
     font-size: 16px;
     border: none;
     cursor: pointer;
+    background-color: transparent; /* Make sure this is transparent or matches your desired color */
+    display: flex; /* This will help center the icon */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
 }
 
+.calculator-icon {
+    width: 70px;
+    height: 70px;
+    display: block;
+}

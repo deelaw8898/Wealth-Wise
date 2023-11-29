@@ -1,7 +1,7 @@
-// CalculatorButton.js
 import React, { useState } from 'react';
 import Calculator from './Calculator';
 import './CalculatorButton.css';
+import calcIcon from './icon_calculator.png';
 
 function CalculatorButton() {
     const [isCalculatorOpen, setCalculatorOpen] = useState(false);
@@ -13,7 +13,7 @@ function CalculatorButton() {
     return (
         <div className="calculator-button-container">
             <button onClick={toggleCalculator} className="calculator-toggle">
-                Calc
+                <img src={calcIcon} alt="Calculator" className="calculator-icon"/>
             </button>
 
             {isCalculatorOpen && <Calculator />}
@@ -22,4 +22,3 @@ function CalculatorButton() {
 }
 
 export default CalculatorButton;
-

@@ -10,6 +10,10 @@ function Calculator() {
         setShowHistory(!showHistory); // Toggle the visibility of the history window
     };
 
+    const clearHistory = () => {
+        setHistory('HISTORY\n'); // Resets the history to the default state
+    };
+
     const handleClick = (e) => {
         setInput(input.concat(e.target.name));
     }
@@ -72,6 +76,7 @@ function Calculator() {
         <div className="calculator-container">
             <div className={`history-window ${showHistory ? 'show' : ''}`}>
                 {/* Use the history state as the value for the textarea */}
+                <button onClick={clearHistory} className="clear-history">Clear History</button>
                 <textarea readOnly value={history}/>
             </div>
             <div className="calculator-widget">
