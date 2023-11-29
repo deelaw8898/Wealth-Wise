@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Import axios here
+import axios from 'axios'; 
+import { useNavigate } from 'react-router-dom';
+import './login.css';
 
-function Login() {
+
+function Login({onLogin}) {
   // Define state variables to store username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const navigate = useNavigate();
+  //const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // Function to handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -21,8 +25,8 @@ function Login() {
 
       if (response.status === 200) {
         setMessage('Login successful');
-        // Redirect the user to the dashboard or another page
-        // You can use React Router for navigation
+        onLogin(true, username);
+        navigate('/tracker');
       } else {
         setMessage('Invalid username or password');
       }
@@ -36,8 +40,8 @@ function Login() {
     <div className="login-container">
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <div>
-          <label htmlFor="username">Username:</label>
+        <div className='usernameLogin'>
+          <h2>Username</h2>
           <input
             type="text"
             id="username"
@@ -46,8 +50,8 @@ function Login() {
             required
           />
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
+        <div className='passwordLogin'>
+          <h2>password</h2>
           <input
             type="password"
             id="password"
@@ -56,7 +60,7 @@ function Login() {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button className="submit" type="submit">Login</button>
       </form>
       <p>{message}</p>
     </div>
