@@ -54,7 +54,7 @@ The app integrates with a **backend API** built with **Express.js** and **MySQL*
 
 ---
 
-## 🚀 Backend API
+## Backend API
 
 ### Endpoints
 
